@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>ZENOX | MONEY</title>
+<title>𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬</title>
 <meta name="theme-color" content="#020a06">
 <!-- Open the connection to the API (DNS + TLS) while the page is still loading -->
-<link rel="preconnect" href="https://fdg-production.up.railway.app" crossorigin>
+<link rel="preconnect" href="https://silent-block-bedf.ahmedrabieharoun.workers.dev" crossorigin>
 <!-- Critical for boot: Telegram SDK + device fingerprint (must be ready before the first API call) -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <!-- Non-critical SDKs (wallet + ad networks): `async` so a slow/blocked CDN can no longer freeze the loading page.
@@ -753,6 +753,7 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:grayscale(1) contrast(1.1)
 .cp-ind{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:14px;background:linear-gradient(135deg,rgba(96,242,145,.75),rgba(40,217,99,.55));border:1px solid rgba(185,249,206,.7);box-shadow:0 0 18px rgba(96,242,145,.55),inset 0 0 14px rgba(170,255,210,.12);transition:transform .45s cubic-bezier(.5,1.4,.5,1);overflow:hidden}
 .cp-ind::after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(170,255,210,.35) 50%,transparent 70%);transform:translateX(-120%);animation:cpSweep 3.4s ease-in-out infinite}
 .cp-tabs[data-on="ads"] .cp-ind{transform:translateX(100%)}
+#cpTabs{display:none!important}
 @keyframes cpSweep{0%,55%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
 #cpPanel{transition:opacity .25s ease,transform .25s ease}
 #cpPanel.sw{opacity:0;transform:translate3d(0,8px,0)}
@@ -829,7 +830,7 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:grayscale(1) contrast(1.1)
 
 /* ═══════════ Icons v2 — clean line icons, motion lives inside the icon ═══════════ */
 .ico{display:inline-block;overflow:visible;flex-shrink:0;filter:drop-shadow(0 0 2px rgba(143,246,177,.5))}
-.ic-trophy,.ic-crown,.ic-medal1,.ic-gem{filter:drop-shadow(0 0 2.5px rgba(251,191,36,.45))}
+.ic-trophy,.ic-crown,.ic-medal1,.ic-gem{filter:drop-shadow(0 0 2.5px rgba(64,240,123,.45))}
 .ico *{transform-box:fill-box;transform-origin:center}
 .ico.st *{animation:none!important}
 .cp-tab:not(.on) .ico *{animation-play-state:paused}
@@ -1108,7 +1109,7 @@ html,body{touch-action:manipulation}
 img{content-visibility:auto}
 
 /* ══════════════════════════════════════════════════════════════════════
-   ZENOX | MONEY — NEON EMERALD THEME  (final layer — overrides everything above)
+   𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬 — NEON EMERALD THEME  (final layer — overrides everything above)
    Palette taken from the brand art: deep forest black, neon green, lime,
    chrome silver, a touch of bronze/gold for rewards.
    ══════════════════════════════════════════════════════════════════════ */
@@ -1343,9 +1344,46 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
 .wallet-balance-item .wbal-amount{font-size:22px}
 #page-record .cp-root{background:radial-gradient(120% 46% at 50% 0%,#0b4a2b 0%,#04180d 58%,#020a06 100%)}
 #welcomeModal .wl-title{font-size:16px;letter-spacing:.8px}
+
+/* ── Staking card ── */
+.stake-card .mining-card-head{align-items:center}
+.stk-head-txt{flex:1;min-width:0}
+.stk-badge{margin-inline-start:auto;padding:7px 11px;border-radius:12px;font-weight:800;font-size:15px;line-height:1.05;text-align:center;color:#eafff2;background:rgba(64,240,123,.14);border:1px solid rgba(64,240,123,.5);box-shadow:0 0 16px rgba(64,240,123,.25)}
+.stk-badge small{display:block;font-size:9px;font-weight:700;letter-spacing:.6px;opacity:.75;margin-top:2px}
+.stk-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.stk-stat{padding:10px 6px;border-radius:12px;background:rgba(0,0,0,.26);border:1px solid rgba(170,255,210,.1);text-align:center;min-width:0}
+.stk-stat span{display:block;font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--text2)}
+.stk-stat b{display:block;margin-top:5px;font-size:16px;font-weight:800;color:#fff;font-family:var(--f-num);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis}
+.stk-timer-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:12px;color:var(--text2)}
+.stk-timer-row b{color:#fff;font-size:14px;font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:.5px}
+.stk-pending{margin:2px 0 4px;font-size:11px;color:var(--text2);text-align:center}
+.stk-form{margin-top:14px;padding-top:14px;border-top:1px dashed rgba(170,255,210,.14)}
+.stk-input-wrap{position:relative;display:flex;align-items:center}
+.stk-input-wrap input{width:100%;padding:13px 62px 13px 14px;border-radius:13px;background:rgba(0,0,0,.32);border:1px solid rgba(170,255,210,.2);color:#fff;font-size:15px;font-weight:700;outline:none;font-family:var(--f-num);-moz-appearance:textfield}
+.stk-input-wrap input::-webkit-outer-spin-button,.stk-input-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.stk-input-wrap input:focus{border-color:rgba(64,240,123,.7);box-shadow:0 0 0 3px rgba(64,240,123,.14)}
+.stk-max{position:absolute;right:8px;padding:6px 11px;border:0;border-radius:9px;background:rgba(64,240,123,.18);color:#bdfad1;font-weight:800;font-size:11px;letter-spacing:.6px;cursor:pointer}
+.stk-btn{margin-top:10px}
+.stk-note{margin-top:10px;font-size:11px;line-height:1.5;color:var(--text2);text-align:center}
+.stk-note b{color:#fff}
+
+/* ═══ HIGH-QUALITY GREEN ICON SYSTEM ═══ */
+.gi{stroke:url(#znxGrad)!important;stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2.5px rgba(64,240,123,.5));shape-rendering:geometricPrecision}
+.gi.gi-f{fill:url(#znxFill)}
+.invite-btn .gi,.promo-btn .gi,.combo-check-btn .gi,.task-btn.join .gi,.copy-btn .gi,.wallet-submit .gi,.modal-submit .gi,.forcesub-item-btn .gi,.forcesub-verify-btn .gi,.wheel-card-btn .gi,.game-action .gi,.wheel-hub .gi,.tab.active .gi,.qty-chip.active .gi,.mining-btn .gi,.convert-arrow .gi,.home-action.earn .gi{stroke:currentColor!important;fill:none;filter:none}
+.nav-item:not(.active) .gi{opacity:.55;filter:none}
+.nav-item.active .gi{stroke-width:2;filter:drop-shadow(0 0 5px rgba(64,240,123,.8))}
+.feature-icon.gold,.reward-icon,.game-card:nth-child(1) .game-card-icon{color:#40f07b!important;background:rgba(64,240,123,.1)!important;border:1px solid rgba(64,240,123,.4)!important;box-shadow:0 0 18px rgba(19,228,89,.25)!important}
+.feature-icon .gi,.game-card-icon .gi,.wallet-action-icon .gi,.invite-icon .gi,.wheel-info-emoji .gi,.forcesub-emoji .gi,.ban-emoji .gi,.modal-success-icon .gi{filter:drop-shadow(0 0 5px rgba(64,240,123,.65))}
+.ic-trophy,.ic-crown,.ic-medal1,.ic-gem{filter:drop-shadow(0 0 3px rgba(64,240,123,.55))!important}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="znxGrad" gradientUnits="userSpaceOnUse" x1="3" y1="2" x2="21" y2="22"><stop offset="0" stop-color="#b6ffd0"/><stop offset=".5" stop-color="#3df07a"/><stop offset="1" stop-color="#0fb84a"/></linearGradient>
+<linearGradient id="znxFill" gradientUnits="userSpaceOnUse" x1="3" y1="2" x2="21" y2="22"><stop offset="0" stop-color="#7dffb0" stop-opacity=".34"/><stop offset="1" stop-color="#0fb84a" stop-opacity=".12"/></linearGradient>
+</defs></svg>
+
 
 <div id="bgFx" aria-hidden="true"><div class="spores"></div><div class="gw"><div class="diag"></div><div class="grid"></div></div><i class="beam b1"></i><i class="beam b2"></i><i class="beam b3"></i></div>
 <!-- Loading -->
@@ -1361,18 +1399,18 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
 <!-- Mandatory Subscription Gate -->
 <div class="forcesub-screen" id="forceSubScreen">
   <div class="forcesub-card">
-    <div class="forcesub-emoji"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <div class="forcesub-emoji"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
     <div class="forcesub-title">Join to Continue</div>
     <div class="forcesub-desc">You must join the channels below to use the bot and unlock your referral reward.</div>
     <div class="forcesub-list" id="forceSubList"></div>
-    <button class="forcesub-verify-btn" id="forceSubVerifyBtn" onclick="verifyForceSub()"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg> Verify Membership</button>
+    <button class="forcesub-verify-btn" id="forceSubVerifyBtn" onclick="verifyForceSub()"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg> Verify Membership</button>
   </div>
 </div>
 
 <!-- Multi-Account Ban Screen -->
 <div class="ban-screen" id="banScreen">
   <div class="ban-card">
-    <div class="ban-emoji"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.900 4.900 14.200 14.200"/></svg></div>
+    <div class="ban-emoji"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.900 4.900 14.200 14.200"/></svg></div>
     <div class="ban-title">Account Banned</div>
     <div class="ban-desc">This account has been permanently blocked from using the bot for violating the usage policy.</div>
     <div class="ban-reason-box">
@@ -1392,15 +1430,15 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
     <div class="page active" id="page-home">
       <div class="zx-top">
         <div class="zx-brand">
-          <img class="zx-brand-logo" data-znx="logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="ZENOX | MONEY">
-          <div class="zx-brand-txt"><b>ZENOX<i>|</i><span>MONEY</span></b><small>THE EARNING HUB</small></div>
+          <img class="zx-brand-logo" data-znx="logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬">
+          <div class="zx-brand-txt"><b>𝗭𝗘𝗡𝗢𝗫<i>|</i><span>𝗠𝗢𝗡𝗘𝗬</span></b><small>THE EARNING HUB</small></div>
         </div>
         <div class="user-info zx-user">
           <div class="user-name-wrap">
             <span class="user-greeting">Welcome back</span>
             <span class="user-name" id="homeName">Player</span>
           </div>
-          <div class="avatar" id="homeAvatar"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="avatar" id="homeAvatar"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
         </div>
       </div>
 
@@ -1415,8 +1453,8 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
           <div class="balance-sub" id="homePmtTonValue">≈ $0.0000</div>
           <div class="balance-sub" id="homeTonUsd">Keep earning every day!</div>
           <div class="home-actions">
-            <button class="home-action earn" onclick="switchPage('tasks')"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Earn</button>
-            <button class="home-action withdraw" onclick="switchPage('wallet')"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg> Withdraw</button>
+            <button class="home-action earn" onclick="switchPage('tasks')"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Earn</button>
+            <button class="home-action withdraw" onclick="switchPage('wallet')"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg> Withdraw</button>
           </div>
         </div>
       </div>
@@ -1438,15 +1476,30 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
         </div>
       </div>
 
-      <div class="zx-sec"><span>MINING NODE</span></div>
-      <div class="mining-card">
+      <div class="zx-sec"><span>STAKING</span></div>
+      <div class="mining-card stake-card" id="stakeCard">
         <div class="mining-card-head">
           <div class="mining-icon"><img data-znx="coin" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="ZNX"></div>
-          <div><div class="mining-title">Mining</div><div class="mining-sub">Watch an ad to start mining for one hour</div></div>
+          <div class="stk-head-txt"><div class="mining-title">Staking</div><div class="mining-sub" id="stkSub">Stake your ZNX and earn 5% every 24 hours</div></div>
+          <div class="stk-badge" id="stkBadge">+5%<small>/ 24h</small></div>
         </div>
-        <div class="mining-amount-row"><span>Mining Balance</span><b class="mining-amount" id="miningAmount">0.00</b><img class="mining-amount-icon" data-znx="coin" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="ZNX"></div>
-        <div class="mining-progress"><div class="mining-progress-fill" id="miningProgressFill"></div></div>
-        <button class="mining-btn" id="miningBtn" onclick="watchMiningAd()"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="15" x="2" y="7" rx="2"/><path d="m17 2-5 5-5-5"/></svg> Watch Ad &amp; Start Mining</button>
+        <div class="stk-stats">
+          <div class="stk-stat"><span>Staked</span><b id="stkStaked">0</b></div>
+          <div class="stk-stat"><span>Reward / cycle</span><b id="stkPerCycle">0</b></div>
+          <div class="stk-stat"><span>Total earned</span><b id="stkEarned">0</b></div>
+        </div>
+        <div class="stk-timer-row"><span id="stkTimerLbl">No active stake</span><b id="stkTimer">--:--:--</b></div>
+        <div class="mining-progress"><div class="mining-progress-fill" id="stkProgressFill"></div></div>
+        <div class="stk-pending" id="stkPending" style="display:none"></div>
+        <button class="mining-btn" id="stkClaimBtn" onclick="claimStake()" style="display:none"></button>
+        <div class="stk-form">
+          <div class="stk-input-wrap">
+            <input type="number" inputmode="numeric" min="1" step="1" id="stkAmount" placeholder="Amount to stake" autocomplete="off">
+            <button type="button" class="stk-max" onclick="stakeMax()">MAX</button>
+          </div>
+          <button class="mining-btn stk-btn" id="stkBtn" onclick="stakeCoins()">Stake ZNX</button>
+        </div>
+        <div class="stk-note" id="stkNote">Available: <b id="stkAvail">0</b> ZNX · Staked coins are locked and earn a reward every 24 hours.</div>
       </div>
 
       <div class="zx-sec"><span>DAILY OPS</span></div>
@@ -1457,7 +1510,7 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
           <button class="feature-btn" id="dailyBonusBtn" onclick="claimDailyBonus()">Claim</button>
         </div>
         <div class="redeem-card">
-          <div class="feature-icon purple"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2M13 11v2M13 17v2"/></svg></div>
+          <div class="feature-icon purple"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2M13 11v2M13 17v2"/></svg></div>
           <div class="feature-copy"><div class="feature-title">Redeem Code</div><div class="feature-sub">Have a promo code? Claim your reward</div></div>
           <button class="feature-btn" onclick="openModal('redeemModal')">Redeem</button>
         </div>
@@ -1468,7 +1521,7 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
     <div class="page" id="page-tasks">
        <div class="tasks-header"><div class="page-title">Earn</div><div style="font-size:13px;color:var(--text3);margin-top:5px">Complete tasks and collect ZNX rewards</div></div>
       <div class="tabs-section"><div class="tabs">
-        <div class="tab active" onclick="switchTab(this,'ads')"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="15" x="2" y="7" rx="2"/><path d="m17 2-5 5-5-5"/></svg> Ads</div>
+        <div class="tab active" onclick="switchTab(this,'ads')"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="15" x="2" y="7" rx="2"/><path d="m17 2-5 5-5-5"/></svg> Ads</div>
         <div class="tab" onclick="switchTab(this,'channels')"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.500.5l3-3a5 5 0 0 0-7-7l-1.700 1.700"/><path d="M14 11a5 5 0 0 0-7.500-.5l-3 3a5 5 0 0 0 7 7l1.700-1.700"/></svg> User Tasks</div>
       </div></div>
       <div class="add-task-section">
@@ -1487,8 +1540,8 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
           <div class="games-balance"><div class="games-balance-icon"><img data-znx="coin" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="ZNX"></div><div class="games-balance-copy"><div class="games-balance-label">Your balance</div><div class="games-balance-value" id="gamesBalance">0 <span>ZNX</span></div></div></div>
       <div class="games-section-title">— MINI GAMES</div>
       <div class="games-grid">
-        <div class="game-card" onclick="startGame('gem')"><div class="game-card-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3 8 9l4 13 4-13-3-6M2 9h20"/></svg></div><div class="game-card-title">Gem Rush</div><div class="game-card-type">6 gems · 3 bombs</div><span class="game-card-limit">up to 30 ZNX</span><span class="game-card-plays" id="plays-gem">3/3 left today</span></div>
-        <div class="game-card" onclick="startGame('wheel')"><div class="game-card-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01"/></svg></div><div class="game-card-title">Number Clash</div><div class="game-card-type">Spin × spin</div><span class="game-card-limit">up to 36 ZNX</span><span class="game-card-plays" id="plays-wheel">3/3 left today</span></div>
+        <div class="game-card" onclick="startGame('gem')"><div class="game-card-icon"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3 8 9l4 13 4-13-3-6M2 9h20"/></svg></div><div class="game-card-title">Gem Rush</div><div class="game-card-type">6 gems · 3 bombs</div><span class="game-card-limit">up to 30 ZNX</span><span class="game-card-plays" id="plays-gem">3/3 left today</span></div>
+        <div class="game-card" onclick="startGame('wheel')"><div class="game-card-icon"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01"/></svg></div><div class="game-card-title">Number Clash</div><div class="game-card-type">Spin × spin</div><span class="game-card-limit">up to 36 ZNX</span><span class="game-card-plays" id="plays-wheel">3/3 left today</span></div>
         <div class="game-card" onclick="startGame('xo')"><div class="game-card-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.500 3.500l7 7M10.500 3.500l-7 7"/><circle cx="16.500" cy="16.500" r="4"/></svg></div><div class="game-card-title">XO vs CPU</div><div class="game-card-type">Strategy</div><span class="game-card-limit">up to 10 ZNX</span><span class="game-card-plays" id="plays-xo">3/3 left today</span></div>
         <div class="game-card" onclick="startGame('fruit')"><div class="game-card-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17a5 5 0 0 0 10 0c0-2.800-2.500-5-5-3-2.500-2-5 .2-5 3zM12 17a5 5 0 0 0 10 0c0-2.800-2.500-5-5-3-2.500-2-5 .2-5 3z"/><path d="M7 14c3.200-2.900 4.300-8.800 5-12 1.700 2.400 4.900 9 5 12M22 9c-4.300 0-7.100-2.300-10-7 5.700 0 10 4.700 10 7z"/></svg></div><div class="game-card-title">Fruit Slots</div><div class="game-card-type">Match 3</div><span class="game-card-limit">up to 20 ZNX</span><span class="game-card-plays" id="plays-fruit">3/3 left today</span></div>
       </div>
@@ -1622,7 +1675,7 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
            <div class="convert-balance">Balance: <span id="convertTonBalance">$0.0000</span></div>
          </div>
          <div class="convert-rate" id="convertRateLabel"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3"/></svg> 10,000 ZNX = $1</div>
-         <button class="wallet-submit" id="convertSubmitBtn" onclick="submitConvert()"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Exchange Now</button>
+         <button class="wallet-submit" id="convertSubmitBtn" onclick="submitConvert()"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Exchange Now</button>
          <button class="modal-close" style="margin-top:8px" onclick="closeWalletForm('convertFormCard')">Cancel</button>
        </div>
 
@@ -1639,11 +1692,11 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
     <div class="page" id="page-wheel">
       <div class="wheel-page-header">
         <button class="back-btn" onclick="switchPage('home')"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
-        <div class="page-title"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v7M12 15v7M2 12h7M15 12h7"/></svg> Lucky Wheel</div>
+        <div class="page-title"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v7M12 15v7M2 12h7M15 12h7"/></svg> Lucky Wheel</div>
       </div>
 
       <div class="wheel-info-banner">
-        <div class="wheel-info-emoji"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <div class="wheel-info-emoji"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
         <div class="wheel-info-text">Earn <b>1 free spin</b> for every <b id="wheelRefsPerSpin">2</b> active referrals. Spin to win up to <b>10,000 <img class="shiba-icon-inline" data-znx="coin" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="ZNX"></b>!</div>
       </div>
 
@@ -1675,22 +1728,22 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
   <!-- Bottom Nav -->
   <div class="nav">
     <div class="nav-item active" onclick="switchPage('home')" id="nav-home">
-      <div class="nav-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></div><div class="nav-label">Home</div>
+      <div class="nav-icon"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></div><div class="nav-label">Home</div>
     </div>
     <div class="nav-item" onclick="switchPage('tasks')" id="nav-tasks">
-      <div class="nav-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></div><div class="nav-label">Tasks</div>
+      <div class="nav-icon"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></div><div class="nav-label">Tasks</div>
     </div>
     <div class="nav-item" onclick="switchPage('games')" id="nav-games">
-      <div class="nav-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01"/><path d="M17.3 5H6.7a4 4 0 0 0-4 3.6C2.6 9.4 2 14.5 2 16a3 3 0 0 0 3 3c1 0 1.500-.5 2-1l1.400-1.400a2 2 0 0 1 1.400-.6h4.400a2 2 0 0 1 1.400.6L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.500-.6-6.600-.7-7.300A4 4 0 0 0 17.300 5z"/></svg></div><div class="nav-label">Games</div>
+      <div class="nav-icon"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01"/><path d="M17.3 5H6.7a4 4 0 0 0-4 3.6C2.6 9.4 2 14.5 2 16a3 3 0 0 0 3 3c1 0 1.500-.5 2-1l1.400-1.400a2 2 0 0 1 1.400-.6h4.400a2 2 0 0 1 1.400.6L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.500-.6-6.600-.7-7.300A4 4 0 0 0 17.300 5z"/></svg></div><div class="nav-label">Games</div>
     </div>
     <div class="nav-item" onclick="switchPage('refs')" id="nav-refs">
-      <div class="nav-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.900M16 3.100a4 4 0 0 1 0 7.800"/></svg></div><div class="nav-label">Referrals</div>
+      <div class="nav-icon"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.900M16 3.100a4 4 0 0 1 0 7.800"/></svg></div><div class="nav-label">Referrals</div>
     </div>
     <div class="nav-item" onclick="switchPage('wallet')" id="nav-wallet">
-      <div class="nav-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></div><div class="nav-label">Wallet</div>
+      <div class="nav-icon"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></div><div class="nav-label">Wallet</div>
     </div>
     <div class="nav-item" onclick="switchPage('record')" id="nav-record">
-      <div class="nav-icon"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.500a2.500 2.500 0 0 1 0-5H6M18 9h1.500a2.500 2.500 0 0 0 0-5H18M4 22h16M10 14.700V17c0 .6-.5 1-1 1.200C7.900 18.800 7 20.200 7 22M14 14.700V17c0 .6.5 1 1 1.200 1.100.6 2 2 2 3.800"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></div><div class="nav-label">Ranking</div>
+      <div class="nav-icon"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.500a2.500 2.500 0 0 1 0-5H6M18 9h1.500a2.500 2.500 0 0 0 0-5H18M4 22h16M10 14.700V17c0 .6-.5 1-1 1.200C7.900 18.800 7 20.200 7 22M14 14.700V17c0 .6.5 1 1 1.200 1.100.6 2 2 2 3.800"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></div><div class="nav-label">Ranking</div>
     </div>
   </div>
 </div>
@@ -1699,15 +1752,15 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
 
 <div class="modal-overlay" id="welcomeModal">
   <div class="wl-card">
-    <img class="wl-logo" data-znx="logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="ZENOX | MONEY">
-    <div class="wl-title">Welcome to ZENOX | MONEY</div>
+    <img class="wl-logo" data-znx="logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬">
+    <div class="wl-title">Welcome to 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬</div>
     <div class="wl-sub">The Earning Hub</div>
     <div class="wl-stats">
       <div class="wl-stat"><b>ZNX</b><span>Your reward coin</span></div>
       <div class="wl-stat"><b>10%</b><span>Lifetime referral commission</span></div>
     </div>
     <div class="wl-note">Complete tasks, watch ads, play games and invite friends to collect <b>ZNX</b>. Convert your ZNX to USD and withdraw to your TON wallet.</div>
-    <button class="modal-submit" onclick="closeWelcome()">Let's Go 🚀</button>
+    <button class="modal-submit" onclick="closeWelcome()">Let's Go <svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.500 16.500c-1.500 1.300-2 5-2 5s3.700-.5 5-2c.7-.8.7-2.100-.1-2.900a2.200 2.200 0 0 0-2.900-.1zM12 15l-3-3a22 22 0 0 1 2-4A13 13 0 0 1 22 2c0 2.700-.8 7.500-6 11a22 22 0 0 1-4 2z"/><path d="M9 12H4s.5-3 2-4c1.600-1.100 5 0 5 0M12 15v5s3-.5 4-2c1.100-1.600 0-5 0-5"/></svg></button>
   </div>
 </div>
 <div class="modal-overlay" id="addTaskModal" onclick="closeModalOutside(event,'addTaskModal')">
@@ -1715,7 +1768,7 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
     <div class="modal-handle"></div>
 
     <div id="addTaskFormView">
-       <div class="modal-title"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-5v12L3 14z"/><path d="M11.600 16.800a3 3 0 1 1-5.800-1.600"/></svg> Add Task</div>
+       <div class="modal-title"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-5v12L3 14z"/><path d="M11.600 16.800a3 3 0 1 1-5.800-1.600"/></svg> Add Task</div>
         <div class="modal-desc">Promote your Telegram channel or bot. Bot tasks are approved instantly. Channel tasks are checked immediately to confirm that the bot is an administrator.</div>
 
        <div class="modal-field-label">Task Name</div>
@@ -1767,7 +1820,7 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
     </div>
 
     <div id="addTaskSuccessView" class="modal-success" style="display:none">
-      <div class="modal-success-icon" style="font-size:48px"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg></div>
+      <div class="modal-success-icon" style="font-size:48px"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg></div>
         <div class="modal-success-title">Task Added Successfully</div>
         <div class="modal-success-desc">Your USD payment was deducted and the task is now live. The bot administrator permission was verified automatically:</div>
       <ul class="modal-success-list">
@@ -1784,7 +1837,7 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
 <div class="modal-overlay" id="redeemModal" onclick="closeModalOutside(event,'redeemModal')">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2M13 11v2M13 17v2"/></svg> Redeem Code</div>
+    <div class="modal-title"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2M13 11v2M13 17v2"/></svg> Redeem Code</div>
     <div class="modal-desc">Enter a valid code to receive its ZNX reward.</div>
     <input class="modal-input" id="redeemCodeInput" maxlength="64" autocomplete="off" placeholder="Enter redeem code">
     <button class="modal-submit" id="redeemSubmitBtn" onclick="redeemCode()">Redeem Reward</button>
@@ -1796,7 +1849,7 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:drop-shadow(0 2px 6px rgba
 <div class="modal-overlay" id="captchaModal" onclick="if(event.target.id==='captchaModal')cancelCaptcha()">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title"><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Security Check</div>
+    <div class="modal-title"><svg class="gi gi-f" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Security Check</div>
     <div class="modal-desc">Please complete the quick verification below to continue and receive your reward.</div>
     <div id="captchaWidgetBox" style="display:flex;justify-content:center;min-height:65px;margin:16px 0;"></div>
     <button class="modal-close" onclick="cancelCaptcha()">Cancel</button>
@@ -1819,13 +1872,14 @@ var ZNX_LOGO="data:image/webp;base64,UklGRk57AABXRUJQVlA4IEJ7AADwoQGdASqAAYABPmE
 })();
 </script>
 <script>
-var GI_P={"home": "<path d=\"M3 10.5 12 3l9 7.5\"/><path d=\"M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5\"/>", "tasks": "<rect x=\"8\" y=\"2\" width=\"8\" height=\"4\" rx=\"1\"/><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\"/><path d=\"m9 14 2 2 4-4\"/>", "games": "<path d=\"M6 11h4M8 9v4M15 12h.01M18 10h.01\"/><path d=\"M17.3 5H6.7a4 4 0 0 0-4 3.6C2.6 9.4 2 14.5 2 16a3 3 0 0 0 3 3c1 0 1.500-.5 2-1l1.400-1.400a2 2 0 0 1 1.400-.6h4.400a2 2 0 0 1 1.400.6L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.500-.6-6.600-.7-7.300A4 4 0 0 0 17.300 5z\"/>", "users": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.900M16 3.100a4 4 0 0 1 0 7.800\"/>", "wallet": "<path d=\"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2\"/><path d=\"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4\"/>", "trophy": "<path d=\"M6 9H4.500a2.500 2.500 0 0 1 0-5H6M18 9h1.500a2.500 2.500 0 0 0 0-5H18M4 22h16M10 14.700V17c0 .6-.5 1-1 1.200C7.900 18.800 7 20.200 7 22M14 14.700V17c0 .6.5 1 1 1.200 1.100.6 2 2 2 3.800\"/><path d=\"M18 2H6v7a6 6 0 0 0 12 0V2z\"/>", "user": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/>", "bolt": "<path d=\"M13 2 4 14h7l-1 8 9-12h-7z\"/>", "up": "<path d=\"M7 7h10v10M7 17 17 7\"/>", "down": "<path d=\"M12 5v14M19 12l-7 7-7-7\"/>", "gift": "<rect x=\"3\" y=\"8\" width=\"18\" height=\"4\" rx=\"1\"/><path d=\"M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.500 8a2.500 2.500 0 0 1 0-5C10 3 12 8 12 8s2-5 4.500-5a2.500 2.500 0 0 1 0 5\"/>", "tv": "<rect width=\"20\" height=\"15\" x=\"2\" y=\"7\" rx=\"2\"/><path d=\"m17 2-5 5-5-5\"/>", "ticket": "<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z\"/><path d=\"M13 5v2M13 11v2M13 17v2\"/>", "link": "<path d=\"M10 13a5 5 0 0 0 7.500.5l3-3a5 5 0 0 0-7-7l-1.700 1.700\"/><path d=\"M14 11a5 5 0 0 0-7.500-.5l-3 3a5 5 0 0 0 7 7l1.700-1.700\"/>", "plus": "<path d=\"M12 5v14M5 12h14\"/>", "gem": "<path d=\"M6 3h12l4 6-10 13L2 9z\"/><path d=\"M11 3 8 9l4 13 4-13-3-6M2 9h20\"/>", "dice": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01\"/>", "xo": "<path d=\"M3.500 3.500l7 7M10.500 3.500l-7 7\"/><circle cx=\"16.500\" cy=\"16.500\" r=\"4\"/>", "cherry": "<path d=\"M2 17a5 5 0 0 0 10 0c0-2.800-2.500-5-5-3-2.500-2-5 .2-5 3zM12 17a5 5 0 0 0 10 0c0-2.800-2.500-5-5-3-2.500-2-5 .2-5 3z\"/><path d=\"M7 14c3.200-2.900 4.300-8.800 5-12 1.700 2.400 4.900 9 5 12M22 9c-4.300 0-7.100-2.300-10-7 5.700 0 10 4.700 10 7z\"/>", "melon": "<path d=\"M3 9a9 9 0 0 0 18 0z\"/><path d=\"M9 13h.01M12 16h.01M15 13h.01\"/>", "heart": "<path d=\"M19 14c1.500-1.500 3-3.200 3-5.500A5.500 5.500 0 0 0 16.500 3c-1.800 0-3 .5-4.500 2-1.500-1.500-2.700-2-4.500-2A5.500 5.500 0 0 0 2 8.500c0 2.300 1.500 4 3 5.500l7 7z\"/>", "bomb": "<circle cx=\"11\" cy=\"13\" r=\"9\"/><path d=\"m19.500 9.500 1.800-1.800a2.400 2.400 0 0 0 0-3.400l-1.600-1.600a2.400 2.400 0 0 0-3.400 0l-1.800 1.800M22 2l-1.500 1.500\"/>", "help": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.100 9a3 3 0 0 1 5.800 1c0 2-3 3-3 3M12 17h.01\"/>", "swap": "<path d=\"M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4\"/>", "send": "<path d=\"M22 2 11 13M22 2l-7 20-4-9-9-4z\"/>", "megaphone": "<path d=\"m3 11 18-5v12L3 14z\"/><path d=\"M11.600 16.800a3 3 0 1 1-5.800-1.600\"/>", "lock": "<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>", "ban": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m4.900 4.900 14.200 14.200\"/>", "check": "<path d=\"M20 6 9 17l-5-5\"/>", "checkc": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m8 12 3 3 5-6\"/>", "alert": "<path d=\"m21.700 18-8-14a2 2 0 0 0-3.500 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.700-3zM12 9v4M12 17h.01\"/>", "upload": "<path d=\"M12 3v12M17 8l-5-5-5 5M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/>", "chart": "<path d=\"M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3\"/>", "back": "<path d=\"m15 18-6-6 6-6\"/>", "pick": "<path d=\"M4 20 15 9\"/><path d=\"M6.500 7.500C10 4 16 4 20 8.500M6.500 7.500 9 10M20 8.500 17 11\"/>", "rocket": "<path d=\"M4.500 16.500c-1.500 1.300-2 5-2 5s3.700-.5 5-2c.7-.8.7-2.100-.1-2.900a2.200 2.200 0 0 0-2.900-.1zM12 15l-3-3a22 22 0 0 1 2-4A13 13 0 0 1 22 2c0 2.700-.8 7.500-6 11a22 22 0 0 1-4 2z\"/><path d=\"M9 12H4s.5-3 2-4c1.600-1.100 5 0 5 0M12 15v5s3-.5 4-2c1.100-1.600 0-5 0-5\"/>", "package": "<path d=\"M11 21.700a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.700l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.700z\"/><path d=\"M12 22V12M3.300 7l8.700 5 8.700-5\"/>", "bot": "<path d=\"M12 8V4H8\"/><rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"/><path d=\"M2 14h2M20 14h2M15 13v2M9 13v2\"/>", "target": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>", "wheel": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v7M12 15v7M2 12h7M15 12h7\"/>", "diamond": "<path d=\"M2.700 10.300a2.400 2.400 0 0 0 0 3.400l7.600 7.600a2.400 2.400 0 0 0 3.400 0l7.600-7.600a2.400 2.400 0 0 0 0-3.400l-7.600-7.600a2.400 2.400 0 0 0-3.400 0z\"/>"};
-function IC(n,c){return '<svg class="gi'+(c?' '+c:'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(GI_P[n]||'')+'</svg>';}
+var GI_P={"home": "<path d=\"M3 10.5 12 3l9 7.5\"/><path d=\"M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5\"/>", "tasks": "<rect x=\"8\" y=\"2\" width=\"8\" height=\"4\" rx=\"1\"/><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\"/><path d=\"m9 14 2 2 4-4\"/>", "games": "<path d=\"M6 11h4M8 9v4M15 12h.01M18 10h.01\"/><path d=\"M17.3 5H6.7a4 4 0 0 0-4 3.6C2.6 9.4 2 14.5 2 16a3 3 0 0 0 3 3c1 0 1.500-.5 2-1l1.400-1.400a2 2 0 0 1 1.400-.6h4.400a2 2 0 0 1 1.400.6L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.500-.6-6.600-.7-7.300A4 4 0 0 0 17.300 5z\"/>", "users": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.900M16 3.100a4 4 0 0 1 0 7.800\"/>", "wallet": "<path d=\"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2\"/><path d=\"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4\"/>", "trophy": "<path d=\"M6 9H4.500a2.500 2.500 0 0 1 0-5H6M18 9h1.500a2.500 2.500 0 0 0 0-5H18M4 22h16M10 14.700V17c0 .6-.5 1-1 1.200C7.900 18.800 7 20.200 7 22M14 14.700V17c0 .6.5 1 1 1.200 1.100.6 2 2 2 3.800\"/><path d=\"M18 2H6v7a6 6 0 0 0 12 0V2z\"/>", "user": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/>", "bolt": "<path d=\"M13 2 4 14h7l-1 8 9-12h-7z\"/>", "up": "<path d=\"M7 7h10v10M7 17 17 7\"/>", "down": "<path d=\"M12 5v14M19 12l-7 7-7-7\"/>", "gift": "<rect x=\"3\" y=\"8\" width=\"18\" height=\"4\" rx=\"1\"/><path d=\"M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.500 8a2.500 2.500 0 0 1 0-5C10 3 12 8 12 8s2-5 4.500-5a2.500 2.500 0 0 1 0 5\"/>", "tv": "<rect width=\"20\" height=\"15\" x=\"2\" y=\"7\" rx=\"2\"/><path d=\"m17 2-5 5-5-5\"/>", "ticket": "<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z\"/><path d=\"M13 5v2M13 11v2M13 17v2\"/>", "link": "<path d=\"M10 13a5 5 0 0 0 7.500.5l3-3a5 5 0 0 0-7-7l-1.700 1.700\"/><path d=\"M14 11a5 5 0 0 0-7.500-.5l-3 3a5 5 0 0 0 7 7l1.700-1.700\"/>", "plus": "<path d=\"M12 5v14M5 12h14\"/>", "gem": "<path d=\"M6 3h12l4 6-10 13L2 9z\"/><path d=\"M11 3 8 9l4 13 4-13-3-6M2 9h20\"/>", "dice": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01\"/>", "xo": "<path d=\"M3.500 3.500l7 7M10.500 3.500l-7 7\"/><circle cx=\"16.500\" cy=\"16.500\" r=\"4\"/>", "cherry": "<path d=\"M2 17a5 5 0 0 0 10 0c0-2.800-2.500-5-5-3-2.500-2-5 .2-5 3zM12 17a5 5 0 0 0 10 0c0-2.800-2.500-5-5-3-2.500-2-5 .2-5 3z\"/><path d=\"M7 14c3.200-2.900 4.300-8.800 5-12 1.700 2.400 4.900 9 5 12M22 9c-4.300 0-7.100-2.300-10-7 5.700 0 10 4.700 10 7z\"/>", "melon": "<path d=\"M3 9a9 9 0 0 0 18 0z\"/><path d=\"M9 13h.01M12 16h.01M15 13h.01\"/>", "heart": "<path d=\"M19 14c1.500-1.500 3-3.200 3-5.500A5.500 5.500 0 0 0 16.500 3c-1.800 0-3 .5-4.500 2-1.500-1.500-2.700-2-4.500-2A5.500 5.500 0 0 0 2 8.500c0 2.300 1.500 4 3 5.500l7 7z\"/>", "bomb": "<circle cx=\"11\" cy=\"13\" r=\"9\"/><path d=\"m19.500 9.500 1.800-1.800a2.400 2.400 0 0 0 0-3.400l-1.600-1.600a2.400 2.400 0 0 0-3.400 0l-1.800 1.800M22 2l-1.500 1.500\"/>", "help": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.100 9a3 3 0 0 1 5.800 1c0 2-3 3-3 3M12 17h.01\"/>", "swap": "<path d=\"M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4\"/>", "send": "<path d=\"M22 2 11 13M22 2l-7 20-4-9-9-4z\"/>", "megaphone": "<path d=\"m3 11 18-5v12L3 14z\"/><path d=\"M11.600 16.800a3 3 0 1 1-5.800-1.600\"/>", "lock": "<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>", "ban": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m4.900 4.900 14.200 14.200\"/>", "check": "<path d=\"M20 6 9 17l-5-5\"/>", "checkc": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m8 12 3 3 5-6\"/>", "alert": "<path d=\"m21.700 18-8-14a2 2 0 0 0-3.500 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.700-3zM12 9v4M12 17h.01\"/>", "upload": "<path d=\"M12 3v12M17 8l-5-5-5 5M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/>", "chart": "<path d=\"M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3\"/>", "back": "<path d=\"m15 18-6-6 6-6\"/>", "pick": "<path d=\"M4 20 15 9\"/><path d=\"M6.500 7.500C10 4 16 4 20 8.500M6.500 7.500 9 10M20 8.500 17 11\"/>", "rocket": "<path d=\"M4.500 16.500c-1.500 1.300-2 5-2 5s3.700-.5 5-2c.7-.8.7-2.100-.1-2.900a2.200 2.200 0 0 0-2.900-.1zM12 15l-3-3a22 22 0 0 1 2-4A13 13 0 0 1 22 2c0 2.700-.8 7.500-6 11a22 22 0 0 1-4 2z\"/><path d=\"M9 12H4s.5-3 2-4c1.600-1.100 5 0 5 0M12 15v5s3-.5 4-2c1.100-1.600 0-5 0-5\"/>", "package": "<path d=\"M11 21.700a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.700l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.700z\"/><path d=\"M12 22V12M3.300 7l8.700 5 8.700-5\"/>", "bot": "<path d=\"M12 8V4H8\"/><rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"/><path d=\"M2 14h2M20 14h2M15 13v2M9 13v2\"/>", "target": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>", "wheel": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v7M12 15v7M2 12h7M15 12h7\"/>", "diamond": "<path d=\"M2.700 10.300a2.400 2.400 0 0 0 0 3.400l7.600 7.600a2.400 2.400 0 0 0 3.400 0l7.600-7.600a2.400 2.400 0 0 0 0-3.400l-7.600-7.600a2.400 2.400 0 0 0-3.400 0z\"/>", "x": "<path d=\"M18 6 6 18M6 6l12 12\"/>", "copy": "<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>", "shield": "<path d=\"M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z\"/><path d=\"m9 12 2 2 4-4\"/>", "coins": "<circle cx=\"8\" cy=\"8\" r=\"6\"/><path d=\"M18.1 10.4A6 6 0 1 1 10.4 18.1M7 6h1v4M16.7 13.8l.7.7-2.8 2.8\"/>"};
+var GI_NOFILL=["alert", "back", "chart", "check", "cherry", "copy", "down", "link", "pick", "plus", "send", "swap", "up", "upload", "x", "xo"];
+function IC(n,c){return '<svg class="gi'+(GI_NOFILL.indexOf(n)<0?' gi-f':'')+(c?' '+c:'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(GI_P[n]||'')+'</svg>';}
 function FS(s){return s==='q'?IC('help'):IC(s);}
 function stripEmoji(t){return String(t).replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B50}\u{FE0F}\u{200D}]/gu,'').replace(/\s{2,}/g,' ').trim();}
 // ── Config ──────────────────────────────────────────────────────────
-var API_URL  = 'https://fdg-production.up.railway.app'; // ← Railway URL
-  var BOT_USER = 'Pmt_Gram_Bot'; // ZENOX | MONEY username without @
+var API_URL  = 'https://silent-block-bedf.ahmedrabieharoun.workers.dev'; // ← Cloudflare Worker URL
+  var BOT_USER = 'Pmt_Gram_Bot'; // 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬 username without @
   // Same deposit wallet address used in the active deposit system.
   var BOT_DEPOSIT_WALLET = 'UQAACNWWtTtN7ILkhRERwYUTzo06Bd1Tv_8Yk5gPioIMFoUD';
   var tonConnectUI = null;
@@ -2487,7 +2541,7 @@ function showMockData(){
     stats:{ adsWatchedToday:0, friendsInvited:0, earnedToday:0 },
     gamePlays:{coin:0,merge:0,flappy:0,gem:0},
     forceSub:{ required:false, passed:true, channels:[] },
-    mining:{ startedAt:null, reward:50, durationMs:3600000 }
+    staking:{ staked:0, pending:0, totalStaked:0, cycleStart:null, nextRewardAt:null, rewardPercent:5, periodMs:86400000, minAmount:100, rewardPerCycle:0, claimableCycles:0, claimableReward:0, totalEarned:0 }
   };
   S.refs = [];
   showApp();
@@ -2587,7 +2641,7 @@ function render(){
    document.getElementById('statEarnedToday').textContent = fmtShiba(stats.earnedToday || 0);
    document.getElementById('statAdsToday').textContent = stats.adsWatchedToday || 0;
    document.getElementById('statFriendsInvited').textContent = stats.friendsInvited ?? totalRefs;
-   renderMining();
+   renderStaking();
    var dailyBtn = document.getElementById('dailyBonusBtn');
    if (dailyBtn) {
      dailyBtn.disabled = !!(d.daily && d.daily.claimed);
@@ -2623,52 +2677,92 @@ function render(){
    renderGames();
 }
 
-function renderMining(){
-  var box = (S.data && S.data.mining) || {};
-  var cfg = (S.data && S.data.config) || {};
-  var reward = Number(box.reward ?? cfg.miningReward ?? 50);
-  var started = Number(box.startedAt || (S.user && S.user.miningStartedAt) || 0);
-  var duration = Number(box.durationMs ?? cfg.miningDurationMs ?? 3600000);
-  var now = Date.now() + (S.clockOffsetMs || 0);
-  var elapsed = started ? Math.max(0, Math.min(duration, now - started)) : 0;
-  var amount = started ? Math.min(reward, reward * elapsed / duration) : 0;
-  var ready = started && elapsed >= duration;
-  var fill = document.getElementById('miningProgressFill');
-  var amountEl = document.getElementById('miningAmount');
-  var btn = document.getElementById('miningBtn');
-  var card = document.querySelector('.mining-card');
-  if (!fill || !amountEl || !btn) return;
-  if (card) card.classList.toggle('mining-on', !!started);
-  fill.style.width = (reward > 0 ? (amount / reward) * 100 : 0) + '%';
-  amountEl.textContent = amount.toFixed(2);
-  if (!started){
-    btn.disabled = false; btn.innerHTML = IC('tv')+' Watch Ad & Start Mining'; btn.onclick = watchMiningAd;
+function stkNow(){ return Date.now() + (S.clockOffsetMs || 0); }
+function stkFmtTime(ms){
+  ms = Math.max(0, ms); var s = Math.floor(ms/1000);
+  var hh = Math.floor(s/3600), mm = Math.floor((s%3600)/60), ss = s%60;
+  return (hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm+':'+(ss<10?'0':'')+ss;
+}
+function renderStaking(){
+  var st = (S.data && S.data.staking) || {};
+  var staked = Number(st.staked||0), pending = Number(st.pending||0);
+  var pct = Number(st.rewardPercent||5), period = Number(st.periodMs||86400000);
+  var perCycle = Number(st.rewardPerCycle||0);
+  var next = Number(st.nextRewardAt||0);
+  var now = stkNow();
+  var el = function(id){ return document.getElementById(id); };
+  if (!el('stkStaked')) return;
+  var pctTxt = (Math.round(pct*100)/100) + '%';
+  var perTxt = period === 86400000 ? '24 hours' : (period % 3600000 === 0 ? (period/3600000)+' hours' : Math.round(period/60000)+' min');
+  el('stkSub').textContent = 'Stake your ZNX and earn ' + pctTxt + ' every ' + perTxt;
+  el('stkBadge').innerHTML = '+' + pctTxt + '<small>/ ' + (period === 86400000 ? '24h' : perTxt) + '</small>';
+  el('stkStaked').textContent = fmtShiba(staked);
+  el('stkPerCycle').textContent = '+' + fmtShiba(perCycle);
+  el('stkEarned').textContent = fmtShiba(st.totalEarned||0);
+  el('stkAvail').textContent = fmtShiba((S.user && S.user.balance) || 0);
+  var pendEl = el('stkPending');
+  if (pending > 0){ pendEl.style.display = ''; pendEl.textContent = '+' + fmtShiba(pending) + ' ZNX waiting — joins your stake at the next reward'; }
+  else pendEl.style.display = 'none';
+  var claimBtn = el('stkClaimBtn'), fill = el('stkProgressFill'), lbl = el('stkTimerLbl'), tm = el('stkTimer');
+  var card = el('stakeCard'); if (card) card.classList.toggle('mining-on', staked > 0);
+  var ready = staked > 0 && next && now >= next;
+  if (staked <= 0 || !next){
+    lbl.textContent = 'No active stake'; tm.textContent = '--:--:--'; fill.style.width = '0%';
+    claimBtn.style.display = 'none';
   } else if (ready){
-    btn.disabled = false; btn.innerHTML = IC('gift')+' Claim ' + fmtShiba(reward) + ' ZNX'; btn.onclick = claimMining;
+    var cycles = Math.max(1, Math.floor((now - (next - period)) / period));
+    lbl.textContent = 'Reward ready'; tm.textContent = '00:00:00'; fill.style.width = '100%';
+    claimBtn.style.display = ''; claimBtn.disabled = false;
+    claimBtn.innerHTML = IC('gift') + ' Claim +' + fmtShiba(perCycle*cycles) + ' ZNX';
   } else {
-    btn.disabled = true; btn.innerHTML = IC('pick')+' Mining in progress...'; btn.onclick = null;
+    var left = next - now;
+    lbl.textContent = 'Next reward in'; tm.textContent = stkFmtTime(left);
+    fill.style.width = Math.max(0, Math.min(100, ((period - left) / period) * 100)) + '%';
+    claimBtn.style.display = 'none';
   }
   clearTimeout(miningTimerId);
-  if (started && !ready) miningTimerId = setTimeout(renderMining, 1000);
+  if (staked > 0 && next) miningTimerId = setTimeout(renderStaking, 1000);
 }
 
-function watchMiningAd(){
-  var btn = document.getElementById('miningBtn');
-  if (miningAdBusy || !btn) return;
-  if (Number((S.data && S.data.mining && S.data.mining.startedAt) || 0)) return;
-  var controller = ensureAdsgramInit();
-  if (!controller){ showToast('Ad loading, try again','error'); return; }
-  miningAdBusy = true; btn.disabled = true;
-  controller.show().then(function(){
-    return api('startMining', {});
-  }).then(function(res){
-     if (!res.success) throw new Error(res.error || 'Unable to start mining');
-    S.data.mining = res.data; renderMining();
-    var durH = (Number(res.data.miningDurationMs || 3600000) / 3600000);
-    var durTxt = durH === 1 ? 'one hour' : (durH + ' hours');
-    showToast('Mining started for ' + durTxt + ' ⛏', null, true);
-  }).catch(function(err){ showToast((err && err.message) || 'Mining unavailable','error'); renderMining(); })
-    .then(function(){ miningAdBusy = false; });
+function stakeMax(){
+  var bal = Math.floor(Number((S.user && S.user.balance) || 0));
+  var inp = document.getElementById('stkAmount'); if (inp) inp.value = bal > 0 ? bal : '';
+}
+
+function stakeCoins(){
+  if (miningAdBusy) return;
+  var inp = document.getElementById('stkAmount'), btn = document.getElementById('stkBtn');
+  var st = (S.data && S.data.staking) || {};
+  var amount = Math.floor(Number(inp && inp.value));
+  var min = Number(st.minAmount || 1);
+  var bal = Math.floor(Number((S.user && S.user.balance) || 0));
+  if (!amount || amount <= 0){ showToast('Enter the amount to stake','error'); return; }
+  if (amount < min){ showToast('Minimum stake is ' + fmtShiba(min) + ' ZNX','error'); return; }
+  if (amount > bal){ showToast('Insufficient ZNX balance','error'); return; }
+  miningAdBusy = true; btn.disabled = true; var oldTxt = btn.textContent; btn.textContent = 'Staking...';
+  api('stake', { amount: amount }).then(function(res){
+    if (!res.success){ showToast(res.error || 'Could not stake','error'); return; }
+    S.user.balance = res.data.shibaBalance;
+    S.data.staking = res.data.staking;
+    if (inp) inp.value = '';
+    showToast(fmtShiba(amount) + ' ZNX staked ✅', null, true);
+    render();
+  }).catch(function(){ showToast('Could not stake','error'); })
+    .then(function(){ miningAdBusy = false; btn.disabled = false; btn.textContent = oldTxt; try { renderStaking(); } catch(_){} });
+}
+
+function claimStake(){
+  if (miningAdBusy) return;
+  var btn = document.getElementById('stkClaimBtn'); if (!btn || btn.disabled) return;
+  miningAdBusy = true; btn.disabled = true; btn.textContent = 'Claiming...';
+  api('claimStake', {}).then(function(res){
+    if (!res.success){ showToast(res.error || 'Reward is not ready yet','error'); return; }
+    S.user.balance = res.data.shibaBalance;
+    S.data.staking = res.data.staking;
+    showToast('+' + fmtShiba(res.data.shibaAdded) + ' ZNX staking reward 🎉', null, true);
+    render();
+  }).catch(function(){ showToast('Could not claim reward','error'); })
+    .then(function(){ miningAdBusy = false; try { renderStaking(); } catch(_){} });
 }
 
 // ── Shared: require a completed AdsGram ad view before running an action ──
@@ -2680,42 +2774,6 @@ function watchAdThen(onSuccess, onFail){
   }).catch(function(err){
     showToast((err && err.description) || 'Ad was not completed','error');
     if (onFail) onFail();
-  });
-}
-
-function claimMining(){
-  var btn = document.getElementById('miningBtn');
-  if (!btn || btn.disabled) return;
-  if (miningAdBusy) return;
-  var box = (S.data && S.data.mining) || {};
-  var cfg = (S.data && S.data.config) || {};
-  var started = Number(box.startedAt || (S.user && S.user.miningStartedAt) || 0);
-  var duration = Number(box.durationMs ?? cfg.miningDurationMs ?? 3600000);
-  var now = Date.now() + (S.clockOffsetMs || 0);
-  if (!started || (now - started) < duration){ showToast('Mining is not complete yet','error'); return; }
-  miningAdBusy = true;
-  btn.disabled = true; btn.innerHTML = IC('tv')+' Watch Ad to Collect';
-  watchAdThen(function(){
-    btn.textContent = 'Checking...';
-    api('claimMining', {}).then(function(res){
-      if (!res.success){ showToast(res.error || 'Mining is not complete yet','error'); return; }
-      S.user.balance = res.data.shibaBalance;
-      if (!S.data.mining) S.data.mining = { reward: cfg.miningReward || 50, durationMs: cfg.miningDurationMs || 3600000 };
-      S.data.mining.startedAt = null;
-      showToast('+' + fmtShiba(res.data.shibaAdded) + ' ZNX added to your balance 🎉', null, true);
-      render();
-    }).catch(function(){ showToast('Could not claim reward','error'); })
-      .then(function(){
-        miningAdBusy = false;
-        try { renderMining(); } catch(_){}
-        var b = document.getElementById('miningBtn');
-        if (b && !(S.data.mining && S.data.mining.startedAt)){
-          b.disabled = false; b.innerHTML = IC('tv')+' Watch Ad & Start Mining'; b.onclick = watchMiningAd;
-        }
-      });
-  }, function(){
-    miningAdBusy = false;
-    try { renderMining(); } catch(_){}
   });
 }
 
@@ -2776,7 +2834,7 @@ function renderActivity(log){
   var el = document.getElementById('homeActivity');
   if (!log.length){ el.innerHTML = '<div class="empty-state">No activity yet</div>'; return; }
   var icons = { task_reward:IC('checkc'), claim_task:IC('target'), combo_claim:IC('gift'), referral_reward:IC('users'), withdrawal:IC('up'), wheel_spin:IC('wheel') };
-  var labels = { pmt_to_usd:'ZNX → USD', task_reward:'Task Reward', claim_task:'Invite Reward', combo_claim:'Daily Combo', referral_reward:'Referral Bonus', withdrawal:'Withdrawal', wheel_spin:'Lucky Wheel' };
+  var labels = { pmt_to_usd:'ZNX → USD', task_reward:'Task Reward', claim_task:'Invite Reward', combo_claim:'Daily Combo', referral_reward:'Referral Bonus', withdrawal:'Withdrawal', wheel_spin:'Lucky Wheel', stake:'Staked', stake_reward:'Staking Reward' };
   el.innerHTML = log.slice(0,5).map(function(e){
     var icon = icons[e.type] || IC('checkc');
     var amount = e.amount;
@@ -2879,7 +2937,7 @@ function renderWalletHistory(logs){
   var entries = [];
   (logs||[]).forEach(function(l){
     if (l.type === 'withdrawal') return; // It's shown directly from withdrawals/ with its real status instead of staying "Pending" forever
-     var labels = { pmt_to_usd:'ZNX → USD', task_reward:'Task Reward', claim_task:'Invite Reward', combo_claim:'Daily Combo', referral_reward:'Referral Bonus', wheel_spin:'Lucky Wheel', deposit:'Deposit' };
+     var labels = { pmt_to_usd:'ZNX → USD', task_reward:'Task Reward', claim_task:'Invite Reward', combo_claim:'Daily Combo', referral_reward:'Referral Bonus', wheel_spin:'Lucky Wheel', deposit:'Deposit', stake:'Staked', stake_reward:'Staking Reward' };
     var label = labels[l.type] || (l.type||'Reward');
      if (l.currency === 'USD' || l.currency === 'TON' || l.type === 'deposit') {
        var legacyUsd = (l.currency === 'TON') ? Number(l.amount||0) * usdPerTon() : Number(l.amount||0);
@@ -2901,9 +2959,8 @@ function renderWalletHistory(logs){
   }).join('');
 }
 
-// ── Competitions page (Referrals + Ads) ────────────────────────────────
+// ── Competitions page (Referrals only) ────────────────────────────────
 // إضافة مسابقة جديدة = إضافة مدخل واحد هنا + نوع في السيرفر (COMPETITION_TYPES).
-var CP_MEDALS = ['🥇','🥈','🥉'];
 var cpUid = 0;
 var cpTimerInterval = null;
 var cpRefreshInterval = null;
@@ -2913,10 +2970,7 @@ var cpShown = {};
 var CP_CONFIG = {
   referral: { tabIcon:'users', tab:'Referrals', title:'Referral Leaderboard', scoreLabel:'ACTIVE REFERRALS', scoreIcon:'users',
     sub:'Ranked by active referrals joined this round — top 10 win USD automatically',
-    empty:'No active referrals yet this round — invite a friend to claim #1! 🚀' },
-  ads: { tabIcon:'tv', tab:'Ads', title:'Ads Leaderboard', scoreLabel:'ADS WATCHED', scoreIcon:'tv',
-    sub:'Ranked by ads watched during the current round only — top 10 win USD',
-    empty:'No ads watched yet this round — watch an ad to take #1! 📺' }
+    empty:'No active referrals yet this round — invite a friend to claim #1! '+IC('rocket') }
 };
 function cpInt(n){ return Number(n||0).toLocaleString('en-US'); }
 
@@ -2927,10 +2981,10 @@ function cpIcon(name, size, st){
   var G = 'url(#G'+u+')', P = 'url(#P'+u+')', S = 'url(#S'+u+')', B = 'url(#B'+u+')';
   var sw = function(cls){ return '<g class="a-sw '+(cls||'')+'"><rect x="-4" y="-4" width="8" height="56" fill="#fff" opacity=".7" transform="skewX(-20)"/></g>'; };
   var defs = '<defs>'+
-    '<linearGradient id="G'+u+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset=".5" stop-color="#fbbf24"/><stop offset="1" stop-color="#d97706"/></linearGradient>'+
+    '<linearGradient id="G'+u+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d1fae5"/><stop offset=".5" stop-color="#40f07b"/><stop offset="1" stop-color="#0c983b"/></linearGradient>'+
     '<linearGradient id="P'+u+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d1fae5"/><stop offset="1" stop-color="#2de86a"/></linearGradient>'+
-    '<linearGradient id="S'+u+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#94a3b8"/></linearGradient>'+
-    '<linearGradient id="B'+u+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fed7aa"/><stop offset="1" stop-color="#c2410c"/></linearGradient>'+
+    '<linearGradient id="S'+u+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6fff0"/><stop offset="1" stop-color="#5fd990"/></linearGradient>'+
+    '<linearGradient id="B'+u+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9be8b5"/><stop offset="1" stop-color="#14803a"/></linearGradient>'+
     '<clipPath id="c'+u+'">';
   var clip = '', body = '';
   var CUP = 'M14 7h20v11c0 6-4.4 10-10 10s-10-4-10-10z';
@@ -2938,17 +2992,17 @@ function cpIcon(name, size, st){
     clip = '<path d="'+CUP+'"/>';
     body = '<g class="a-body">'+
       '<path d="M14 11H9c0 5.5 2.4 8.5 6 9.5M34 11h5c0 5.5-2.4 8.5-6 9.5" fill="none" stroke="'+G+'" stroke-width="2" stroke-linecap="round"/>'+
-      '<path d="'+CUP+'" fill="rgba(251,191,36,.14)" stroke="'+G+'" stroke-width="2.2" stroke-linejoin="round"/>'+
+      '<path d="'+CUP+'" fill="rgba(64,240,123,.14)" stroke="'+G+'" stroke-width="2.2" stroke-linejoin="round"/>'+
       '<rect x="22" y="28" width="4" height="7" fill="'+G+'"/><rect x="16" y="35" width="16" height="6" rx="1.8" fill="'+G+'"/>'+
       '<g clip-path="url(#c'+u+')">'+sw()+'</g>'+
-      '<path class="a-star" d="'+cpSp(24,16,5.5)+'" fill="#fff8db"/></g>';
+      '<path class="a-star" d="'+cpSp(24,16,5.5)+'" fill="#e9fff1"/></g>';
   } else if (name === 'crown'){
     var CR = 'M7 33L9.5 15 18 24 24 11 30 24 38.5 15 41 33z';
     clip = '<path d="'+CR+'"/>';
-    body = '<g class="a-body"><path d="'+CR+'" fill="rgba(251,191,36,.16)" stroke="'+G+'" stroke-width="2.2" stroke-linejoin="round"/>'+
+    body = '<g class="a-body"><path d="'+CR+'" fill="rgba(64,240,123,.16)" stroke="'+G+'" stroke-width="2.2" stroke-linejoin="round"/>'+
       '<rect x="7" y="36" width="34" height="5" rx="2" fill="'+G+'"/>'+
-      '<path d="'+cpSp(24,28,3)+'" fill="#fff8db"/><g clip-path="url(#c'+u+')">'+sw()+'</g></g>'+
-      '<path class="a-sp" d="'+cpSp(8,8,3.2)+'" fill="#fde68a"/><path class="a-sp" style="animation-delay:1.1s" d="'+cpSp(41,9,3)+'" fill="#fde68a"/><path class="a-sp" style="animation-delay:2.1s" d="'+cpSp(24,4,2.6)+'" fill="#fff"/>';
+      '<path d="'+cpSp(24,28,3)+'" fill="#e9fff1"/><g clip-path="url(#c'+u+')">'+sw()+'</g></g>'+
+      '<path class="a-sp" d="'+cpSp(8,8,3.2)+'" fill="#bdfad1"/><path class="a-sp" style="animation-delay:1.1s" d="'+cpSp(41,9,3)+'" fill="#bdfad1"/><path class="a-sp" style="animation-delay:2.1s" d="'+cpSp(24,4,2.6)+'" fill="#fff"/>';
   } else if (name === 'tv'){
     clip = '<rect x="7.5" y="11.5" width="33" height="21" rx="3"/>';
     body = '<g class="a-body"><rect x="5" y="9" width="38" height="26" rx="5" fill="rgba(57,255,120,.14)" stroke="'+P+'" stroke-width="2.2"/>'+
@@ -2960,8 +3014,8 @@ function cpIcon(name, size, st){
   } else if (name === 'users'){
     body = '<g class="apL"><g class="fb"><circle cx="10.5" cy="22" r="3.3" fill="rgba(57,255,120,.25)" stroke="'+P+'" stroke-width="2"/><path d="M4.5 36c0-4.4 2.6-7 6-7" fill="none" stroke="'+P+'" stroke-width="2" stroke-linecap="round"/></g></g>'+
       '<g class="apR"><g class="fc"><circle cx="37.5" cy="22" r="3.3" fill="rgba(57,255,120,.25)" stroke="'+P+'" stroke-width="2"/><path d="M43.5 36c0-4.4-2.6-7-6-7" fill="none" stroke="'+P+'" stroke-width="2" stroke-linecap="round"/></g></g>'+
-      '<path class="cn" d="M13.8 20L20 16.6M34.2 20L28 16.6" stroke="#fbbf24" stroke-width="1.6" stroke-linecap="round" fill="none"/>'+
-      '<g class="fa"><circle cx="24" cy="15" r="4.6" fill="rgba(251,191,36,.18)" stroke="'+G+'" stroke-width="2.2"/><path d="M15.5 36c0-5.6 3.8-9 8.5-9s8.5 3.4 8.5 9" fill="none" stroke="'+G+'" stroke-width="2.2" stroke-linecap="round"/></g>';
+      '<path class="cn" d="M13.8 20L20 16.6M34.2 20L28 16.6" stroke="#40f07b" stroke-width="1.6" stroke-linecap="round" fill="none"/>'+
+      '<g class="fa"><circle cx="24" cy="15" r="4.6" fill="rgba(64,240,123,.18)" stroke="'+G+'" stroke-width="2.2"/><path d="M15.5 36c0-5.6 3.8-9 8.5-9s8.5 3.4 8.5 9" fill="none" stroke="'+G+'" stroke-width="2.2" stroke-linecap="round"/></g>';
   } else if (name === 'coin'){
     clip = '<circle cx="24" cy="24" r="17"/>';
     body = '<circle cx="24" cy="24" r="17" fill="rgba(4,46,28,.55)" stroke="'+G+'" stroke-width="2.2"/><circle cx="24" cy="24" r="12.6" fill="none" stroke="'+P+'" stroke-width="1" opacity=".7"/>'+
@@ -2981,18 +3035,18 @@ function cpIcon(name, size, st){
     clip = '<rect x="7" y="26" width="9" height="14"/><rect x="19.5" y="12" width="9" height="28"/><rect x="32" y="30" width="9" height="10"/>';
     body = '<path d="M5 42.500h38" stroke="'+P+'" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>'+
       '<rect class="bar" x="7" y="26" width="9" height="14" rx="2" fill="rgba(57,255,120,.2)" stroke="'+P+'" stroke-width="2"/>'+
-      '<rect class="bar" x="19.5" y="12" width="9" height="28" rx="2" fill="rgba(251,191,36,.18)" stroke="'+G+'" stroke-width="2"/>'+
+      '<rect class="bar" x="19.5" y="12" width="9" height="28" rx="2" fill="rgba(64,240,123,.18)" stroke="'+G+'" stroke-width="2"/>'+
       '<rect class="bar" x="32" y="30" width="9" height="10" rx="2" fill="rgba(57,255,120,.2)" stroke="'+P+'" stroke-width="2"/>'+
-      '<g clip-path="url(#c'+u+')">'+sw()+'</g><path class="a-star" d="'+cpSp(24,5.500,3.500)+'" fill="#fde68a"/>';
+      '<g clip-path="url(#c'+u+')">'+sw()+'</g><path class="a-star" d="'+cpSp(24,5.500,3.500)+'" fill="#bdfad1"/>';
   } else if (name === 'gem'){
     var GM = 'M14 8h20l8 10-18 22L6 18z';
     clip = '<path d="'+GM+'"/>';
     body = '<g class="a-body"><path d="'+GM+'" fill="rgba(57,255,120,.16)" stroke="'+P+'" stroke-width="2.200" stroke-linejoin="round"/>'+
       '<path d="M6 18h36M18 8l-4 10 10 22M30 8l4 10-10 22" fill="none" stroke="'+P+'" stroke-width="1.500" stroke-linejoin="round" opacity=".8"/>'+
-      '<path class="f1" d="M14 8h4l-4 10H6z" fill="#fde68a"/><path class="f2" d="M30 8h4l8 10H34z" fill="#fff"/>'+
-      '<g clip-path="url(#c'+u+')">'+sw()+'</g></g><path class="a-star" d="'+cpSp(38,8,4)+'" fill="#fde68a"/>';
+      '<path class="f1" d="M14 8h4l-4 10H6z" fill="#bdfad1"/><path class="f2" d="M30 8h4l8 10H34z" fill="#fff"/>'+
+      '<g clip-path="url(#c'+u+')">'+sw()+'</g></g><path class="a-star" d="'+cpSp(38,8,4)+'" fill="#bdfad1"/>';
   } else if (name.indexOf('medal') === 0){
-    var n = +name.charAt(5), F = n===1?G:n===2?S:B, ink = n===1?'#5a3a00':n===2?'#1e293b':'#431407';
+    var n = +name.charAt(5), F = n===1?G:n===2?S:B, ink = n===1?'#03230f':n===2?'#03230f':'#03230f';
     var HX = 'M24 15l9 5.200v10.600L24 36l-9-5.200V20.200z';
     clip = '<path d="'+HX+'"/>';
     body = '<g class="a-body"><path d="M17 3l7 13 7-13" fill="none" stroke="'+P+'" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>'+
@@ -3187,7 +3241,7 @@ function cpTick(){
   if (box) box.classList.toggle('urgent', remain < 3600000);
 }
 
-// ---------- Info sheet (❓) ----------
+// ---------- Info sheet ----------
 function cpInfo(){
   var type = cpActive, cfg = CP_CONFIG[type], data = cpCache[type] || {};
   var prizes = data.prizesTon || [], days = data.roundEndTs && data.roundStartTs ? Math.max(1, Math.round((data.roundEndTs - data.roundStartTs) / 86400000)) : null;
@@ -3200,18 +3254,16 @@ function cpInfo(){
     i = j+1;
   }
   if (!rows) rows = '<div class="cp-sh-p">Prizes are loading…</div>';
-  var score = type === 'ads'
-    ? '<li>Your score = the number of <b>ads you watched during the current round</b>.</li><li>Ads watched <b>before</b> the round started are never counted.</li><li>Only ads verified by the server count — nothing sent from the app can change your score.</li>'
-    : '<li>Your score = the number of <b>active referrals</b> who joined during the current round.</li><li>Invites that joined before the round, or haven\'t completed the required subscription, are not counted.</li>';
+  var score = '<li>Your score = the number of <b>active referrals</b> who joined during the current round.</li><li>Invites that joined before the round, or haven\'t completed the required subscription, are not counted.</li>';
   var html = '<div class="cp-ov" id="cpOv" onclick="if(event.target===this)cpInfoClose()"><div class="cp-sheet" role="dialog" aria-modal="true">'+
-    '<div class="cp-sh-top">'+cpIcon(cfg.tabIcon)+'<div class="cp-sh-t">'+cfg.title+'</div><button class="cp-x" onclick="cpInfoClose()" aria-label="Close">✕</button></div>'+
-    '<div class="cp-sh-p">'+(type==='ads' ? 'Watch ads, climb the board and win USD when the round ends.' : 'Invite friends, climb the board and win USD when the round ends.')+'</div>'+
+    '<div class="cp-sh-top">'+cpIcon(cfg.tabIcon)+'<div class="cp-sh-t">'+cfg.title+'</div><button class="cp-x" onclick="cpInfoClose()" aria-label="Close">'+IC('x')+'</button></div>'+
+    '<div class="cp-sh-p">'+'Invite friends, climb the board and win USD when the round ends.'+'</div>'+
     '<div class="cp-blk"><h4>'+cpIcon('rank')+'How you score</h4><ul>'+score+'</ul></div>'+
     '<div class="cp-blk"><h4>'+cpIcon('hourglass')+'Rounds</h4><ul>'+
       (days ? '<li>Each round lasts <b>'+days+' day'+(days>1?'s':'')+'</b>.</li>' : '')+
       '<li>When the timer hits zero the results are locked, prizes are paid automatically to your USD balance, and a <b>new round starts right away</b>.</li>'+
       '<li>Tie? The player who reached the score first ranks higher.</li>'+
-      '<li>The board shows the top '+(data.topLimit||25)+' players. Referrals and Ads are two separate competitions with separate rankings.</li></ul></div>'+
+      '<li>The board shows the top '+(data.topLimit||25)+' players.</li></ul></div>'+
     '<div class="cp-blk"><h4>'+cpIcon('gem')+'Prizes</h4>'+rows+
       (data.totalPrizePoolTon ? '<div class="cp-pool"><span>Total prize pool</span><span>$'+data.totalPrizePoolTon+'</span></div>' : '')+'</div>'+
     '</div></div>';
@@ -4041,7 +4093,7 @@ function spinWheel(){
 function shareInvite(){
   if (!S.user) return;
   var link = buildRefLink(S.user.referralCode);
-   var text  = 'Join me on ZENOX | MONEY and earn real ZNX!';
+   var text  = 'Join me on 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬 and earn real ZNX!';
   var url   = 'https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+encodeURIComponent(text);
   if (window.Telegram && Telegram.WebApp && Telegram.WebApp.openTelegramLink){
     try { Telegram.WebApp.openTelegramLink(url); return; } catch(_){}
