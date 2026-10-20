@@ -1893,6 +1893,13 @@ html body .ico{filter:none}
         </div>
       </div>
 
+      <div class="lang-row" id="langRow" onclick="openLangModal()" role="button" tabindex="0">
+        <div class="lang-row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.600 2.600 3.900 5.600 3.900 9S14.600 18.400 12 21c-2.600-2.600-3.900-5.600-3.900-9S9.400 5.600 12 3z"/></svg></div>
+        <div class="lang-row-txt"><b>Language</b><span id="langRowCur">English</span></div>
+        <span class="lang-row-flag" id="langRowFlag"></span>
+        <svg class="lang-row-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </div>
+
       <div class="wallet-form-card" id="withdrawFormCard" style="display:none">
          <div class="wallet-form-title"><span><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span><span>Withdraw USD</span></div>
          <div class="withdraw-requirements" aria-label="Withdrawal requirements">
@@ -3338,6 +3345,7 @@ function cpRender(){
   var still = !!cpShown[type];
   cpShown[type] = true;
   var list = data.leaderboard || [];
+  var rest = list.slice(3);
   var u = S.user || {};
   var isMe = function(r){ return u && String(r.telegramId) === String(u.telegramId); };
   var nameOf = function(r){ return r.firstName || (r.username ? '@'+r.username : '') || 'User'; };
@@ -4684,7 +4692,7 @@ function timeAgo(ts){
 (function(){
 var AR={
 "Home":"الرئيسية","Tasks":"المهام","Games":"الألعاب","Wallet":"المحفظة","Referrals":"الإحالات","Staking":"التخزين","Ads":"الإعلانات","Earn":"اربح","Ranking":"الترتيب",
-"Loading...":"جارٍ التحميل...","LOADING":"جارٍ التحميل","Cancel":"إلغاء","Close":"إغلاق","Copy":"نسخ","Claim":"استلام","Redeem":"استبدال","MAX":"الحد الأقصى","MIN":"الحد الأدنى","FROM":"من","TO":"إلى","Rate":"السعر","Reason":"السبب","Category":"الفئة","Load More":"تحميل المزيد","Let's Go":"هيا بنا","SPIN":"لف",
+"Loading...":"جارٍ التحميل...","LOADING":"جارٍ التحميل","Cancel":"إلغاء","Close":"إغلاق","Language":"اللغة","Choose your language":"اختر لغتك","Copy":"نسخ","Claim":"استلام","Redeem":"استبدال","MAX":"الحد الأقصى","MIN":"الحد الأدنى","FROM":"من","TO":"إلى","Rate":"السعر","Reason":"السبب","Category":"الفئة","Load More":"تحميل المزيد","Let's Go":"هيا بنا","SPIN":"لف",
 "Welcome back":"أهلاً بعودتك","Welcome to 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬":"أهلاً بك في 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬","The Earning Hub":"مركز الأرباح","THE EARNING HUB":"مركز الأرباح","ZNX · ZENITH NETWORK EXCHANGE":"ZNX · ZENITH NETWORK EXCHANGE",
 "Complete tasks and collect ZNX rewards":"أكمل المهام واجمع مكافآت ZNX","Complete tasks, watch ads, play games and invite friends to collect":"أكمل المهام وشاهد الإعلانات والعب وادعُ أصدقاءك لتجمع","Convert your ZNX to USD and withdraw to your TON wallet.":"حوّل ZNX إلى USD واسحب إلى محفظة TON الخاصة بك.",
 "Your Balance":"رصيدك","Your balance":"رصيدك","Balance:":"الرصيد:","Available:":"المتاح:","Your available ZNX and USD balances":"أرصدتك المتاحة من ZNX وUSD","Your reward coin":"عملة مكافآتك","Total earned":"إجمالي الأرباح","Earned today":"أرباح اليوم","Ads watched":"إعلانات تمت مشاهدتها","Friends invited":"أصدقاء تمت دعوتهم","Transaction History":"سجل المعاملات","No transactions yet":"لا توجد معاملات بعد",
@@ -4764,19 +4772,43 @@ function setLang(l){
   lang=l==='ar'?'ar':'en';
   var h=document.documentElement; h.lang=lang; h.dir=lang==='ar'?'rtl':'ltr';
   if(lang==='ar'){walk(document.body);observe(true);}else{observe(false);restore(document.body);}
-  var b=document.getElementById('langBtn'); if(b)b.textContent=lang==='ar'?'EN':'ع';
+  updateRow();
   save(lang);
 }
 window.I18N={tr:tr,setLang:setLang,get lang(){return lang;}};
 var _st=window.showToast;
 if(typeof _st==='function')window.showToast=function(msg,type,isHtml){return _st(lang==='ar'?tr(msg):msg,type,isHtml);};
 var st=document.createElement('style');
-st.textContent="#langBtn{position:fixed;top:8px;left:8px;z-index:99999;min-width:38px;height:30px;padding:0 10px;border-radius:15px;border:1px solid rgba(132,245,170,.5);background:rgba(8,24,14,.85);color:#5cf593;font:700 13px 'Exo 2',sans-serif;cursor:pointer}"+
+st.textContent=""+
 "html[dir=rtl] body{font-family:'Cairo','Exo 2',sans-serif}html[dir=rtl] .invite-text,html[dir=rtl] .ref-link-url{text-align:right}html[dir=rtl] input,html[dir=rtl] textarea{text-align:right}";
 document.head.appendChild(st);
 var lk=document.createElement('link');lk.rel='stylesheet';lk.href='https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap';document.head.appendChild(lk);
-var btn=document.createElement('button');btn.id='langBtn';btn.type='button';
-btn.onclick=function(){setLang(lang==='ar'?'en':'ar');};document.body.appendChild(btn);
+function flagUS(){var s='<svg viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="30" height="20" fill="#B22234"/>';
+  for(var i=1;i<13;i+=2)s+='<rect y="'+(i*20/13).toFixed(3)+'" width="30" height="'+(20/13).toFixed(3)+'" fill="#fff"/>';
+  s+='<rect width="12" height="'+(7*20/13).toFixed(3)+'" fill="#3C3B6E"/>';
+  for(var r=0;r<9;r++){var n=r%2?5:6;for(var c=0;c<n;c++)s+='<circle cx="'+((r%2?2:1)+c*2).toFixed(1)+'" cy="'+(1.1+r*1.1).toFixed(2)+'" r=".42" fill="#fff"/>';}
+  return s+'</svg>';}
+function flagAR(){return '<svg viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="30" height="20" fill="#0A7B3E"/><path d="M10.88 6.57A6.2 6.2 0 1 0 19.12 6.57A5.0 5.0 0 1 1 10.88 6.57z" fill="#fff"/><circle cx="15" cy="7.4" r="3" fill="#fff"/><circle cx="15" cy="7.4" r="2.1" fill="none" stroke="#0A7B3E" stroke-width=".5"/><path d="M13.600 7.900c.5.700 1.900.700 2.800 0M14.200 6.500l.8.900.8-.9" fill="none" stroke="#0A7B3E" stroke-width=".45" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+var LANGS=[{c:'en',flag:flagUS(),name:'English',code:'EN'},{c:'ar',flag:flagAR(),name:'العربية',code:'AR'}];
+function cur(){return LANGS.filter(function(x){return x.c===lang;})[0]||LANGS[0];}
+function updateRow(){var a=document.getElementById('langRowCur'),f=document.getElementById('langRowFlag');
+  if(a)a.textContent=cur().name;if(f)f.innerHTML=cur().flag;
+  var o=document.getElementById('langModal');if(o)o.querySelectorAll('.lm-opt').forEach(function(e){e.classList.toggle('on',e.getAttribute('data-c')===lang);});}
+window.closeLangModal=function(){var o=document.getElementById('langModal');if(!o)return;o.classList.remove('show');setTimeout(function(){o.remove();},220);};
+window.openLangModal=function(){
+  if(document.getElementById('langModal'))return;
+  var o=document.createElement('div');o.id='langModal';o.className='lm-ov';
+  o.innerHTML='<div class="lm-sheet"><div class="lm-grip"></div><div class="lm-title">Language</div><div class="lm-sub">Choose your language</div>'+
+    LANGS.map(function(x){return '<button type="button" class="lm-opt'+(x.c===lang?' on':'')+'" data-c="'+x.c+'"><span class="lm-flag">'+x.flag+'</span><span class="lm-name">'+x.name+'</span><span class="lm-code">'+x.code+'</span><span class="lm-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.500l4.500 4.500L19 7"/></svg></span></button>';}).join('')+
+    '<button type="button" class="lm-close">Close</button></div>';
+  o.onclick=function(e){if(e.target===o)closeLangModal();};
+  o.querySelector('.lm-close').onclick=closeLangModal;
+  o.querySelectorAll('.lm-opt').forEach(function(b){b.onclick=function(){setLang(b.getAttribute('data-c'));setTimeout(closeLangModal,180);};});
+  document.body.appendChild(o);
+  if(lang==='ar')walk(o);
+  requestAnimationFrame(function(){o.classList.add('show');});
+};
+var rowEl=document.getElementById('langRow');if(rowEl)rowEl.onkeydown=function(e){if(e.key==='Enter'||e.key===' ')openLangModal();};
 var init=saved();
 if(!init){try{var lc=Telegram.WebApp.initDataUnsafe.user.language_code;init=/^ar/i.test(lc)?'ar':'en';}catch(e){init='en';}
   try{Telegram.WebApp.CloudStorage.getItem('znx_lang',function(e,v){if(!e&&v&&v!==lang&&!saved())setLang(v);});}catch(e){}}
@@ -4834,6 +4866,27 @@ setLang(init);
 .cx-rt{text-align:right;flex-shrink:0}.cx-rt b{display:block;font-size:15px;font-weight:800;color:#fff}.cx-rt em{display:inline-block;margin-top:2px;padding:1px 8px;border-radius:10px;font-style:normal;font-size:11px;font-weight:800;color:#1a1200;background:linear-gradient(135deg,#ffe29a,#f5a623)}
 html[dir=rtl] .cx-rt{text-align:left}
 @media (prefers-reduced-motion:reduce){.cx-hero::before,.cx-sp,.cx-pool b,.cx-trophy,.cx-crown,.cx-plinth::after,.cx-t.sec,.cx-pod.p1 .cx-av-wrap::before{animation:none!important}}
+</style>
+<style id="lmStyle">
+.lang-row{display:flex;align-items:center;gap:12px;margin:0 16px 16px;padding:13px 14px;border-radius:18px;cursor:pointer;background:linear-gradient(145deg,rgba(14,44,29,.65),rgba(6,19,12,.92));border:1px solid rgba(170,255,210,.12);box-shadow:0 8px 20px rgba(0,0,0,.35);transition:transform .15s,border-color .15s}
+.lang-row:active{transform:scale(.98);border-color:rgba(44,214,123,.55)}
+.lang-row-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#5cf593;background:rgba(44,214,123,.12);border:1px solid rgba(44,214,123,.28)}.lang-row-ico svg{width:22px;height:22px}
+.lang-row-txt{flex:1;min-width:0}.lang-row-txt b{display:block;font-size:14.5px;font-weight:800;color:#fff}.lang-row-txt span{display:block;font-size:12px;color:rgba(255,255,255,.62);margin-top:2px}
+.lang-row-flag,.lm-flag{font-size:26px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}.lang-row-chev{width:18px;height:18px;color:rgba(255,255,255,.45);flex-shrink:0}
+html[dir=rtl] .lang-row-chev{transform:scaleX(-1)}
+.lm-ov{position:fixed;inset:0;z-index:100000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0);backdrop-filter:blur(0);transition:background .22s,backdrop-filter .22s}
+.lm-ov.show{background:rgba(0,0,0,.62);backdrop-filter:blur(5px)}
+.lm-sheet{width:100%;max-width:520px;padding:10px 18px calc(22px + env(safe-area-inset-bottom,0px));border-radius:26px 26px 0 0;background:linear-gradient(180deg,#0e2a1b,#06130c);border:1px solid rgba(170,255,210,.14);border-bottom:0;transform:translateY(100%);transition:transform .26s cubic-bezier(.2,.9,.3,1)}
+.lm-ov.show .lm-sheet{transform:none}
+.lm-grip{width:42px;height:4px;border-radius:4px;background:rgba(255,255,255,.2);margin:0 auto 14px}
+.lm-title{font-size:19px;font-weight:900;color:#fff;text-align:center}.lm-sub{font-size:12.5px;color:rgba(255,255,255,.6);text-align:center;margin:3px 0 16px}
+.lm-opt{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:10px;border-radius:16px;cursor:pointer;color:#fff;font-family:inherit;text-align:start;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);transition:all .15s}
+.lm-opt:active{transform:scale(.98)}.lm-opt.on{background:linear-gradient(145deg,rgba(44,214,123,.2),rgba(8,30,18,.9));border-color:#2cd67b;box-shadow:0 0 0 3px rgba(44,214,123,.15)}
+.lm-name{flex:1;font-size:16px;font-weight:800}.lm-code{font-size:11px;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,.5)}
+.lm-check{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.2);color:transparent}.lm-check svg{width:14px;height:14px}
+.lm-opt.on .lm-check{background:#2cd67b;border-color:#2cd67b;color:#04170c}
+.lm-close{width:100%;margin-top:4px;padding:14px;border-radius:16px;font:800 14.5px inherit;font-family:inherit;color:rgba(255,255,255,.85);background:transparent;border:1px solid rgba(255,255,255,.14);cursor:pointer}
+.lang-row-flag,.lm-flag{display:flex;flex-shrink:0}.lang-row-flag svg,.lm-flag svg{width:38px;height:26px;display:block;border-radius:6px;box-shadow:0 0 0 1px rgba(255,255,255,.22),0 3px 8px rgba(0,0,0,.45)}.lm-flag svg{width:44px;height:30px}
 </style>
 </body>
 </html>
