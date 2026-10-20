@@ -2142,7 +2142,7 @@ function FS(s){return s==='q'?IC('help'):IC(s);}
 function stripEmoji(t){return String(t).replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B50}\u{FE0F}\u{200D}]/gu,'').replace(/\s{2,}/g,' ').trim();}
 // ── Config ──────────────────────────────────────────────────────────
 var API_URL  = 'https://silent-block-bedf.ahmedrabieharoun.workers.dev'; // ← Cloudflare Worker URL
-  var BOT_USER = 'Pmt_Gram_Bot'; // 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬 username without @
+  var BOT_USER = 'zinoXxX_bot'; // 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬 username without @
   // Same deposit wallet address used in the active deposit system.
   var BOT_DEPOSIT_WALLET = 'UQAACNWWtTtN7ILkhRERwYUTzo06Bd1Tv_8Yk5gPioIMFoUD';
   var tonConnectUI = null;
@@ -2152,7 +2152,7 @@ var API_URL  = 'https://silent-block-bedf.ahmedrabieharoun.workers.dev'; // ← 
 // t.me/BOT/APP_SHORT_NAME?startapp=CODE (make sure this value matches
 // exactly the short name you created with /newapp in BotFather)
 var BOT_APP_SHORT_NAME = 'app';
-var BOT_DIRECT_LINK = 'https://t.me/Pmt_Gram_Bot/app'; // Direct Link of the Mini App
+var BOT_DIRECT_LINK = 'https://t.me/zinoXxX_bot/app'; // Direct Link of the Mini App
 function buildRefLink(code){
   return BOT_DIRECT_LINK+'?startapp='+encodeURIComponent(code);
 }
@@ -3346,54 +3346,59 @@ function cpRender(){
   var nd = function(){ d += step; return d.toFixed(2)+'s'; };
   var pool = data.totalPrizePoolTon;
 
-  // Hero: prize pool + countdown
-  var html = '<div class="cp2-hero cpa" style="--d:'+nd()+'">'+
-    '<div class="cp2-hero-top"><div class="cp2-hero-ico">'+cpIcon('trophy')+'</div>'+
-    '<div class="cp2-hero-txt"><span>TOTAL PRIZE POOL</span><b>'+(pool ? '$'+cpInt(pool) : 'USD rewards')+'</b></div></div>'+
-    '<div class="cp2-timer" id="cpTimer"><div class="cp2-tl">'+cpIcon('hourglass')+'Round ends in</div>'+
-    '<div class="cp2-tg">'+
-      '<div><b id="cpTd">--</b><span>days</span></div><em>:</em>'+
-      '<div><b id="cpTh">--</b><span>hrs</span></div><em>:</em>'+
-      '<div><b id="cpTm">--</b><span>min</span></div><em>:</em>'+
-      '<div><b id="cpTs">--</b><span>sec</span></div>'+
-    '</div></div></div>';
-
-  // Your standing
+  // ===== Contest v3 (premium) =====
   var myRank = data.myRank, myScore = data.myScore || 0;
   var myName = u.firstName || (u.username ? '@'+u.username : '') || 'You';
   var myAv = u.photoUrl ? '<img src="'+esc(u.photoUrl)+'" alt="">' : esc(myName.charAt(0).toUpperCase());
-  var myPz = data.myPrizeTon > 0 ? 'Winning $'+data.myPrizeTon : (myRank ? 'Keep climbing to reach the prizes' : 'Not ranked yet');
-  html += '<div class="cp2-me cpa" style="--d:'+nd()+'">'+
-    '<div class="cp2-me-rank"><span>RANK</span><b>'+(myRank ? '#'+myRank : '—')+'</b></div>'+
-    '<div class="cp2-me-mid"><div class="cp-av">'+myAv+'</div><div class="cp2-me-info"><div class="cp2-me-name">'+esc(myName)+'</div><div class="cp2-me-pz">'+myPz+'</div></div></div>'+
-    '<div class="cp2-me-score"><b>'+cpInt(myScore)+'</b><span>'+cfg.scoreLabel+'</span></div></div>';
+  var max = list.length ? (list[0].score || 1) : 1;
+  var tenth = list.length >= 10 ? (list[9].score || 0) : 0;
+  var inZone = !!(myRank && myRank <= 10);
+  var pct = inZone ? 100 : Math.max(4, Math.min(96, tenth ? Math.round(myScore/(tenth+1)*100) : (myScore ? 50 : 4)));
+  var gap = (!inZone && tenth) ? Math.max(1, tenth - myScore + 1) : 0;
+  var myMsg = data.myPrizeTon > 0 ? 'Winning $'+data.myPrizeTon : (inZone ? 'You are in the prize zone' : (gap ? gap+' more to reach the prizes' : (myRank ? 'Keep climbing to reach the prizes' : 'Not ranked yet')));
+  var sparks = ''; for (var s=0;s<7;s++) sparks += '<i class="cx-sp" style="--x:'+(8+s*13)+'%;--t:'+(3+s*.6).toFixed(1)+'s;--l:'+(s*.5).toFixed(1)+'s"></i>';
 
-  // Leaders
-  var top3 = list.slice(0,3), rest = list.slice(3);
-  html += '<div class="cp2-sec cpa" style="--d:'+nd()+'"><span>'+cpIcon('crown')+'Top players</span></div>';
+  var html = '<div class="cx-hero cpa" style="--d:'+nd()+'">'+sparks+
+    '<div class="cx-hero-top"><div class="cx-trophy">'+cpIcon('trophy')+'</div>'+
+    '<div class="cx-pool"><span>TOTAL PRIZE POOL</span><b>'+(pool ? '$'+cpInt(pool) : 'USD rewards')+'</b></div>'+
+    '<span class="cx-live"><i></i>LIVE</span></div>'+
+    '<div class="cx-tl" id="cpTimer">'+cpIcon('hourglass')+'Round ends in</div>'+
+    '<div class="cx-tg">'+
+      '<div class="cx-t"><b id="cpTd">--</b><span>days</span></div>'+
+      '<div class="cx-t"><b id="cpTh">--</b><span>hrs</span></div>'+
+      '<div class="cx-t"><b id="cpTm">--</b><span>min</span></div>'+
+      '<div class="cx-t sec"><b id="cpTs">--</b><span>sec</span></div></div></div>';
+
+  html += '<div class="cx-me cpa'+(inZone?' zone':'')+'" style="--d:'+nd()+';--p:'+pct+'">'+
+    '<div class="cx-ring"><div class="cx-av">'+myAv+'</div></div>'+
+    '<div class="cx-me-mid"><div class="cx-me-name">'+esc(myName)+'</div><div class="cx-me-msg">'+myMsg+'</div>'+
+    '<div class="cx-prog"><i></i></div></div>'+
+    '<div class="cx-me-r"><span>RANK</span><b>'+(myRank ? '#'+myRank : '—')+'</b><em>'+cpInt(myScore)+' '+cfg.scoreLabel+'</em></div></div>';
+
+  html += '<div class="cx-sec cpa" style="--d:'+nd()+'"><span>'+cpIcon('crown')+'Top players</span></div>';
   if (!list.length){
     html += '<div class="cp-empty cpa" style="--d:'+nd()+'">'+cfg.empty+'</div>';
   } else {
-    var card = function(r,i){
+    var slot = function(i){
+      var r = list[i], n = i+1;
+      if (!r) return '<div class="cx-pod p'+n+' empty"><div class="cx-av-wrap"><div class="cx-av">?</div></div><div class="cx-pn">—</div><div class="cx-plinth"><b>#'+n+'</b></div></div>';
       var me = isMe(r);
-      return '<div class="cp2-lead l'+(i+1)+(me?' me':'')+' cpa" style="--d:'+(0.7+i*0.12).toFixed(2)+'s">'+
-        '<div class="cp2-lead-medal">'+cpIcon('medal'+(i+1))+'</div>'+
-        '<div class="cp-av">'+avOf(r)+'</div>'+
-        '<div class="cp2-lead-name">'+esc(nameOf(r))+(me?'<span class="cp-you">YOU</span>':'')+'</div>'+
-        '<div class="cp2-lead-score">'+cpIcon(cfg.scoreIcon)+cpInt(r.score)+'</div>'+
-        '<div class="cp2-lead-prize">'+(r.prizeTon ? '+$'+r.prizeTon : '#'+r.rank)+'</div></div>';
+      return '<div class="cx-pod p'+n+(me?' me':'')+' cpa" style="--d:'+(0.55+(n==1?0:n*0.1)).toFixed(2)+'s">'+
+        '<div class="cx-av-wrap">'+(n==1?'<div class="cx-crown">'+cpIcon('crown')+'</div>':'')+'<div class="cx-av">'+avOf(r)+'</div><i class="cx-badge">'+n+'</i></div>'+
+        '<div class="cx-pn">'+esc(nameOf(r))+(me?'<span class="cp-you">YOU</span>':'')+'</div>'+
+        '<div class="cx-ps">'+cpIcon(cfg.scoreIcon)+cpInt(r.score)+'</div>'+
+        '<div class="cx-plinth"><b>'+(r.prizeTon ? '+$'+r.prizeTon : '#'+n)+'</b></div></div>';
     };
-    html += '<div class="cp2-leads">'+top3.map(card).join('')+'</div>';
+    html += '<div class="cx-podium">'+slot(1)+slot(0)+slot(2)+'</div>';
   }
 
-  // Ranking list
   if (rest.length){
-    html += '<div class="cp2-sec cpa" style="--d:'+nd()+'"><span>'+cpIcon('rank')+'Ranking</span></div><div class="cp2-list">'+rest.map(function(r,idx){
-      var me = isMe(r);
-      return '<div class="cp2-row'+(me?' me':'')+'" style="--d:'+(d+Math.min(idx,12)*0.05).toFixed(2)+'s">'+
-        '<div class="cp2-rk">'+r.rank+'</div><div class="cp-av">'+avOf(r)+'</div>'+
-        '<div class="cp2-nm">'+esc(nameOf(r))+(me?'<span class="cp-you">YOU</span>':'')+'</div>'+
-        '<div class="cp2-rt"><b>'+cpInt(r.score)+'</b>'+(r.prizeTon ? '<em>+$'+r.prizeTon+'</em>' : '')+'</div></div>';
+    html += '<div class="cx-sec cpa" style="--d:'+nd()+'"><span>'+cpIcon('rank')+'Ranking</span></div><div class="cx-list">'+rest.map(function(r,idx){
+      var me = isMe(r), w = Math.max(4, Math.round((r.score||0)/max*100));
+      return '<div class="cx-row'+(me?' me':'')+(r.prizeTon?' prize':'')+'" style="--d:'+(d+Math.min(idx,12)*0.05).toFixed(2)+'s">'+
+        '<div class="cx-rk">'+r.rank+'</div><div class="cx-av sm">'+avOf(r)+'</div>'+
+        '<div class="cx-mid"><div class="cx-nm">'+esc(nameOf(r))+(me?'<span class="cp-you">YOU</span>':'')+'</div><div class="cx-bar"><i style="width:'+w+'%"></i></div></div>'+
+        '<div class="cx-rt"><b>'+cpInt(r.score)+'</b>'+(r.prizeTon ? '<em>+$'+r.prizeTon+'</em>' : '')+'</div></div>';
     }).join('')+'</div>';
   }
 
@@ -4674,5 +4679,161 @@ function timeAgo(ts){
   return Math.floor(d/86400)+'d ago';
 }
 </script>
+<script>
+/* ===== i18n EN/AR ===== */
+(function(){
+var AR={
+"Home":"الرئيسية","Tasks":"المهام","Games":"الألعاب","Wallet":"المحفظة","Referrals":"الإحالات","Staking":"التخزين","Ads":"الإعلانات","Earn":"اربح","Ranking":"الترتيب",
+"Loading...":"جارٍ التحميل...","LOADING":"جارٍ التحميل","Cancel":"إلغاء","Close":"إغلاق","Copy":"نسخ","Claim":"استلام","Redeem":"استبدال","MAX":"الحد الأقصى","MIN":"الحد الأدنى","FROM":"من","TO":"إلى","Rate":"السعر","Reason":"السبب","Category":"الفئة","Load More":"تحميل المزيد","Let's Go":"هيا بنا","SPIN":"لف",
+"Welcome back":"أهلاً بعودتك","Welcome to 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬":"أهلاً بك في 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬","The Earning Hub":"مركز الأرباح","THE EARNING HUB":"مركز الأرباح","ZNX · ZENITH NETWORK EXCHANGE":"ZNX · ZENITH NETWORK EXCHANGE",
+"Complete tasks and collect ZNX rewards":"أكمل المهام واجمع مكافآت ZNX","Complete tasks, watch ads, play games and invite friends to collect":"أكمل المهام وشاهد الإعلانات والعب وادعُ أصدقاءك لتجمع","Convert your ZNX to USD and withdraw to your TON wallet.":"حوّل ZNX إلى USD واسحب إلى محفظة TON الخاصة بك.",
+"Your Balance":"رصيدك","Your balance":"رصيدك","Balance:":"الرصيد:","Available:":"المتاح:","Your available ZNX and USD balances":"أرصدتك المتاحة من ZNX وUSD","Your reward coin":"عملة مكافآتك","Total earned":"إجمالي الأرباح","Earned today":"أرباح اليوم","Ads watched":"إعلانات تمت مشاهدتها","Friends invited":"أصدقاء تمت دعوتهم","Transaction History":"سجل المعاملات","No transactions yet":"لا توجد معاملات بعد",
+"Daily Bonus":"المكافأة اليومية","Come back every day · +500 ZNX":"عد كل يوم · +500 ZNX","Keep earning every day!":"واصل الربح كل يوم!","Build a streak":"كوّن سلسلة أيام","DAILY OPS":"المهام اليومية","Lucky Wheel":"عجلة الحظ","1 free spin":"لفة مجانية","Spins available:":"اللفات المتاحة:","Every 2 active referrals = 1 free spin!":"كل إحالتين نشطتين = لفة مجانية!","for every":"لكل","active referrals. Spin to win up to":"إحالات نشطة. لف واربح حتى",
+"Invite Friends":"ادعُ أصدقاءك","Invite friends and earn":"ادعُ أصدقاءك واربح","Your Referral Link":"رابط الإحالة الخاص بك","Referral List · One-Time Bonus":"قائمة الإحالات · مكافأة لمرة واحدة","No referrals yet":"لا توجد إحالات بعد","Lifetime referral commission":"عمولة الإحالة مدى الحياة",
+"Each referral must watch 10 AdsGram ads — you get paid instantly, one time.":"يجب على كل إحالة مشاهدة 10 إعلانات AdsGram — تُدفع لك فوراً، مرة واحدة.","Only AdsGram ads count toward the 10.":"إعلانات AdsGram فقط تُحتسب ضمن الـ 10.","Plus 10% of everything they make after activation, forever.":"بالإضافة إلى 10% من كل ما يربحونه بعد التفعيل، للأبد.","Only ads watched through AdsGram count toward the withdrawal requirement.":"إعلانات AdsGram فقط تُحتسب ضمن شرط السحب.",
+"Withdraw":"سحب","Withdraw USD":"سحب USD","Deposit USD":"إيداع USD","Send Deposit":"إرسال الإيداع","Submit Withdrawal":"تقديم طلب السحب","Submit Request":"إرسال الطلب","Convert ZNX":"تحويل ZNX","Convert ZNX to USD":"تحويل ZNX إلى USD","Exchange Now":"حوّل الآن","Withdrawal fee:":"رسوم السحب:","You will pay":"ستدفع","You will receive in TON":"ستستلم بعملة TON","Amount you will receive after the fee":"المبلغ الذي ستستلمه بعد الرسوم","Enter the amount in USD, then pay the equivalent in TON from your connected wallet. Your User ID is added as the transaction comment.":"أدخل المبلغ بـ USD ثم ادفع ما يعادله بعملة TON من محفظتك المتصلة. يُضاف معرّف المستخدم الخاص بك كتعليق على المعاملة.","Additional Notes (Optional)":"ملاحظات إضافية (اختياري)","By submitting this request, you confirm that:":"بإرسال هذا الطلب فأنت تؤكد أن:",
+"Have a promo code? Claim your reward":"لديك كود ترويجي؟ استلم مكافأتك","Redeem Code":"استبدال الكود","Redeem Reward":"استلام المكافأة","Enter a valid code to receive its ZNX reward.":"أدخل كوداً صالحاً لاستلام مكافأة ZNX الخاصة به.","Enter redeem code":"أدخل كود الاستبدال",
+"Staked":"المخزَّن","No active stake":"لا يوجد تخزين نشط","Stake ZNX":"تخزين ZNX","STAKING":"التخزين","Reward / cycle":"المكافأة / الدورة","/ 24h":"/ 24 ساعة","Stake your ZNX and earn 5% every 24 hours":"خزّن ZNX واربح 5% كل 24 ساعة","ZNX · Staked coins are locked and earn a reward every 24 hours.":"ZNX · العملات المخزَّنة مقفلة وتربح مكافأة كل 24 ساعة.","Amount to stake":"المبلغ المراد تخزينه","Or enter a custom amount (multiples of 100)":"أو أدخل مبلغاً مخصصاً (من مضاعفات 100)","Amount in USD ($)":"المبلغ بـ USD ($)",
+"MINI GAMES":"ألعاب مصغّرة","— MINI GAMES":"— ألعاب مصغّرة","Play, win and get paid straight to your balance":"العب واربح وتُضاف الأرباح مباشرة لرصيدك","Gem Rush":"سباق الجواهر","10-second sprint":"سباق 10 ثوانٍ","Memory Match":"مطابقة الذاكرة","Find the pairs":"اعثر على الأزواج","Rock Paper Scissors":"حجر ورقة مقص","Best of 3 vs CPU":"الأفضل من 3 ضد الكمبيوتر","Higher or Lower":"أعلى أم أقل","Quick Tap":"النقر السريع","Player":"اللاعب","3/3 left today":"3/3 متبقية اليوم",
+"User Tasks":"مهام المستخدمين","Add Task":"إضافة مهمة","Task Name":"اسم المهمة","Channel / Group":"قناة / مجموعة","Website / Bot":"موقع / بوت","Channel Link":"رابط القناة","Channel / Bot:":"القناة / البوت:","Members You Need":"عدد الأعضاء المطلوب","Members requested:":"الأعضاء المطلوبون:","Total Cost":"التكلفة الإجمالية","Total cost:":"التكلفة الإجمالية:","Task Added Successfully":"تمت إضافة المهمة بنجاح","Promote your Telegram channel or bot. Bot tasks are approved instantly. Channel tasks are checked immediately to confirm that the bot is an administrator.":"روّج لقناتك أو بوتك على تيليجرام. مهام البوتات تُعتمد فوراً، ومهام القنوات تُفحص فوراً للتأكد من أن البوت مشرف.","Pay with your USD balance to promote your channel or bot":"ادفع من رصيد USD للترويج لقناتك أو بوتك","Add the bot as an administrator in your channel/group before submitting. The check is performed immediately.":"أضف البوت كمشرف في قناتك/مجموعتك قبل الإرسال. يتم الفحص فوراً.","Pricing is charged from your USD balance: every 100 completions = $0.225. Bot tasks go live instantly; channel tasks go live after payment and setup verification.":"يُخصم السعر من رصيد USD: كل 100 إتمام = $0.225. مهام البوتات تعمل فوراً، ومهام القنوات بعد الدفع والتحقق من الإعداد.","Enter at least 100 members":"أدخل 100 عضو على الأقل","Your USD payment was deducted and the task is now live. The bot administrator permission was verified automatically:":"تم خصم دفعتك بـ USD والمهمة نشطة الآن. تم التحقق تلقائياً من صلاحية مشرف البوت:","• You own or manage this channel.":"• أنت تملك هذه القناة أو تديرها.","• You agree to the price calculated for the members requested.":"• توافق على السعر المحسوب للأعضاء المطلوبين.","• The task goes live on the Tasks page once payment is confirmed.":"• تظهر المهمة في صفحة المهام بعد تأكيد الدفع.","• Our team will contact you with payment details to activate the task.":"• سيتواصل معك فريقنا بتفاصيل الدفع لتفعيل المهمة.",
+"Join to Continue":"انضم للمتابعة","Verify Membership":"تحقق من العضوية","You must join the channels below to use the bot and unlock your referral reward.":"يجب الانضمام إلى القنوات أدناه لاستخدام البوت وفتح مكافأة الإحالة.","Security Check":"فحص الأمان","Please complete the quick verification below to continue and receive your reward.":"أكمل التحقق السريع أدناه للمتابعة واستلام مكافأتك.",
+"Account Banned":"الحساب محظور","This account has been permanently blocked from using the bot for violating the usage policy.":"تم حظر هذا الحساب نهائياً من استخدام البوت لمخالفة سياسة الاستخدام.","Changing your network or IP address will not lift this restriction — the block is tied to this specific device.":"تغيير الشبكة أو عنوان IP لن يرفع هذا القيد — الحظر مرتبط بهذا الجهاز تحديداً.","Multiple accounts detected on the same device. Only the first account created on this device is allowed to use the bot.":"تم اكتشاف عدة حسابات على نفس الجهاز. يُسمح فقط بأول حساب أُنشئ على هذا الجهاز باستخدام البوت.",
+"Advertisements":"الإعلانات","ADSGRAM ADS":"إعلانات ADSGRAM","Task Reward":"مكافأة مهمة","Invite Reward":"مكافأة دعوة","Daily Combo":"الكومبو اليومي","Referral Bonus":"مكافأة إحالة","Withdrawal":"سحب","Lucky Wheel ":"عجلة الحظ","Staked ":"تم التخزين","Staking Reward":"مكافأة التخزين","ZNX → USD":"ZNX ← USD",
+"Anything you'd like us to know...":"أي شيء تود إخبارنا به...","e.g. Join my channel or start my bot":"مثال: انضم لقناتي أو شغّل بوتي","TON Wallet Address (UQ...) — you receive TON here":"عنوان محفظة TON (UQ...) — ستستلم TON هنا",
+/* toasts / errors */
+"Ad loading, try again":"الإعلان قيد التحميل، حاول مرة أخرى","Ad was not completed":"لم يكتمل الإعلان","Already claimed today!":"تم الاستلام اليوم بالفعل!","Amount too small":"المبلغ صغير جداً","Connect your TON wallet first":"اربط محفظة TON أولاً","Conversion completed ✅":"تم التحويل ✅","Could not claim reward":"تعذّر استلام المكافأة","Could not stake":"تعذّر التخزين","Deposit pending, refresh later":"الإيداع قيد المعالجة، حدّث لاحقاً","Deposit sent, verifying... ✅":"تم إرسال الإيداع، جارٍ التحقق... ✅","Enter a redeem code":"أدخل كود الاستبدال","Enter a task name":"أدخل اسم المهمة","Enter a valid amount in USD":"أدخل مبلغاً صالحاً بـ USD","Enter a valid amount":"أدخل مبلغاً صالحاً","Enter the amount to stake":"أدخل المبلغ المراد تخزينه","Enter your TON wallet address":"أدخل عنوان محفظة TON","Enter your Telegram link":"أدخل رابط تيليجرام الخاص بك","Insufficient USD balance":"رصيد USD غير كافٍ","Insufficient ZNX balance":"رصيد ZNX غير كافٍ","Invalid wallet address":"عنوان المحفظة غير صالح","Invite link copied! 🎉":"تم نسخ رابط الدعوة! 🎉","Join all channels first":"انضم لكل القنوات أولاً","Network error":"خطأ في الشبكة","No spins left. Invite friends! 🎯":"لا توجد لفات متبقية. ادعُ أصدقاءك! 🎯","Referral link copied! 📋":"تم نسخ رابط الإحالة! 📋","Select all 4 items first!":"اختر العناصر الأربعة أولاً!","Verification failed":"فشل التحقق","Verification was cancelled":"تم إلغاء التحقق","Verified! Welcome aboard 🎉":"تم التحقق! أهلاً بك 🎉","Watch the full ad (15s)":"شاهد الإعلان كاملاً (15 ثانية)","Withdrawals are currently disabled":"السحب متوقف حالياً","❌ Wrong combination. Try again!":"❌ تركيبة خاطئة. حاول مرة أخرى!","😬 No reward. Try again!":"😬 لا مكافأة. حاول مرة أخرى!","Ad reward unavailable":"مكافأة الإعلان غير متاحة","Deposit cancelled":"تم إلغاء الإيداع","Reward is not ready yet":"المكافأة ليست جاهزة بعد","Conversion failed":"فشل التحويل","Could not claim bonus":"تعذّر استلام المكافأة","Could not claim":"تعذّر الاستلام","Could not spin":"تعذّر تدوير العجلة","Failed to submit":"فشل الإرسال","Failed.":"فشلت العملية.","Game unavailable":"اللعبة غير متاحة","Invalid code":"كود غير صالح","Unable to start task":"تعذّر بدء المهمة","Withdrawal failed":"فشل السحب","Open bot, wait 5s, then Verify":"افتح البوت وانتظر 5 ثوانٍ ثم اضغط تحقق","Join channel, then Verify ✓":"انضم للقناة ثم اضغط تحقق ✓","Unable to load your Telegram account":"تعذّر تحميل حساب تيليجرام الخاص بك","LIVE":"مباشر","TOTAL PRIZE POOL":"إجمالي الجوائز","Round ends in":"تنتهي الجولة خلال","days":"أيام","hrs":"ساعات","min":"دقائق","sec":"ثوانٍ","RANK":"المركز","Top players":"المتصدرون","LIVE CONTEST":"مسابقة مباشرة","Competitions":"المسابقات","Referral Leaderboard":"لوحة متصدري الإحالات","ACTIVE REFERRALS":"إحالات نشطة","YOU":"أنت","USD rewards":"جوائز USD","You are in the prize zone":"أنت في منطقة الجوائز","Not ranked yet":"لا ترتيب بعد","Keep climbing to reach the prizes":"واصل الصعود للوصول إلى الجوائز","Ranked by active referrals joined this round — top 10 win USD automatically":"الترتيب حسب الإحالات النشطة في هذه الجولة — أفضل 10 يربحون USD تلقائياً","Unable to load the leaderboard right now":"تعذّر تحميل لوحة المتصدرين الآن","just now":"الآن"
+};
+var RULES=[
+[/Minimum stake is ([\d,\.]+) ZNX/g,"الحد الأدنى للتخزين هو $1 ZNX"],
+[/You have used all (\d+) plays for today/g,"لقد استخدمت كل محاولاتك اليوم ($1)"],
+[/Deposit confirmed \+(\S+)/g,"تم تأكيد الإيداع +$1"],
+[/Withdrawal submitted — you will receive ([\d\.]+) TON/g,"تم إرسال طلب السحب — ستستلم $1 TON"],
+[/\+\s?([\d,]+) ZNX staking reward/g,"+$1 ZNX مكافأة تخزين"],
+[/([\d,]+) ZNX staked/g,"تم تخزين $1 ZNX"],
+[/\+\s?([\d,]+)(\s*(?:ZNX|<img[^>]*>))\s*added!?/g,"تمت إضافة +$1$2"],
+[/Correct! \+/g,"صحيح! +"],[/You won /g,"ربحت "],
+[/(\d+) more to reach the prizes/g,"باقي $1 للوصول إلى الجوائز"],[/Winning \$(\S+)/g,"ستربح $$$1"],[/(\d+)m ago/g,"منذ $1 د"],[/(\d+)h ago/g,"منذ $1 س"],[/(\d+)d ago/g,"منذ $1 يوم"]
+];
+function tr(s){
+  if(typeof s!=='string')return s;
+  var k=s.trim(); if(!k)return s;
+  if(AR.hasOwnProperty(k))return s.replace(k,AR[k]);
+  var o=s; for(var i=0;i<RULES.length;i++)o=o.replace(RULES[i][0],RULES[i][1]);
+  return o;
+}
+var lang='en',map=new WeakMap(),obs=null,ATT=['placeholder','title'];
+function saved(){try{return localStorage.getItem('znx_lang');}catch(e){return null;}}
+function save(l){try{localStorage.setItem('znx_lang',l);}catch(e){}
+  try{Telegram.WebApp.CloudStorage.setItem('znx_lang',l);}catch(e){}}
+function doText(n){
+  var v=n.nodeValue,m=map.get(n);
+  if(m&&v===m.out)return;
+  var out=lang==='ar'?tr(v):v; map.set(n,{en:v,out:out});
+  if(out!==v)n.nodeValue=out;
+}
+function doEl(el){
+  ATT.forEach(function(a){
+    if(!el.getAttribute)return; var v=el.getAttribute(a); if(v==null)return;
+    var k='data-en-'+a,en=el.getAttribute(k);
+    if(en==null||v!==tr(en)){en=v;el.setAttribute(k,v);}
+    var out=lang==='ar'?tr(en):en; if(out!==v)el.setAttribute(a,out);
+  });
+}
+function walk(root){
+  if(root.nodeType===3){if(!/^(SCRIPT|STYLE)$/.test(root.parentNode&&root.parentNode.nodeName))doText(root);return;}
+  if(root.nodeType!==1||/^(SCRIPT|STYLE)$/.test(root.nodeName))return;
+  doEl(root);
+  for(var c=root.firstChild;c;c=c.nextSibling)walk(c);
+}
+function restore(root){
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),n;
+  while((n=w.nextNode())){var m=map.get(n);if(m&&n.nodeValue===m.out)n.nodeValue=m.en;}
+  document.querySelectorAll('[data-en-placeholder],[data-en-title]').forEach(function(e){
+    ATT.forEach(function(a){var en=e.getAttribute('data-en-'+a);if(en!=null)e.setAttribute(a,en);});});
+}
+function observe(on){
+  if(obs){obs.disconnect();obs=null;}
+  if(!on)return;
+  obs=new MutationObserver(function(ms){ms.forEach(function(m){
+    if(m.type==='childList')m.addedNodes.forEach(walk);
+    else if(m.type==='characterData')doText(m.target);
+    else doEl(m.target);});});
+  obs.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:ATT});
+}
+function setLang(l){
+  lang=l==='ar'?'ar':'en';
+  var h=document.documentElement; h.lang=lang; h.dir=lang==='ar'?'rtl':'ltr';
+  if(lang==='ar'){walk(document.body);observe(true);}else{observe(false);restore(document.body);}
+  var b=document.getElementById('langBtn'); if(b)b.textContent=lang==='ar'?'EN':'ع';
+  save(lang);
+}
+window.I18N={tr:tr,setLang:setLang,get lang(){return lang;}};
+var _st=window.showToast;
+if(typeof _st==='function')window.showToast=function(msg,type,isHtml){return _st(lang==='ar'?tr(msg):msg,type,isHtml);};
+var st=document.createElement('style');
+st.textContent="#langBtn{position:fixed;top:8px;left:8px;z-index:99999;min-width:38px;height:30px;padding:0 10px;border-radius:15px;border:1px solid rgba(132,245,170,.5);background:rgba(8,24,14,.85);color:#5cf593;font:700 13px 'Exo 2',sans-serif;cursor:pointer}"+
+"html[dir=rtl] body{font-family:'Cairo','Exo 2',sans-serif}html[dir=rtl] .invite-text,html[dir=rtl] .ref-link-url{text-align:right}html[dir=rtl] input,html[dir=rtl] textarea{text-align:right}";
+document.head.appendChild(st);
+var lk=document.createElement('link');lk.rel='stylesheet';lk.href='https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap';document.head.appendChild(lk);
+var btn=document.createElement('button');btn.id='langBtn';btn.type='button';
+btn.onclick=function(){setLang(lang==='ar'?'en':'ar');};document.body.appendChild(btn);
+var init=saved();
+if(!init){try{var lc=Telegram.WebApp.initDataUnsafe.user.language_code;init=/^ar/i.test(lc)?'ar':'en';}catch(e){init='en';}
+  try{Telegram.WebApp.CloudStorage.getItem('znx_lang',function(e,v){if(!e&&v&&v!==lang&&!saved())setLang(v);});}catch(e){}}
+setLang(init);
+})();
+</script>
+
+<style id="cxStyle">
+@property --cxa{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes cxSpin{to{--cxa:360deg}}@keyframes cxFloat{50%{transform:translateY(-5px)}}
+@keyframes cxShine{to{background-position:200% 0}}@keyframes cxRise{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-120px);opacity:0}}
+@keyframes cxPulse{50%{box-shadow:0 0 0 6px rgba(255,209,102,0)}}@keyframes cxBlink{50%{opacity:.25}}
+#cpPanel{--gold:#ffd166;--gold2:#f5a623;--em:#2cd67b}
+.cx-hero{position:relative;margin:4px 0 14px;padding:18px 16px 16px;border-radius:26px;overflow:hidden;isolation:isolate;
+ background:radial-gradient(120% 130% at 0% 0%,rgba(255,196,70,.24),transparent 55%),radial-gradient(100% 120% at 100% 100%,rgba(44,214,123,.22),transparent 55%),linear-gradient(160deg,#0d2619,#050f09);box-shadow:0 18px 40px rgba(0,0,0,.55),0 0 40px rgba(255,190,60,.1)}
+.cx-hero::before{content:'';position:absolute;inset:0;padding:1.6px;border-radius:inherit;z-index:2;pointer-events:none;background:conic-gradient(from var(--cxa),#ffd166,#2cd67b 30%,rgba(5,15,9,0) 55%,#ffd166);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:cxSpin 6s linear infinite}
+.cx-sp{position:absolute;bottom:6px;left:var(--x);width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);opacity:0;animation:cxRise var(--t) ease-in infinite var(--l);z-index:0}
+.cx-hero-top{display:flex;align-items:center;gap:13px;position:relative;z-index:1}
+.cx-trophy{width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;color:#2a1a00;background:linear-gradient(145deg,#ffe29a,#f5a623);box-shadow:0 8px 22px rgba(245,166,35,.45),inset 0 1px 0 rgba(255,255,255,.7);animation:cxFloat 3s ease-in-out infinite}
+.cx-trophy .ico{width:32px;height:32px}
+.cx-pool{flex:1;min-width:0}.cx-pool span{display:block;font-size:10.5px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.62)}
+.cx-pool b{display:block;font:900 34px/1.1 'Orbitron','Exo 2',sans-serif;font-variant-numeric:tabular-nums;background:linear-gradient(100deg,#fff4cf,#ffd166,#fff4cf,#f5a623,#ffd166);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cxShine 4s linear infinite}
+.cx-live{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:1px;color:#ff8a8a;padding:4px 9px;border-radius:20px;background:rgba(255,70,70,.12);border:1px solid rgba(255,100,100,.3)}
+.cx-live i{width:6px;height:6px;border-radius:50%;background:#ff4d4d;animation:cxBlink 1.2s infinite}
+.cx-tl{display:flex;align-items:center;gap:7px;margin:16px 0 9px;font-size:11.5px;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.7);position:relative;z-index:1}.cx-tl .ico{width:15px;height:15px;color:var(--gold)}
+.cx-tg{display:flex;gap:8px;position:relative;z-index:1}
+.cx-t{flex:1;padding:11px 0 8px;text-align:center;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:1px solid rgba(255,214,120,.2);backdrop-filter:blur(6px)}
+.cx-t b{display:block;font:800 24px/1 'Orbitron','Exo 2',sans-serif;color:#fff;font-variant-numeric:tabular-nums}.cx-t span{display:block;margin-top:5px;font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.cx-t.sec{border-color:rgba(255,209,102,.6);animation:cxPulse 1s infinite}.cx-t.sec b{color:var(--gold)}
+.cx-me{display:flex;align-items:center;gap:12px;margin-bottom:6px;padding:14px;border-radius:22px;background:linear-gradient(145deg,rgba(44,214,123,.14),rgba(6,20,13,.92));border:1px solid rgba(44,214,123,.3)}
+.cx-me.zone{border-color:rgba(255,209,102,.55);background:linear-gradient(145deg,rgba(255,196,70,.16),rgba(6,20,13,.92))}
+.cx-ring{width:58px;height:58px;border-radius:50%;padding:3px;flex-shrink:0;background:conic-gradient(var(--em) calc(var(--p)*1%),rgba(255,255,255,.1) 0)}.cx-me.zone .cx-ring{background:conic-gradient(var(--gold) 100%,var(--gold))}
+.cx-av{width:100%;height:100%;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;background:linear-gradient(135deg,#0f3322,#06130c)}.cx-av img{width:100%;height:100%;object-fit:cover}.cx-av.sm{width:38px;height:38px;flex-shrink:0;font-size:15px}
+.cx-me-mid{flex:1;min-width:0}.cx-me-name{font-size:15px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cx-me-msg{font-size:11.5px;color:rgba(255,255,255,.7);margin:2px 0 8px}
+.cx-prog{height:6px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden}.cx-prog i{display:block;height:100%;width:calc(var(--p)*1%);border-radius:6px;background:linear-gradient(90deg,var(--em),#9dffc6)}.cx-me.zone .cx-prog i{background:linear-gradient(90deg,var(--gold2),#fff0b8)}
+.cx-me-r{text-align:center;flex-shrink:0}.cx-me-r span{font-size:9.5px;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,.55)}.cx-me-r b{display:block;font:900 26px/1.1 'Orbitron','Exo 2',sans-serif;color:var(--gold)}.cx-me-r em{display:block;font-style:normal;font-size:9.5px;color:rgba(255,255,255,.6);max-width:84px}
+.cx-sec{margin:20px 4px 12px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.8)}.cx-sec span{display:flex;align-items:center;gap:8px}.cx-sec span::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,209,102,.4),transparent)}.cx-sec .ico{width:16px;height:16px;color:var(--gold)}
+.cx-podium{display:flex;align-items:flex-end;gap:8px;padding:6px 0 4px}
+.cx-pod{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center}.cx-pod.p1{order:2}.cx-pod.p2{order:1}.cx-pod.p3{order:3}.cx-pod.empty{opacity:.35}
+.cx-av-wrap{position:relative;margin-bottom:8px}.cx-pod .cx-av{width:60px;height:60px;font-size:22px;border:3px solid var(--rc)}.cx-pod.p1 .cx-av{width:78px;height:78px;font-size:28px;box-shadow:0 0 26px rgba(255,209,102,.55)}
+.cx-pod{--rc:#c8d3dc}.cx-pod.p1{--rc:#ffd166}.cx-pod.p3{--rc:#d9915a}
+.cx-pod.p1 .cx-av-wrap::before{content:'';position:absolute;inset:-7px;border-radius:50%;background:conic-gradient(from var(--cxa),#ffd166,transparent 40%,#ffd166);-webkit-mask:radial-gradient(circle,transparent 60%,#000 62%);mask:radial-gradient(circle,transparent 60%,#000 62%);animation:cxSpin 3s linear infinite}
+.cx-crown{position:absolute;top:-22px;left:50%;transform:translateX(-50%);color:var(--gold);animation:cxFloat 2.2s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(255,209,102,.7))}.cx-crown .ico{width:24px;height:24px;fill:rgba(255,209,102,.3)}
+.cx-badge{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;font:800 12px/22px 'Exo 2',sans-serif;text-align:center;font-style:normal;color:#1a1200;background:var(--rc);box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.cx-pn{font-size:12.5px;font-weight:800;color:#fff;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}.cx-ps{display:flex;align-items:center;gap:4px;margin:3px 0 8px;font-size:12px;font-weight:800;color:var(--em)}.cx-ps .ico{width:13px;height:13px}
+.cx-plinth{width:100%;display:flex;align-items:center;justify-content:center;border-radius:14px 14px 4px 4px;position:relative;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--rc) 55%,transparent),rgba(8,24,15,.9));border:1px solid color-mix(in srgb,var(--rc) 60%,transparent);border-bottom:0}
+.cx-plinth b{font:900 15px 'Orbitron','Exo 2',sans-serif;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.5)}.cx-pod.p1 .cx-plinth{height:84px}.cx-pod.p2 .cx-plinth{height:60px}.cx-pod.p3 .cx-plinth{height:46px}
+.cx-plinth::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);background-size:250% 100%;animation:cxShine 3.5s linear infinite}
+.cx-list{display:flex;flex-direction:column;gap:8px}
+.cx-row{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:16px;background:linear-gradient(145deg,rgba(14,44,29,.6),rgba(6,19,12,.92));border:1px solid rgba(170,255,210,.09);animation:lbPop .45s ease both;animation-delay:var(--d)}
+.cx-row.prize{border-color:rgba(255,209,102,.4);background:linear-gradient(145deg,rgba(255,196,70,.1),rgba(6,19,12,.92))}.cx-row.me{border-color:rgba(44,214,123,.7);box-shadow:0 0 0 1px rgba(44,214,123,.25),0 8px 20px rgba(44,214,123,.15)}
+.cx-rk{width:28px;font:800 15px 'Orbitron','Exo 2',sans-serif;text-align:center;color:rgba(255,255,255,.6)}.cx-row.prize .cx-rk{color:var(--gold)}
+.cx-mid{flex:1;min-width:0}.cx-nm{font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cx-bar{height:4px;margin-top:7px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden}.cx-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--em),#a6ffcc)}.cx-row.prize .cx-bar i{background:linear-gradient(90deg,var(--gold2),#fff0b8)}
+.cx-rt{text-align:right;flex-shrink:0}.cx-rt b{display:block;font-size:15px;font-weight:800;color:#fff}.cx-rt em{display:inline-block;margin-top:2px;padding:1px 8px;border-radius:10px;font-style:normal;font-size:11px;font-weight:800;color:#1a1200;background:linear-gradient(135deg,#ffe29a,#f5a623)}
+html[dir=rtl] .cx-rt{text-align:left}
+@media (prefers-reduced-motion:reduce){.cx-hero::before,.cx-sp,.cx-pool b,.cx-trophy,.cx-crown,.cx-plinth::after,.cx-t.sec,.cx-pod.p1 .cx-av-wrap::before{animation:none!important}}
+</style>
 </body>
 </html>
