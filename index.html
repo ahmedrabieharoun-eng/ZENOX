@@ -2324,7 +2324,7 @@ var gigapubCooldownUntil = 0;
 var gigapubTimerId = null;
 
 // ── Adloop ────────────────────────────────────────────────────────────
-var ADLOOP_SLOT_ID = "748241";
+var ADLOOP_SLOT_ID = "926147";
 var ADLOOP_MIN_WATCH_MS = 15000; // minimum watch time before reward is allowed
 var adloopController = null;
 var adloopWatchBusy = false;
@@ -3965,7 +3965,11 @@ function stopGigapubButtonTimer(){
 function ensureAdloopInit(){
   if (adloopController) return adloopController;
   if (!window.Adloop || typeof window.Adloop.init !== 'function') return null;
-  adloopController = window.Adloop.init({ slotId: ADLOOP_SLOT_ID });
+  try {
+    adloopController = window.Adloop.init({ slotId: ADLOOP_SLOT_ID });
+  } catch(e){
+    adloopController = null;
+  }
   return adloopController;
 }
 
@@ -4034,6 +4038,7 @@ function watchAdloop(){
       adloopWatchBusy = false;
       stopAdloopButtonTimer();
       renderTasks('ads');
+      adloopController = null; // re-init on next try to load a fresh ad
       showToast('Ad was not completed','error');
     });
   }).catch(function(){
