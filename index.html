@@ -2151,7 +2151,7 @@ function stripEmoji(t){return String(t).replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u
 var API_URL  = 'https://silent-block-bedf.ahmedrabieharoun.workers.dev'; // ← Cloudflare Worker URL
   var BOT_USER = 'zinoXxX_bot'; // 𝗭𝗘𝗡𝗢𝗫 | 𝗠𝗢𝗡𝗘𝗬 username without @
   // Same deposit wallet address used in the active deposit system.
-  var BOT_DEPOSIT_WALLET = 'UQAACNWWtTtN7ILkhRERwYUTzo06Bd1Tv_8Yk5gPioIMFoUD';
+  var BOT_DEPOSIT_WALLET = 'UQDF8ZkfXmIl3MbOTVR66uh5-qA_NtF2R69teyWTRdYQQF10';
   var tonConnectUI = null;
 // The Mini App name registered in BotFather (Short Name) — must be set here because
 // this bot is a "button bot" and its Mini App is not the default Main App, so the link
@@ -3589,7 +3589,7 @@ function openDepositForm(){
   document.getElementById('depositFormCard').style.display='block';
   updateDepositTonDue();
   // The address comes from the active deposit system; we don't rely on an old value stored in Firebase.
-  BOT_DEPOSIT_WALLET = 'UQAACNWWtTtN7ILkhRERwYUTzo06Bd1Tv_8Yk5gPioIMFoUD';
+  BOT_DEPOSIT_WALLET = 'UQDF8ZkfXmIl3MbOTVR66uh5-qA_NtF2R69teyWTRdYQQF10';
   if (!tonConnectUI && window.TON_CONNECT_UI) {
     tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
       manifestUrl: API_URL.replace(/\/$/,'') + '/tonconnect-manifest.json',
