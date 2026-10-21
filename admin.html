@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>ZENOX | MONEY — لوحة التحكم</title>
+<title>ZENOX — لوحة التحكم</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <style>
 :root{
-  --bg:#0a0d16;
-  --bg-2:#0d111c;
+  --bg:#08110d;
+  --bg-2:#0b1511;
   --panel:#11162476;
-  --panel-solid:#121729;
-  --panel-2:#161c31;
-  --border:#212840;
-  --border-soft:#1a2036;
-  --gold:#f2b84b;
-  --gold-2:#d99c2e;
-  --gold-dim:#7a622c;
-  --cyan:#33d6c0;
+  --panel-solid:#101a15;
+  --panel-2:#15221b;
+  --border:#1f3329;
+  --border-soft:#182a21;
+  --gold:#22c55e;
+  --gold-2:#16a34a;
+  --gold-dim:#2b6b43;
+  --cyan:#4ade80;
   --ton:#0098ea;
   --danger:#ff5470;
   --danger-dim:#5c1f2c;
@@ -36,8 +36,8 @@ html,body{height:100%}
 body{
   font-family:var(--sans);
   background:
-    radial-gradient(1100px 600px at 85% -10%, rgba(242,184,75,.09), transparent 60%),
-    radial-gradient(900px 500px at 0% 100%, rgba(51,214,192,.06), transparent 55%),
+    radial-gradient(1100px 600px at 85% -10%, rgba(34,197,94,.09), transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, rgba(74,222,128,.06), transparent 55%),
     var(--bg);
   color:var(--text);
   min-height:100vh;
@@ -52,7 +52,7 @@ body{
 .app{display:flex;min-height:100vh}
 .sidebar{
   width:264px;flex:none;position:sticky;top:0;height:100vh;
-  background:linear-gradient(180deg,#0d1220,#0a0d16 60%);
+  background:linear-gradient(180deg,#0b1712,#08110d 60%);
   border-left:1px solid var(--border-soft);
   display:flex;flex-direction:column;padding:22px 16px;gap:6px;
   z-index:20;
@@ -60,7 +60,7 @@ body{
 .brand{display:flex;align-items:center;gap:12px;padding:6px 8px 22px 8px}
 .brand-coin{
   width:42px;height:42px;border-radius:50%;object-fit:cover;
-  box-shadow:0 0 0 2px rgba(242,184,75,.35), 0 6px 18px rgba(242,184,75,.25);
+  box-shadow:0 0 0 2px rgba(34,197,94,.35), 0 6px 18px rgba(34,197,94,.25);
   animation:spin-slow 9s linear infinite;
 }
 @keyframes spin-slow{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
@@ -74,10 +74,10 @@ body{
   border:1px solid transparent;transition:all .15s ease;position:relative;
 }
 .nav-item svg{width:18px;height:18px;flex:none;opacity:.85}
-.nav-item:hover{background:#141a2c;color:var(--text)}
+.nav-item:hover{background:#13211a;color:var(--text)}
 .nav-item.active{
-  background:linear-gradient(90deg, rgba(242,184,75,.14), rgba(242,184,75,.02));
-  color:var(--gold);border-color:rgba(242,184,75,.22);
+  background:linear-gradient(90deg, rgba(34,197,94,.14), rgba(34,197,94,.02));
+  color:var(--gold);border-color:rgba(34,197,94,.22);
 }
 .nav-item.active svg{opacity:1}
 .nav-badge{
@@ -87,9 +87,9 @@ body{
 .nav-sep{height:1px;background:var(--border-soft);margin:12px 6px}
 .sidebar-foot{margin-top:auto;padding:12px 10px 4px;font-size:11.5px;color:var(--muted-2);display:flex;align-items:center;gap:8px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--muted-2);flex:none}
-.dot.on{background:var(--cyan);box-shadow:0 0 0 3px rgba(51,214,192,.18);animation:pulse 2s infinite}
+.dot.on{background:var(--cyan);box-shadow:0 0 0 3px rgba(74,222,128,.18);animation:pulse 2s infinite}
 .dot.off{background:var(--danger)}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(51,214,192,.18)}50%{box-shadow:0 0 0 5px rgba(51,214,192,.05)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(74,222,128,.18)}50%{box-shadow:0 0 0 5px rgba(74,222,128,.05)}}
 
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
 .topbar{
@@ -111,10 +111,10 @@ body{
   font-family:var(--sans);font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid transparent;
   transition:.15s;white-space:nowrap;
 }
-.btn-gold{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#241a05;box-shadow:0 4px 14px rgba(242,184,75,.22)}
+.btn-gold{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#04230f;box-shadow:0 4px 14px rgba(34,197,94,.22)}
 .btn-gold:hover{filter:brightness(1.07)}
 .btn-ghost{background:var(--panel-2);color:var(--text);border-color:var(--border)}
-.btn-ghost:hover{background:#1c2338}
+.btn-ghost:hover{background:#1a2b22}
 .btn-danger{background:rgba(255,84,112,.12);color:#ff92a6;border-color:rgba(255,84,112,.3)}
 .btn-danger:hover{background:rgba(255,84,112,.2)}
 .btn-sm{padding:6px 11px;font-size:12.5px;border-radius:9px}
@@ -136,10 +136,10 @@ body{
 }
 .stat-card::after{
   content:'';position:absolute;inset:auto -30px -30px auto;width:110px;height:110px;border-radius:50%;
-  background:radial-gradient(circle, var(--sc,rgba(242,184,75,.16)), transparent 70%);
+  background:radial-gradient(circle, var(--sc,rgba(34,197,94,.16)), transparent 70%);
 }
 .stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.stat-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(242,184,75,.12);color:var(--gold)}
+.stat-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.12);color:var(--gold)}
 .stat-icon svg{width:19px;height:19px}
 .stat-label{font-size:12.5px;color:var(--muted);font-weight:500}
 .stat-value{font-family:var(--mono);font-size:27px;font-weight:700;letter-spacing:.2px;display:flex;align-items:center;gap:8px}
@@ -161,11 +161,11 @@ body{
 .table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border-soft)}
 table{width:100%;border-collapse:collapse;font-size:13.3px;min-width:640px}
 thead th{
-  text-align:right;padding:11px 14px;background:#0e1220;color:var(--muted);
+  text-align:right;padding:11px 14px;background:#0c1812;color:var(--muted);
   font-weight:700;font-size:12px;border-bottom:1px solid var(--border);white-space:nowrap;
 }
 tbody td{padding:11px 14px;border-bottom:1px solid var(--border-soft);vertical-align:middle}
-tbody tr:hover{background:#131829}
+tbody tr:hover{background:#12201a}
 tbody tr:last-child td{border-bottom:none}
 .mono{font-family:var(--mono)}
 .muted{color:var(--muted)}
@@ -175,9 +175,9 @@ tbody tr:last-child td{border-bottom:none}
 .u-sub{font-size:11.5px;color:var(--muted)}
 
 .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.b-green{background:rgba(51,214,192,.12);color:var(--cyan)}
-.b-gray{background:#1c2338;color:var(--muted)}
-.b-gold{background:rgba(242,184,75,.14);color:var(--gold)}
+.b-green{background:rgba(74,222,128,.12);color:var(--cyan)}
+.b-gray{background:#1a2b22;color:var(--muted)}
+.b-gold{background:rgba(34,197,94,.14);color:var(--gold)}
 .b-red{background:rgba(255,84,112,.14);color:#ff92a6}
 .b-orange{background:rgba(255,165,0,.14);color:#ffb347}
 
@@ -204,7 +204,7 @@ tbody tr:last-child td{border-bottom:none}
   color:var(--text);font-family:var(--mono);font-size:13.5px;outline:none;transition:.15s;width:100%;
 }
 .field input[type=text].sans,.field textarea{font-family:var(--sans)}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold-dim);background:#181f36}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold-dim);background:#18271f}
 .switch-row{display:flex;align-items:center;justify-content:space-between;background:var(--panel-2);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
 .switch-row .lbl b{font-size:13.5px;display:block}
 .switch-row .lbl span{font-size:11.5px;color:var(--muted)}
@@ -245,13 +245,13 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
 .modal-head{padding:18px 22px;border-bottom:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between}
 .modal-head h3{font-size:15.5px;font-weight:800}
 .modal-close{cursor:pointer;color:var(--muted);width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px}
-.modal-close:hover{background:#1c2338;color:var(--text)}
+.modal-close:hover{background:#1a2b22;color:var(--text)}
 .modal-body{padding:20px 22px;display:flex;flex-direction:column;gap:13px}
 .modal-foot{padding:16px 22px;border-top:1px solid var(--border-soft);display:flex;gap:10px;justify-content:flex-end}
 
 .toast-wrap{position:fixed;bottom:22px;left:22px;z-index:200;display:flex;flex-direction:column;gap:10px}
 .toast{
-  background:#141a2c;border:1px solid var(--border);border-right:3px solid var(--cyan);
+  background:#13211a;border:1px solid var(--border);border-right:3px solid var(--cyan);
   padding:12px 16px;border-radius:11px;font-size:13px;min-width:240px;box-shadow:0 10px 30px rgba(0,0,0,.35);
   animation:toastin .2s ease;
 }
@@ -264,7 +264,7 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
 
 .tab-pills{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
 .pill{padding:8px 15px;border-radius:20px;background:var(--panel-2);border:1px solid var(--border);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s}
-.pill.active{background:rgba(242,184,75,.14);color:var(--gold);border-color:rgba(242,184,75,.3)}
+.pill.active{background:rgba(34,197,94,.14);color:var(--gold);border-color:rgba(34,197,94,.3)}
 
 @media(max-width:900px){
   .sidebar{position:fixed;right:0;transform:translateX(100%);transition:.25s;box-shadow:-10px 0 40px rgba(0,0,0,.4)}
@@ -279,8 +279,8 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
 .login-screen{
   position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
   background:
-    radial-gradient(1100px 600px at 85% -10%, rgba(242,184,75,.10), transparent 60%),
-    radial-gradient(900px 500px at 0% 100%, rgba(51,214,192,.07), transparent 55%),
+    radial-gradient(1100px 600px at 85% -10%, rgba(34,197,94,.10), transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, rgba(74,222,128,.07), transparent 55%),
     var(--bg);
   padding:20px;
 }
@@ -297,7 +297,7 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
   width:100%;background:var(--panel-2);border:1px solid var(--border);border-radius:11px;
   padding:12px 14px;color:var(--text);font-family:var(--sans);font-size:14px;outline:none;transition:.15s;
 }
-.login-field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,184,75,.12)}
+.login-field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(34,197,94,.12)}
 .login-error{
   display:none;background:rgba(255,84,112,.1);border:1px solid rgba(255,84,112,.3);color:#ff92a6;
   font-size:12.5px;padding:9px 12px;border-radius:9px;margin-bottom:16px;text-align:center;
@@ -315,7 +315,7 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <img class="brand-coin" src="https://silent-block-bedf.ahmedrabieharoun.workers.dev/zenox-icon.png" alt="ZNX">
-      <div class="brand-txt"><b>ZENOX | MONEY</b><span>لوحة تحكم الإدارة</span></div>
+      <div class="brand-txt"><b>ZENOX</b><span>لوحة تحكم الإدارة</span></div>
     </div>
     <nav class="nav" id="nav">
       <div class="nav-item active" data-view="dashboard">
@@ -330,6 +330,10 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="6" width="19" height="13" rx="2.2"/><path d="M2.5 10.5h19"/><path d="M6 15h4"/></svg>
         طلبات السحب
         <span class="nav-badge" id="wdBadge" style="display:none">0</span>
+      </div>
+      <div class="nav-item" data-view="contest">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4zM17 5h3v2a3 3 0 01-3 3M7 5H4v2a3 3 0 003 3"/></svg>
+        المسابقة
       </div>
       <div class="nav-item" data-view="tasks">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg>
@@ -346,10 +350,6 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
       <div class="nav-item" data-view="ads">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="14" rx="2.5"/><path d="M2.5 9h19"/><circle cx="7" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg>
         شركات الإعلانات
-      </div>
-      <div class="nav-item" data-view="contest">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M17 5h3v2a3 3 0 01-3 3M7 5H4v2a3 3 0 003 3"/></svg>
-        إدارة المسابقة
       </div>
       <div class="nav-item" data-view="blocked">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M5.5 5.5l13 13"/></svg>
@@ -399,31 +399,31 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
       <!-- ================= DASHBOARD ================= -->
       <section class="view active" id="view-dashboard">
         <div class="grid-stats">
-          <div class="stat-card" style="--sc:rgba(242,184,75,.18)">
+          <div class="stat-card" style="--sc:rgba(34,197,94,.18)">
             <div class="stat-top"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.3"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="8" r="2.6"/><path d="M15.5 14.2c2.6.3 4.5 2.5 4.5 5.8"/></svg></div><span class="stat-label">إجمالي المستخدمين</span></div>
             <div class="stat-value" id="statTotalUsers">—</div>
             <div class="stat-foot">كل الحسابات المسجّلة في البوت</div>
           </div>
-          <div class="stat-card" style="--sc:rgba(51,214,192,.18)">
-            <div class="stat-top"><div class="stat-icon" style="background:rgba(51,214,192,.14);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.3 2"/></svg></div><span class="live-chip"><span class="dot on"></span>مباشر</span></div>
+          <div class="stat-card" style="--sc:rgba(74,222,128,.18)">
+            <div class="stat-top"><div class="stat-icon" style="background:rgba(74,222,128,.14);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.3 2"/></svg></div><span class="live-chip"><span class="dot on"></span>مباشر</span></div>
             <div class="stat-label" style="margin-bottom:8px">أونلاين الآن (آخر 5 دقائق)</div>
             <div class="stat-value" id="statOnline">—</div>
             <div class="stat-foot">يُحسب من آخر ظهور لكل مستخدم</div>
           </div>
-          <div class="stat-card" style="--sc:rgba(242,184,75,.18)">
+          <div class="stat-card" style="--sc:rgba(34,197,94,.18)">
             <div class="stat-top"><div class="stat-icon"><img src="https://silent-block-bedf.ahmedrabieharoun.workers.dev/zenox-icon.png" style="width:22px;height:22px;border-radius:50%"></div><span class="stat-label">إجمالي أرصدة ZNX</span></div>
             <div class="stat-value" id="statTotalPmt">—</div>
             <div class="stat-foot" id="statAvgPmt">متوسط الرصيد لكل مستخدم: —</div>
           </div>
           <div class="stat-card" style="--sc:rgba(0,152,234,.18)">
-            <div class="stat-top"><div class="stat-icon" style="background:rgba(0,152,234,.14);color:var(--ton)"><b style="font-size:18px">$</b></div><span class="stat-label">إجمالي أرصدة الدولار</span></div>
+            <div class="stat-top"><div class="stat-icon" style="background:rgba(0,152,234,.14);color:var(--ton)"><b style="font-size:19px">$</b></div><span class="stat-label">إجمالي أرصدة الدولار (USD)</span></div>
             <div class="stat-value" id="statTotalTon">—</div>
             <div class="stat-foot" id="statPendingWd">طلبات سحب معلّقة: —</div>
           </div>
         </div>
 
         <div class="grid-stats" style="grid-template-columns:repeat(3,1fr)">
-          <div class="stat-card" style="--sc:rgba(242,184,75,.14)">
+          <div class="stat-card" style="--sc:rgba(34,197,94,.14)">
             <div class="stat-top"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="14" rx="2.5"/><path d="M2.5 9h19"/><circle cx="7" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg></div><span class="stat-label">إعلانات مشاهدة اليوم</span></div>
             <div class="stat-value" id="statAdsToday">—</div>
             <div class="stat-foot">جميع شركات الإعلانات مجتمعة</div>
@@ -433,26 +433,26 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
             <div class="stat-value" id="statBlocked">—</div>
             <div class="stat-foot">نظام مكافحة الاحتيال</div>
           </div>
-          <div class="stat-card" style="--sc:rgba(51,214,192,.14)">
-            <div class="stat-top"><div class="stat-icon" style="background:rgba(51,214,192,.14);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg></div><span class="stat-label">المهام النشطة</span></div>
+          <div class="stat-card" style="--sc:rgba(74,222,128,.14)">
+            <div class="stat-top"><div class="stat-icon" style="background:rgba(74,222,128,.14);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg></div><span class="stat-label">المهام النشطة</span></div>
             <div class="stat-value" id="statActiveTasks">—</div>
             <div class="stat-foot">مهام قنوات وبوتات ودعوات</div>
           </div>
         </div>
 
         <div class="grid-stats" style="grid-template-columns:repeat(3,1fr)">
-          <div class="stat-card" style="--sc:rgba(242,184,75,.14)">
+          <div class="stat-card" style="--sc:rgba(34,197,94,.14)">
             <div class="stat-top"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.3"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M18 8v5M15.5 10.5h5"/></svg></div><span class="stat-label">مستخدمون جدد اليوم</span></div>
             <div class="stat-value" id="statNewToday">—</div>
             <div class="stat-foot">حسب توقيت القاهرة</div>
           </div>
-          <div class="stat-card" style="--sc:rgba(242,184,75,.14)">
+          <div class="stat-card" style="--sc:rgba(34,197,94,.14)">
             <div class="stat-top"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="14" rx="2.5"/><path d="M2.5 9h19"/><circle cx="7" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg></div><span class="stat-label">إجمالي الإعلانات (كل الوقت)</span></div>
             <div class="stat-value" id="statAdsAllTime">—</div>
             <div class="stat-foot">مجموع كل المشاهدات منذ البداية</div>
           </div>
-          <div class="stat-card" style="--sc:rgba(51,214,192,.14)">
-            <div class="stat-top"><div class="stat-icon" style="background:rgba(51,214,192,.14);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 4L3 11.5l6.5 2.2M21 4l-4 17-7.3-9.3M21 4L9.5 13.7"/></svg></div><span class="stat-label">قنوات إجبارية مفعّلة</span></div>
+          <div class="stat-card" style="--sc:rgba(74,222,128,.14)">
+            <div class="stat-top"><div class="stat-icon" style="background:rgba(74,222,128,.14);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 4L3 11.5l6.5 2.2M21 4l-4 17-7.3-9.3M21 4L9.5 13.7"/></svg></div><span class="stat-label">قنوات إجبارية مفعّلة</span></div>
             <div class="stat-value" id="statActiveChannels">—</div>
             <div class="stat-foot">من إجمالي القنوات المضافة</div>
           </div>
@@ -464,7 +464,7 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
             <div class="pill active" onclick="switchView('users')" style="cursor:pointer">عرض الكل ←</div>
           </div>
           <div class="table-wrap"><table>
-            <thead><tr><th>المستخدم</th><th>آيدي تيليجرام</th><th>رصيد ZNX</th><th>رصيد الدولار ($)</th><th>تاريخ الانضمام</th><th>الحالة</th></tr></thead>
+            <thead><tr><th>المستخدم</th><th>آيدي تيليجرام</th><th>رصيد ZNX</th><th>رصيد USD</th><th>تاريخ الانضمام</th><th>الحالة</th></tr></thead>
             <tbody id="latestUsersBody"><tr><td colspan="6" class="loader"><span class="spin"></span></td></tr></tbody>
           </table></div>
         </div>
@@ -483,7 +483,7 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
             </div>
           </div>
           <div class="table-wrap"><table>
-            <thead><tr><th>المستخدم</th><th>آيدي تيليجرام</th><th>رصيد ZNX</th><th>رصيد الدولار ($)</th><th>إعلانات اليوم</th><th>إجمالي الإعلانات</th><th>آخر ظهور</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+            <thead><tr><th>المستخدم</th><th>آيدي تيليجرام</th><th>رصيد ZNX</th><th>رصيد USD</th><th>إعلانات اليوم</th><th>إجمالي الإعلانات</th><th>آخر ظهور</th><th>الحالة</th><th>إجراءات</th></tr></thead>
             <tbody id="usersBody"><tr><td colspan="9" class="loader"><span class="spin"></span></td></tr></tbody>
           </table></div>
         </div>
@@ -500,8 +500,8 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
         <div class="panel">
           <div class="panel-head"><div><h2>طلبات السحب</h2><div class="hint">التحقق والموافقة أو الرفض يدويًا</div></div></div>
           <div class="table-wrap"><table>
-            <thead><tr><th>المستخدم</th><th>المبلغ المطلوب</th><th>الرسوم</th><th>الصافي</th><th>محفظة TON</th><th>التاريخ</th><th>الحالة</th><th>إجراءات</th></tr></thead>
-            <tbody id="wdBody"><tr><td colspan="8" class="loader"><span class="spin"></span></td></tr></tbody>
+            <thead><tr><th>المستخدم</th><th>المطلوب ($)</th><th>الرسوم ($)</th><th>الصافي ($)</th><th>يُحوَّل (TON)</th><th>محفظة TON</th><th>التاريخ</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+            <tbody id="wdBody"><tr><td colspan="9" class="loader"><span class="spin"></span></td></tr></tbody>
           </table></div>
         </div>
       </section>
@@ -539,7 +539,7 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
           </div>
           <div class="stat-card">
             <div class="stat-top"><span class="stat-label">أكواد مفعّلة</span>
-              <div class="stat-icon" style="background:rgba(51,214,192,.12);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg></div>
+              <div class="stat-icon" style="background:rgba(74,222,128,.12);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg></div>
             </div>
             <div class="stat-value" id="statPromoActive">0</div>
           </div>
@@ -576,7 +576,6 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
         <div class="panel">
           <div class="panel-head">
             <div><h2>شركات الإعلانات</h2><div class="hint">مكافأة كل إعلان والحد اليومي المسموح لكل شركة على حدة</div></div>
-            <button class="btn btn-gold btn-sm" onclick="openAdCompanyModal()">+ شركة جديدة</button>
           </div>
           <div class="mini-cards" id="adsCards"><div class="loader"><span class="spin"></span></div></div>
         </div>
@@ -585,43 +584,29 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
       <!-- ================= CONTEST ================= -->
       <section class="view" id="view-contest">
         <div class="panel">
-          <div class="panel-head">
-            <div><h2>الجولة الحالية</h2><div class="hint" id="ctStateHint">جارِ التحميل...</div></div>
-            <div class="actions"><button class="btn btn-ghost btn-sm" onclick="loadContestBoard()">تحديث الترتيب</button></div>
+          <div class="panel-head"><div><h2>الجولة الحالية</h2><div class="hint">تُوزَّع الجوائز تلقائيًا (بالدولار) على أول 10 مراكز عند انتهاء الوقت ثم تبدأ جولة جديدة</div></div></div>
+          <div id="ctInfo" style="margin-bottom:14px"></div>
+          <div class="field-grid" style="grid-template-columns:repeat(2,1fr)">
+            <div class="field"><label>وقت انتهاء المسابقة (بتوقيت جهازك)</label><input type="datetime-local" id="ct_end"></div>
+            <div class="field"><label>مدة الجولات القادمة (أيام) <span class="tip">weeklyContestDurationMs</span></label><input type="number" step="0.5" id="ct_dur"></div>
           </div>
-          <div class="field-grid">
-            <div class="field"><label>وقت انتهاء المسابقة</label><input type="datetime-local" id="ct_endTs"></div>
-          </div>
-          <div class="row-actions" style="margin-top:10px;flex-wrap:wrap">
-            <button class="btn btn-gold btn-sm" onclick="saveContestEnd()">حفظ وقت الانتهاء</button>
-            <button class="btn btn-ghost btn-sm" onclick="extendContest(1)">+ يوم</button>
-            <button class="btn btn-ghost btn-sm" onclick="extendContest(7)">+ 7 أيام</button>
-            <button class="btn btn-danger btn-sm" onclick="endContestNow()">إنهاء الآن وتوزيع الجوائز</button>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><h2>الجوائز ($)</h2><div class="hint">جائزة كل مركز من 1 إلى 10 بالدولار</div></div>
-            <button class="btn btn-gold btn-sm" onclick="saveContestPrizes()">حفظ الجوائز</button></div>
-          <div class="field-grid" id="ctPrizes"></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><h2>إضافة / حذف رصيد (نقاط الإحالات)</h2><div class="hint">يعدّل عدد إحالات المستخدم في ترتيب الجولة الحالية فقط، ولا يمس رصيد المحفظة</div></div></div>
-          <div class="field-grid">
-            <div class="field"><label>آيدي تيليجرام</label><input type="text" class="mono" id="ct_uid" placeholder="123456789"></div>
-            <div class="field"><label>العدد</label><input type="number" id="ct_amount" value="1" min="1"></div>
-          </div>
-          <div class="row-actions" style="margin-top:10px;flex-wrap:wrap">
-            <button class="btn btn-gold btn-sm" onclick="contestAdjust(1)">+ إضافة رصيد</button>
-            <button class="btn btn-ghost btn-sm" onclick="contestAdjust(-1)">− حذف رصيد</button>
-            <button class="btn btn-danger btn-sm" onclick="contestRemoveUser(true)">استبعاد من المسابقة</button>
-            <button class="btn btn-ghost btn-sm" onclick="contestRemoveUser(false)">إلغاء الاستبعاد</button>
+          <div class="row-actions" style="margin-top:12px;flex-wrap:wrap">
+            <button class="btn btn-gold btn-sm" onclick="saveCtEnd()">حفظ وقت الانتهاء</button>
+            <button class="btn btn-ghost btn-sm" onclick="saveCtEnd(86400000)">+ يوم</button>
+            <button class="btn btn-ghost btn-sm" onclick="saveCtEnd(604800000)">+ 7 أيام</button>
+            <button class="btn btn-ghost btn-sm" onclick="saveCtDuration()">حفظ مدة الجولات القادمة</button>
           </div>
         </div>
         <div class="panel">
-          <div class="panel-head"><div><h2>ترتيب المسابقة</h2><div class="hint">أعلى 25 مستخدم</div></div></div>
+          <div class="panel-head"><div><h2>جوائز المراكز</h2><div class="hint">10 مراكز بالدولار — إجمالي الجوائز: <b id="ctPrizeTotal">—</b></div></div><button class="btn btn-gold btn-sm" onclick="saveCtPrizes()">حفظ الجوائز</button></div>
+          <div class="field-grid" id="ctPrizes" style="grid-template-columns:repeat(5,1fr)"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h2>تصنيف الجولة الحالية</h2><div class="hint">الإحالات النشطة المنضمة خلال الجولة + تعديلات الأدمن</div></div>
+            <div class="actions"><button class="btn btn-ghost btn-sm" onclick="loadContestRefs()">تحديث</button><button class="btn btn-gold btn-sm" onclick="openCtAdd()">+ إضافة رصيد لمستخدم</button></div></div>
           <div class="table-wrap"><table>
-            <thead><tr><th>#</th><th>المستخدم</th><th>الإحالات</th><th>التعديل اليدوي</th><th>الجائزة</th><th></th></tr></thead>
-            <tbody id="ctBody"><tr><td colspan="6"><div class="loader"><span class="spin"></span></div></td></tr></tbody>
+            <thead><tr><th>المركز</th><th>المستخدم</th><th>إحالات حقيقية</th><th>تعديل الأدمن</th><th>الرصيد النهائي</th><th>الجائزة</th><th>إجراءات</th></tr></thead>
+            <tbody id="ctBody"><tr><td colspan="7" class="loader"><span class="spin"></span></td></tr></tbody>
           </table></div>
         </div>
       </section>
@@ -629,7 +614,7 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
       <!-- ================= BLOCKED ================= -->
       <section class="view" id="view-blocked">
         <div class="panel">
-          <div class="panel-head"><div><h2>الحسابات المحظورة تلقائيًا</h2><div class="hint">حسابات أوقفها نظام مكافحة الاحتيال (10 طبقات حماية)</div></div></div>
+          <div class="panel-head"><div><h2>الحسابات المحظورة تلقائيًا</h2><div class="hint">حظر تلقائي (تعدد الحسابات على نفس الجهاز) + حظر يدوي من اللوحة</div></div></div>
           <div class="table-wrap"><table>
             <thead><tr><th>آيدي تيليجرام</th><th>السبب</th><th>درجة الخطورة</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
             <tbody id="blockedBody"><tr><td colspan="5" class="loader"><span class="spin"></span></td></tr></tbody>
@@ -645,44 +630,7 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
             <button class="btn btn-gold" id="saveConfigBtn">حفظ كل التغييرات</button>
           </div>
 
-          <div class="section-title">التبديلات الرئيسية</div>
-          <div class="field-grid" style="grid-template-columns:repeat(2,1fr)">
-            <div class="switch-row">
-              <div class="lbl"><b>الاشتراك الإجباري</b><span>إجبار المستخدم على الاشتراك بالقنوات قبل الاستخدام</span></div>
-              <label class="switch"><input type="checkbox" id="cfg_mandatorySubEnabled"><span class="slider"></span></label>
-            </div>
-            <div class="switch-row">
-              <div class="lbl"><b>نظام السحب</b><span>تشغيل أو إيقاف السحب بالكامل لكل المستخدمين</span></div>
-              <label class="switch"><input type="checkbox" id="cfg_withdrawalEnabled"><span class="slider"></span></label>
-            </div>
-          </div>
-
-          <div class="section-title">المكافآت الأساسية (ZNX)</div>
-          <div class="field-grid">
-            <div class="field"><label>مكافأة اليوم الواحد <span class="tip">dailyBonusReward</span></label><input type="number" id="cfg_dailyBonusReward"></div>
-            <div class="field"><label>مكافأة الإحالة اليومية <span class="tip">referralReward</span></label><input type="number" id="cfg_referralReward"></div>
-            <div class="field"><label>مكافأة التعدين <span class="tip">miningReward</span></label><input type="number" id="cfg_miningReward"></div>
-            <div class="field"><label>مدة التعدين (دقائق) <span class="tip">miningDurationMs</span></label><input type="number" id="cfg_miningDurationMin"></div>
-            <div class="field"><label>الحد اليومي للألعاب <span class="tip">gameDailyLimit</span></label><input type="number" id="cfg_gameDailyLimit"></div>
-          </div>
-
-          <div class="section-title">السحب والتحويل</div>
-          <div class="field-grid">
-            <div class="field"><label>كم ZNX = 1 دولار <span class="tip">usdConversionRate</span></label><input type="number" id="cfg_usdConversionRate"></div>
-            <div class="field"><label>أقل مبلغ سحب ($) <span class="tip">minWithdrawalUsd</span></label><input type="number" step="0.01" id="cfg_minWithdrawalUsd"></div>
-            <div class="field"><label>سعر TON بالدولار <span class="tip">usdPerTon</span></label><input type="number" step="0.01" id="cfg_usdPerTon"></div>
-          </div>
-
-          <div class="section-title">ترويج القناة (السعر لكل 100 عضو)</div>
-          <div class="field-grid">
-            <div class="field"><label>بالدولار ($) <span class="tip">taskPricePer100Usd</span></label><input type="number" step="0.001" id="cfg_taskPricePer100Usd"></div>
-          </div>
-
-          <div class="section-title">إعدادات البوت</div>
-          <div class="field-grid">
-            <div class="field"><label>يوزر البوت <span class="tip">botUsername</span></label><input type="text" class="sans" id="cfg_botUsername"></div>
-            <div class="field" style="grid-column:span 2"><label>توكن البوت <span class="tip">botToken — حساس، لا تشاركه</span></label><input type="password" class="sans" id="cfg_botToken"></div>
-          </div>
+          <div id="cfgForm"></div>
         </div>
       </section>
 
@@ -717,38 +665,25 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
 
 <script>
 /* =========================================================
-   ZENOX | MONEY — Admin Control Panel
+   ZENOX — Admin Control Panel
    Direct Firebase Realtime Database binding
    ========================================================= */
-/* ⚙️ إعدادات Firebase الخاصة بالبوت الجديد (نفس قاعدة FIREBASE_DATABASE_URL المضبوطة في الـ Worker).
-   املأ القيم هنا مرة واحدة، أو اتركها فاضية وهتظهر لك نافذة تطلبها وتحفظها في المتصفح. */
-const FIREBASE_CONFIG = {
-  apiKey: "",
-  authDomain: "",
-  databaseURL: "",   // مثال: https://your-project-default-rtdb.firebaseio.com
-  projectId: ""
-};
-function loadFirebaseConfig(){
-  if(FIREBASE_CONFIG.databaseURL) return FIREBASE_CONFIG;
-  try{
-    const saved = JSON.parse(localStorage.getItem('znx_admin_fb')||'null');
-    if(saved && saved.databaseURL) return saved;
-  }catch(_){}
-  const input = prompt('الصق رابط Firebase Realtime Database (databaseURL) الخاص بالبوت الجديد،\nأو الصق كائن firebaseConfig كامل بصيغة JSON:');
-  if(!input) { document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#fff;font-family:sans-serif">لازم تدخل إعدادات Firebase — أعد تحميل الصفحة.</div>'; throw new Error('Firebase config required'); }
-  let cfg;
-  try{ cfg = JSON.parse(input); }catch(_){ cfg = { databaseURL: input.trim() }; }
-  if(!cfg.databaseURL){ alert('databaseURL مفقود'); throw new Error('bad config'); }
-  try{ localStorage.setItem('znx_admin_fb', JSON.stringify(cfg)); }catch(_){}
-  return cfg;
+// ⚙️ رابط Firebase Realtime Database الخاص بالبوت الجديد (نفس FIREBASE_DATABASE_URL في الـ Worker)
+const FIREBASE_DB_URL = '';
+const firebaseConfig = { databaseURL: FIREBASE_DB_URL || localStorage.getItem('zx_db_url') || '' };
+if(!firebaseConfig.databaseURL){
+  const u = (prompt('الصق رابط Firebase Realtime Database الخاص بالبوت الجديد\nمثال: https://your-project-default-rtdb.firebaseio.com')||'').trim().replace(/\/$/,'');
+  if(/^https:\/\/.+/.test(u)){ localStorage.setItem('zx_db_url',u); location.reload(); }
+  else document.body.innerHTML='<div style="padding:40px;text-align:center;color:#ff92a6">لم يتم إدخال رابط قاعدة البيانات — حدّث الصفحة وأعد المحاولة</div>';
+  throw new Error('Firebase URL missing');
 }
-firebase.initializeApp(loadFirebaseConfig());
+firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-const AVATAR_FALLBACK = 'https://silent-block-bedf.ahmedrabieharoun.workers.dev/zenox-icon.png';
-const TON_ICON = 'https://cdn.simpleicons.org/ton/0098EA';
+const AVATAR_FALLBACK = 'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="20" fill="#222a44"/><circle cx="20" cy="15" r="6" fill="#6b7396"/><path d="M8 34c1-7 6-10 12-10s11 3 12 10" fill="#6b7396"/></svg>');
+// 🪙 اسم العملة وصورتها (الصورة تُقدَّم من الـ Worker نفسه)
+const COIN_NAME = 'ZNX';
 const COIN_ICON = 'https://silent-block-bedf.ahmedrabieharoun.workers.dev/zenox-icon.png';
-function usdOf(u){ return (u && u.usdBalance!=null) ? (Number(u.usdBalance)||0) : Number((u&&u.tonBalance)||0); }
 const ONLINE_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
 
 /* ---------- state ---------- */
@@ -779,6 +714,17 @@ function fmtTon(n){
   n = Number(n)||0;
   return n.toLocaleString('en-US', {minimumFractionDigits:4, maximumFractionDigits:4});
 }
+function fmtUsd(n){
+  n = Number(n)||0;
+  return (n<0?'-':'') + '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:4});
+}
+function usdPerTon(){ const r = Number(configCache.usdPerTon); return r>0 ? r : 1.5; }
+function readUsd(u){
+  u = u || {};
+  if(u.usdBalance !== undefined && u.usdBalance !== null) return Number(u.usdBalance)||0;
+  return Number(u.tonBalance||0) * usdPerTon();
+}
+function lastSeen(u){ u = u || {}; return Math.max(Number(u.lastActiveAt)||0, Number(u.lastLogin)||0); }
 function fmtDate(ts){
   if(!ts) return '—';
   const d = new Date(Number(ts));
@@ -832,12 +778,12 @@ function switchView(view){
   const titles = {
     dashboard:['الرئيسية','نظرة عامة سريعة على أداء البوت الآن'],
     users:['المستخدمين','إدارة كاملة لأرصدة وبيانات كل مستخدم'],
-    withdrawals:['طلبات السحب','مراجعة والموافقة أو رفض طلبات السحب (المبالغ بالدولار — الدفع بعملة TON)'],
+    withdrawals:['طلبات السحب','مراجعة والموافقة أو رفض طلبات سحب TON'],
     tasks:['المهام','إدارة مهام القنوات والبوتات والمكافآت'],
     channels:['الاشتراك الإجباري','قنوات يجب الاشتراك بها لاستخدام البوت'],
     promocodes:['أكواد البرومو','إنشاء ومتابعة أكواد الخصم والمكافآت'],
     ads:['شركات الإعلانات','مكافأة وحد كل شركة إعلانات على حدة'],
-    contest:['إدارة المسابقة','الجوائز ووقت الانتهاء وإضافة/حذف رصيد المشاركين'],
+    contest:['المسابقة','إدارة مسابقة الإحالات: الوقت والجوائز ورصيد المتسابقين'],
     blocked:['الحسابات المحظورة','حسابات أوقفها نظام مكافحة الاحتيال'],
     config:['الإعدادات العامة','كل قيم البوت قابلة للتعديل من هنا مباشرة'],
     partitions:['أقسام قاعدة البيانات','كل قسم رئيسي موجود فعليًا في Firebase — استكشاف أو حذف كامل'],
@@ -849,7 +795,7 @@ function switchView(view){
   if(view==='users') renderUsersTable();
   if(view==='withdrawals') renderWithdrawals();
   if(view==='partitions') loadPartitions();
-  if(view==='contest') loadContestBoard();
+  if(view==='contest') loadContestRefs();
 }
 document.getElementById('nav').addEventListener('click', e=>{
   const item = e.target.closest('.nav-item');
@@ -881,9 +827,9 @@ function renderDashboardStats(){
   todayStartCairo.setHours(0,0,0,0);
 
   list.forEach(([id,u])=>{
-    if(isOnline(u.lastLogin)) online++;
+    if(isOnline(lastSeen(u))) online++;
     totalPmt += Number(u.balance||0);
-    totalTon += usdOf(u);
+    totalTon += readUsd(u);
     adsAll += Number(u.totalAdsWatched||0);
     if(u.adWatchDate === today){
       if(u.adsWatchedByCompany){
@@ -903,7 +849,7 @@ function renderDashboardStats(){
   document.getElementById('statOnline').textContent = fmt(online);
   document.getElementById('statTotalPmt').innerHTML = fmt(totalPmt) + ' <img src="'+COIN_ICON+'">';
   document.getElementById('statAvgPmt').textContent = 'متوسط الرصيد لكل مستخدم: ' + fmt(total? totalPmt/total:0);
-  document.getElementById('statTotalTon').innerHTML = '$' + fmtTon(totalTon);
+  document.getElementById('statTotalTon').textContent = fmtUsd(totalTon);
   document.getElementById('statAdsToday').textContent = fmt(adsToday);
   document.getElementById('statAdsAllTime').textContent = fmt(adsAll);
 
@@ -920,9 +866,9 @@ function renderLatestUsers(){
       <td><div class="u-cell"><img src="${u.photoUrl||AVATAR_FALLBACK}" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name">${escapeHtml(displayName(u))}</div><div class="u-sub">${u.username?'@'+escapeHtml(u.username):'—'}</div></div></div></td>
       <td class="mono muted">${id}</td>
       <td class="mono">${fmt(u.balance)}</td>
-      <td class="mono">${fmtTon(usdOf(u))}</td>
+      <td class="mono">${fmtUsd(readUsd(u))}</td>
       <td class="muted">${fmtDate(u.createdAt)}</td>
-      <td>${isOnline(u.lastLogin)?'<span class="badge b-green">أونلاين</span>':'<span class="badge b-gray">غير متصل</span>'}</td>
+      <td>${isOnline(lastSeen(u))?'<span class="badge b-green">أونلاين</span>':'<span class="badge b-gray">غير متصل</span>'}</td>
     </tr>`).join('');
 }
 
@@ -947,7 +893,7 @@ function renderUsersTable(){
         (u.lastName||'').toLowerCase().includes(userSearchTerm);
     });
   }
-  list.sort((a,b)=> (b[1].lastLogin||0)-(a[1].lastLogin||0));
+  list.sort((a,b)=> lastSeen(b[1])-lastSeen(a[1]));
   const body = document.getElementById('usersBody');
   if(!list.length){ body.innerHTML = emptyRow(9,'لا توجد نتائج مطابقة'); return; }
 
@@ -963,11 +909,11 @@ function renderUsersTable(){
       <td><div class="u-cell"><img src="${u.photoUrl||AVATAR_FALLBACK}" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name">${escapeHtml(displayName(u))}</div><div class="u-sub">${u.username?'@'+escapeHtml(u.username):'—'}</div></div></div></td>
       <td class="mono muted">${id}</td>
       <td class="mono" id="bal_${id}">${fmt(u.balance)}</td>
-      <td class="mono" id="ton_${id}">${fmtTon(usdOf(u))}</td>
+      <td class="mono" id="ton_${id}">${fmtUsd(readUsd(u))}</td>
       <td class="mono">${fmt(adsToday)}</td>
       <td class="mono">${fmt(u.totalAdsWatched)}</td>
-      <td class="muted">${timeAgo(u.lastLogin)}</td>
-      <td>${blocked?'<span class="badge b-red">محظور</span>':(isOnline(u.lastLogin)?'<span class="badge b-green">أونلاين</span>':'<span class="badge b-gray">غير متصل</span>')}</td>
+      <td class="muted">${timeAgo(lastSeen(u))}</td>
+      <td>${blocked?'<span class="badge b-red">محظور</span>':(isOnline(lastSeen(u))?'<span class="badge b-green">أونلاين</span>':'<span class="badge b-gray">غير متصل</span>')}</td>
       <td><div class="row-actions">
         <div class="iconbtn" title="تعديل الرصيد" onclick="openEditUser('${id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4l10-10-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></div>
         <div class="iconbtn" title="عرض التفاصيل" onclick="openViewUser('${id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
@@ -982,7 +928,7 @@ function openEditUser(id){
   document.getElementById('modalTitle').textContent = 'تعديل رصيد: ' + displayName(u);
   document.getElementById('modalBody').innerHTML = `
     <div class="field"><label>رصيد ZNX</label><input type="number" id="m_balance" value="${Number(u.balance||0)}"></div>
-    <div class="field"><label>رصيد الدولار ($)</label><input type="number" step="0.0001" id="m_tonBalance" value="${usdOf(u)}"></div>
+    <div class="field"><label>رصيد الدولار (USD)</label><input type="number" step="0.0001" id="m_usd" value="${readUsd(u).toFixed(4)}"></div>
     <div class="field"><label>محفظة TON المرتبطة</label><input type="text" class="sans" id="m_tonWallet" value="${escapeHtml(u.tonWallet||u.wallet||'')}"></div>
     <div class="switch-row" style="margin-top:4px">
       <div class="lbl"><b>حظر الحساب</b><span>منع الحساب فورًا من استخدام البوت ومكافآت الإحالة</span></div>
@@ -997,20 +943,13 @@ function openEditUser(id){
 }
 
 function saveUserEdit(id){
-  const balance = Number(document.getElementById('m_balance').value)||0;
-  const tonBalance = Number(document.getElementById('m_tonBalance').value)||0;
-  const tonWallet = document.getElementById('m_tonWallet').value.trim();
-  const blockedNow = document.getElementById('m_blocked').checked;
-
-  const updates = { balance, usdBalance: tonBalance, tonBalance: 0, tonWallet };
-  db.ref('users/'+id).update(updates)
+  const g = x => document.getElementById(x);
+  const upd = { balance: Number(g('m_balance').value)||0, usdBalance: Number(g('m_usd').value)||0, tonBalance: 0, tonWallet: g('m_tonWallet').value.trim() };
+  const blockedNow = g('m_blocked').checked, wasBlocked = !!blockedCache[id];
+  db.ref('users/'+id).update(upd)
     .then(()=>{
-      const wasBlocked = !!blockedCache[id];
-      if(blockedNow && !wasBlocked){
-        return db.ref('blocked_accounts/'+id).set({reason:'حظر يدوي من لوحة التحكم', score:100, ts:Date.now()});
-      } else if(!blockedNow && wasBlocked){
-        return db.ref('blocked_accounts/'+id).remove();
-      }
+      if(blockedNow && !wasBlocked) return db.ref('blocked_accounts/'+id).set({reason:'حظر يدوي من لوحة التحكم', score:100, ts:Date.now()});
+      if(!blockedNow && wasBlocked) return clearBlock(id);
     })
     .then(()=>{ toast('تم حفظ بيانات المستخدم ✓'); closeModal(); })
     .catch(err=>toast('خطأ: '+err.message, true));
@@ -1025,7 +964,7 @@ function openViewUser(id){
     <div class="u-cell" style="margin-bottom:8px"><img src="${u.photoUrl||AVATAR_FALLBACK}" style="width:46px;height:46px" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name" style="font-size:15px">${escapeHtml(displayName(u))}</div><div class="u-sub">${u.username?'@'+escapeHtml(u.username):'بدون يوزر'}</div></div></div>
     <div class="mini-row"><span>آيدي تيليجرام</span><b>${id}</b></div>
     <div class="mini-row"><span>رصيد ZNX</span><b>${fmt(u.balance)}</b></div>
-    <div class="mini-row"><span>رصيد الدولار</span><b>${fmtTon(usdOf(u))}</b></div>
+    <div class="mini-row"><span>رصيد USD</span><b>${fmtUsd(readUsd(u))}</b></div>
     <div class="mini-row"><span>كود الإحالة</span><b>${escapeHtml(u.referralCode||'—')}</b></div>
     <div class="mini-row"><span>تمت إحالته بواسطة</span><b>${escapeHtml(u.referredBy||'—')}</b></div>
     <div class="mini-row"><span>إعلانات اليوم</span><b>${fmt(adsToday)}</b></div>
@@ -1035,7 +974,7 @@ function openViewUser(id){
     <div class="mini-row"><span>اجتاز الاشتراك الإجباري</span><b>${u.forceSubPassed?'نعم':'لا'}</b></div>
     <div class="mini-row"><span>محفظة TON</span><b style="font-size:11px">${escapeHtml(u.tonWallet||u.wallet||'—')}</b></div>
     <div class="mini-row"><span>تاريخ الانضمام</span><b>${fmtDate(u.createdAt)}</b></div>
-    <div class="mini-row"><span>آخر ظهور</span><b>${timeAgo(u.lastLogin)}</b></div>
+    <div class="mini-row"><span>آخر ظهور</span><b>${timeAgo(lastSeen(u))}</b></div>
     <div class="row-actions" style="margin-top:10px">
       <button class="btn btn-ghost btn-sm" style="flex:1" onclick="loadUserReferrals('${id}')">عرض الإحالات ودرجة النشاط</button>
       <button class="btn btn-ghost btn-sm" style="flex:1" onclick="loadUserHistory('${id}')">آخر 5 عمليات من السجل</button>
@@ -1067,47 +1006,31 @@ function loadUserReferrals(id){
   if(!box) return;
   box.innerHTML = '<div class="loader" style="padding:14px 0"><span class="spin"></span></div>';
   db.ref('referrals/'+id).once('value').then(snap=>{
-    const refs = snap.val() || {};
-    const entries = Object.entries(refs);
-    if(!entries.length){
-      box.innerHTML = '<div class="empty" style="padding:14px 0">لا يوجد إحالات لهذا المستخدم</div>';
-      return;
-    }
-    const payoutDays = Math.max(1, Math.floor(Number(configCache.referralPayoutDays) || 3));
+    const entries = Object.entries(snap.val() || {});
+    if(!entries.length){ box.innerHTML = '<div class="empty" style="padding:14px 0">لا يوجد إحالات لهذا المستخدم</div>'; return; }
     entries.sort((a,b)=>(b[1].joinedAt||0)-(a[1].joinedAt||0));
-    const dayHeaders = Array.from({length:payoutDays}, (_,i)=>`<th>يوم ${i+1}</th>`).join('');
     const rows = entries.map(([rid, r])=>{
-      const dr = r.dailyRewards || {};
-      const statusBadge = r.status==='completed' ? '<span class="badge b-green">مكتمل</span>'
-        : r.status==='active' ? '<span class="badge b-gold">نشط</span>'
-        : '<span class="badge b-gray">معلّق</span>';
-      const dayCells = Array.from({length:payoutDays}, (_,i)=>{
-        const d = dr['day'+(i+1)] || {};
-        const claimed = !!d.claimed;
-        const watched = Number(d.adsWatched || 0);
-        return `<td class="mono" style="font-size:11.5px">${claimed ? '✅ 10/10' : (watched+'/10')}</td>`;
-      }).join('');
+      const ru = usersCache[rid] || {};
+      const done = r.status==='completed' || r.status==='active';
+      const todayG = (ru.adWatchDate===todayKeyCairo() && ru.adsWatchedByCompany) ? Number(ru.adsWatchedByCompany.gigapub||0) : 0;
+      const watched = Math.min(10, Math.max(todayG, Number(ru.totalGigapubWatched||0)));
       return `<tr>
         <td><div class="u-name" style="font-size:12.5px">${escapeHtml(r.firstName || (r.username?'@'+r.username:'') || rid)}</div><div class="u-sub mono" style="font-size:10.5px">${escapeHtml(rid)}</div></td>
-        <td>${statusBadge}</td>
-        ${dayCells}
+        <td>${done ? '<span class="badge b-green">مكتمل</span>' : '<span class="badge b-gray">معلّق</span>'}</td>
+        <td class="mono" style="font-size:11.5px">${done ? '10/10' : watched+'/10'}</td>
+        <td class="mono" style="font-size:11.5px">${done ? fmt(r.rewardPaid ?? r.reward)+' '+COIN_NAME : '—'}</td>
       </tr>`;
     }).join('');
     box.innerHTML = `
-      <div style="margin:12px 0 6px;font-size:12.5px;font-weight:800;color:var(--muted)">قائمة الإحالات ودرجة النشاط (${entries.length})</div>
-      <div class="table-wrap" style="max-height:260px;overflow-y:auto">
-        <table style="width:100%">
-          <thead><tr><th>المُحال</th><th>الحالة</th>${dayHeaders}</tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
-    `;
-  }).catch(err=>{
-    box.innerHTML = '<div class="empty" style="padding:14px 0">تعذر تحميل الإحالات: '+escapeHtml(err.message)+'</div>';
-  });
+      <div style="margin:12px 0 6px;font-size:12.5px;font-weight:800;color:var(--muted)">قائمة الإحالات (${entries.length})</div>
+      <div class="table-wrap" style="max-height:260px;overflow-y:auto"><table style="width:100%">
+        <thead><tr><th>المُحال</th><th>الحالة</th><th>إعلانات GigaPub</th><th>المكافأة</th></tr></thead>
+        <tbody>${rows}</tbody></table></div>`;
+  }).catch(err=>{ box.innerHTML = '<div class="empty" style="padding:14px 0">تعذر تحميل الإحالات: '+escapeHtml(err.message)+'</div>'; });
 }
 
 const HISTORY_TYPE_LABELS = {
+  stake:'ستيك', stake_reward:'مكافأة ستيك', referral_reward:'مكافأة إحالة', weekly_referral_contest_prize:'جائزة مسابقة الإحالات', pmt_to_usd:'تحويل ZNX إلى دولار', withdrawal_refund:'استرجاع سحب',
   daily_bonus: 'المكافأة اليومية',
   redeem_code: 'استخدام كود برومو',
   ad_reward: 'مشاهدة إعلان',
@@ -1119,9 +1042,9 @@ const HISTORY_TYPE_LABELS = {
   combo_claim: 'الكومبو اليومي',
   referral_daily_reward: 'مكافأة إحالة يومية',
   referral_commission: 'عمولة إحالة',
-  task_promotion_payment: 'دفع ترويج قناة',
+  task_promotion_payment: 'دفع ترويج قناة (USD)',
   withdrawal: 'طلب سحب',
-  deposit: 'إيداع',
+  deposit: 'إيداع TON',
   pmt_to_ton: 'تحويل ZNX إلى TON',
 };
 
@@ -1142,7 +1065,7 @@ function loadUserHistory(id){
       const color = amt >= 0 ? '#7ee6a0' : '#ff92a6';
       const label = HISTORY_TYPE_LABELS[l.type] || l.type || 'عملية';
       const currency = l.currency || 'ZNX';
-      return `<div class="mini-row"><span>${escapeHtml(label)} — ${fmtDate(l.ts)}</span><b style="color:${color}">${sign}${fmt(amt)} ${escapeHtml(currency)}</b></div>`;
+      return `<div class="mini-row"><span>${escapeHtml(label)} — ${fmtDate(l.ts)}</span><b style="color:${color}">${sign}${currency==='USD'?fmtUsd(amt):fmt(amt)} ${escapeHtml(currency)}</b></div>`;
     }).join('');
     box.innerHTML = `
       <div style="margin:12px 0 6px;font-size:12.5px;font-weight:800;color:var(--muted)">آخر 5 عمليات من السجل</div>
@@ -1180,7 +1103,7 @@ function openResetBalanceModal(){
           <input type="checkbox" id="reset_pmt" checked> ZNX
         </label>
         <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13px;cursor:pointer">
-          <input type="checkbox" id="reset_ton" checked> الدولار ($)
+          <input type="checkbox" id="reset_ton" checked> USD
         </label>
       </div>
     </div>
@@ -1209,7 +1132,7 @@ function openResetSingleUser(id){
           <input type="checkbox" id="reset_single_pmt" checked> ZNX
         </label>
         <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13px;cursor:pointer">
-          <input type="checkbox" id="reset_single_ton" checked> الدولار ($)
+          <input type="checkbox" id="reset_single_ton" checked> USD
         </label>
       </div>
     </div>
@@ -1233,7 +1156,7 @@ function executeResetSingleUser(){
   if(!confirm(`⚠️ هل أنت متأكد من تصفير رصيد المستخدم ${id} نهائيًا؟ لا يمكن التراجع!`)) return;
   const updates = {};
   if(resetZNX) updates.balance = 0;
-  if(resetTON){ updates.usdBalance = 0; updates.tonBalance = 0; }
+  if(resetTON) { updates.usdBalance = 0; updates.tonBalance = 0; }
   db.ref('users/'+id).update(updates)
     .then(()=>{
       toast('✓ تم تصفير رصيد المستخدم ' + id);
@@ -1259,7 +1182,7 @@ function executeResetBalances(){
     if(!confirm(`⚠️ هل أنت متأكد من تصفير رصيد المستخدم ${userId} نهائيًا؟ لا يمكن التراجع!`)) return;
     const updates = {};
     if(resetZNX) updates.balance = 0;
-    if(resetTON){ updates.usdBalance = 0; updates.tonBalance = 0; }
+    if(resetTON) { updates.usdBalance = 0; updates.tonBalance = 0; }
     db.ref('users/'+userId).update(updates)
       .then(()=>{ toast('✓ تم تصفير رصيد المستخدم ' + userId); closeModal(); })
       .catch(err=>toast('خطأ: '+err.message, true));
@@ -1353,12 +1276,12 @@ function renderWithdrawals(){
 
   if(wdFilter!=='all') list = list.filter(w=>w._resolvedStatus===wdFilter);
   const body = document.getElementById('wdBody');
-  if(!list.length){ body.innerHTML = emptyRow(8,'لا توجد طلبات سحب في هذا التصنيف'); return; }
+  if(!list.length){ body.innerHTML = emptyRow(9,'لا توجد طلبات سحب في هذا التصنيف'); return; }
 
   const RENDER_LIMIT = 200;
   const shownList = list.slice(0, RENDER_LIMIT);
   const truncatedNote = list.length > RENDER_LIMIT
-    ? `<tr><td colspan="8"><div class="empty">بيتم عرض آخر ${fmt(RENDER_LIMIT)} طلب فقط من أصل ${fmt(list.length)} — استخدم التصنيفات فوق لتضييق النتائج</div></td></tr>`
+    ? `<tr><td colspan="9"><div class="empty">بيتم عرض آخر ${fmt(RENDER_LIMIT)} طلب فقط من أصل ${fmt(list.length)} — استخدم التصنيفات فوق لتضييق النتائج</div></td></tr>`
     : '';
 
   body.innerHTML = shownList.map(w=>{
@@ -1377,9 +1300,10 @@ function renderWithdrawals(){
       </div>` : `<div class="row-actions">${viewUserBtn}${q ? '<span class="muted" title="تم الدفع تلقائيًا عبر نظام الدفع الآلي">آليًا ✓</span>' : '<span class="muted">—</span>'}</div>`;
     return `<tr>
       <td><div class="u-cell"><img src="${u.photoUrl||AVATAR_FALLBACK}" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name">${escapeHtml(displayName(u))}</div><div class="u-sub mono">${w.uid}</div></div></div></td>
-      <td class="mono">$${fmtTon(w.requestedAmount)}</td>
-      <td class="mono muted">$${fmtTon(w.fee)}</td>
-      <td class="mono">$${fmtTon(w.netAmount||w.amount)}${w.payoutAmountTon?`<div class="u-sub">≈ ${fmtTon(w.payoutAmountTon)} TON</div>`:''}</td>
+      <td class="mono">${fmtUsd(w.requestedAmount)}</td>
+      <td class="mono muted">${fmtUsd(w.fee)}</td>
+      <td class="mono">${fmtUsd(w.netAmount||w.amount)}</td>
+      <td class="mono" style="color:var(--gold)"><b>${w.payoutAmountTon!=null?fmtTon(w.payoutAmountTon)+' TON':'—'}</b></td>
       <td class="mono" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escapeHtml(w.walletAddress||'')}">${escapeHtml(w.walletAddress||'—')}</td>
       <td class="muted">${fmtDate(w.ts)}</td>
       <td${paidTitle}>${statusBadge}</td>
@@ -1396,19 +1320,13 @@ function approveWithdrawal(uid, wid){
 }
 
 function rejectWithdrawal(uid, wid, requestedAmount){
-  const refund = confirm('رفض الطلب — هل تريد إرجاع مبلغ ' + fmtTon(requestedAmount) + ' $ لرصيد المستخدم تلقائيًا؟\n(اضغط إلغاء لرفض الطلب بدون استرجاع الرصيد)');
-  const doReject = ()=>{
-    db.ref(`withdrawals/${uid}/${wid}`).update({status:'rejected', rejectedAt:Date.now()})
-      .then(()=>toast('تم رفض طلب السحب'))
-      .catch(err=>toast('خطأ: '+err.message, true));
-  };
-  if(refund){
-    const u = usersCache[uid] || {};
-    const newBal = Number((usdOf(u) + Number(requestedAmount||0)).toFixed(4));
-    db.ref('users/'+uid).update({usdBalance:newBal, tonBalance:0}).then(doReject).catch(err=>toast('خطأ: '+err.message,true));
-  } else {
-    doReject();
-  }
+  const refund = confirm('رفض الطلب — هل تريد إرجاع مبلغ ' + fmtUsd(requestedAmount) + ' لرصيد الدولار عند المستخدم تلقائيًا؟\n(اضغط إلغاء لرفض الطلب بدون استرجاع الرصيد)');
+  const doReject = ()=> db.ref(`withdrawals/${uid}/${wid}`).update({status:'rejected', rejectedAt:Date.now()}).then(()=>toast('تم رفض طلب السحب'));
+  if(!refund){ doReject().catch(err=>toast('خطأ: '+err.message, true)); return; }
+  const u = usersCache[uid];
+  if(!u){ toast('المستخدم غير موجود', true); return; }
+  const usdBalance = Number((readUsd(u) + (Number(requestedAmount)||0)).toFixed(6));
+  db.ref('users/'+uid).update({usdBalance, tonBalance:0}).then(doReject).catch(err=>toast('خطأ: '+err.message, true));
 }
 
 /* =========================================================
@@ -1680,77 +1598,81 @@ const KNOWN_AD_COMPANIES_DEFAULTS = {
   gigapub: { reward: 200, dailyLimit: 10 },
   adloop:  { reward: 200, dailyLimit: 10 },
 };
-
-// شركات اتشالت من لوحة التحكم عمدًا (زي Monetag) — حتى لو النود بتاعها
-// لسه موجود في Firebase (config/adCompanies/monetag)، مش هتتعرض هنا
-// خالص. لو حبيت ترجّعها تاني يوم من الأيام، امسح اسمها من القائمة دي.
-const HIDDEN_AD_COMPANIES = ['monetag'];
+// الشركات المحذوفة من اللوحة (مخفية فقط — الشركة تفضل موقوفة في البوت)
+let hiddenAds = {};
+db.ref('panelSettings/hiddenAdCompanies').on('value', snap=>{ hiddenAds = snap.val() || {}; renderAdCompanies(); });
+const adOn = c => !(c.enabled===false || c.enabled===0 || ['false','0','off','no'].includes(String(c.enabled).trim().toLowerCase()));
 
 function renderAdCompanies(){
-  const saved = (configCache.adCompanies) || {};
-  const merged = { ...KNOWN_AD_COMPANIES_DEFAULTS, ...saved };
-  const visible = Object.entries(merged).filter(([name,c]) => !HIDDEN_AD_COMPANIES.includes(name) && !(c && c.deleted));
-  const deleted = Object.entries(merged).filter(([name,c]) => c && c.deleted);
-  const wrap = document.getElementById('adsCards');
-  const html = visible.map(([name,c])=>{
-    const isUnsaved = !saved[name];
-    const paused = c.enabled === false;
+  const saved = configCache.adCompanies || {};
+  const all = { ...KNOWN_AD_COMPANIES_DEFAULTS, ...saved };
+  const names = Object.keys(all);
+  const hiddenN = names.filter(n=>hiddenAds[n]).length;
+  const html = names.filter(n=>!hiddenAds[n]).map(name=>{
+    const c = all[name] || {}, on = adOn(c);
     return `
-    <div class="mini-card" style="${paused?'opacity:.7':''}">
-      <h4><span style="text-transform:capitalize">${escapeHtml(name)}</span>
-        ${paused?' <span class="badge b-red">متوقفة</span>':' <span class="badge b-green">شغّالة</span>'}
-        ${isUnsaved?' <span class="badge" style="font-size:10px;opacity:.75">افتراضية</span>':''}</h4>
-      <div class="mini-row"><span>مكافأة الإعلان</span><b>${fmt(c.reward)} ZNX</b></div>
+    <div class="mini-card">
+      <h4><span style="text-transform:capitalize">${escapeHtml(name)}</span>${on?'<span class="badge b-green">مفعّلة</span>':'<span class="badge b-gray">موقوفة</span>'}</h4>
+      <div class="mini-row"><span>مكافأة الإعلان</span><b>${fmt(c.reward)} ${COIN_NAME}</b></div>
       <div class="mini-row"><span>الحد اليومي</span><b>${fmt(c.dailyLimit)}</b></div>
       <div class="row-actions" style="margin-top:10px;flex-wrap:wrap">
         <button class="btn btn-ghost btn-sm" style="flex:1" onclick='openAdCompanyModal(${JSON.stringify(name)})'>تعديل</button>
-        <button class="btn ${paused?'btn-gold':'btn-ghost'} btn-sm" style="flex:1" onclick="toggleAdCompany('${name}', ${paused})">${paused?'تشغيل':'إيقاف'}</button>
+        <button class="btn ${on?'btn-warning':'btn-gold'} btn-sm" onclick="toggleAd('${name}')">${on?'إيقاف':'تشغيل'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteAdCompany('${name}')">حذف</button>
       </div>
     </div>`;
-  }).join('');
-  const restore = deleted.length ? `<div style="grid-column:1/-1;margin-top:8px" class="muted">شركات محذوفة: ${deleted.map(([n])=>`<button class="btn btn-ghost btn-sm" style="margin:2px" onclick="restoreAdCompany('${n}')">↺ استرجاع ${escapeHtml(n)}</button>`).join('')}</div>` : '';
-  wrap.innerHTML = html + `<div class="add-card" onclick="openAdCompanyModal()">+ إضافة شركة</div>` + restore;
+  }).join('') + (hiddenN ? `<div class="add-card" onclick="openHiddenAds()">↺ استرجاع شركات محذوفة (${hiddenN})</div>` : '');
+  document.getElementById('adsCards').innerHTML = html || '<div class="empty" style="grid-column:1/-1">لا توجد شركات معروضة</div>';
 }
 
-function toggleAdCompany(name, enable){
-  const cur = ((configCache.adCompanies||{})[name]) || KNOWN_AD_COMPANIES_DEFAULTS[name] || {reward:200,dailyLimit:10};
-  db.ref('config/adCompanies/'+name).update({reward:Number(cur.reward)||0, dailyLimit:Number(cur.dailyLimit)||0, enabled:!!enable, deleted:false})
-    .then(()=>toast(enable?'تم تشغيل الشركة ✓':'تم إيقاف الشركة — اختفت من التطبيق'))
+function toggleAd(name){
+  const savedNode = (configCache.adCompanies||{})[name];
+  const c = savedNode || KNOWN_AD_COMPANIES_DEFAULTS[name] || {};
+  const up = savedNode ? {} : { ...c };
+  up.enabled = !adOn(c);
+  db.ref('config/adCompanies/'+name).update(up)
+    .then(()=>toast(up.enabled ? 'تم تشغيل الشركة ✓' : 'تم إيقاف الشركة — لن تظهر إعلاناتها للمستخدمين'))
     .catch(err=>toast('خطأ: '+err.message, true));
-}
-function restoreAdCompany(name){
-  db.ref('config/adCompanies/'+name).update({deleted:false, enabled:true})
-    .then(()=>toast('تم استرجاع الشركة ✓')).catch(err=>toast('خطأ: '+err.message, true));
 }
 
 function openAdCompanyModal(name){
-  const c = name ? ((configCache.adCompanies||{})[name] || KNOWN_AD_COMPANIES_DEFAULTS[name] || {}) : {};
-  document.getElementById('modalTitle').textContent = name ? 'تعديل: '+name : 'شركة إعلانات جديدة';
+  const c = (configCache.adCompanies||{})[name] || KNOWN_AD_COMPANIES_DEFAULTS[name] || {};
+  document.getElementById('modalTitle').textContent = 'تعديل: '+name;
   document.getElementById('modalBody').innerHTML = `
-    <div class="field"><label>اسم الشركة (بالإنجليزية، مطابق للكود)</label><input type="text" class="sans" id="a_name" value="${escapeHtml(name||'')}" ${name?'disabled':''}></div>
-    <div class="field"><label>مكافأة الإعلان الواحد (ZNX)</label><input type="number" id="a_reward" value="${Number(c.reward)||200}"></div>
+    <div class="field"><label>مكافأة الإعلان الواحد (${COIN_NAME})</label><input type="number" id="a_reward" value="${Number(c.reward)||200}"></div>
     <div class="field"><label>الحد اليومي المسموح</label><input type="number" id="a_limit" value="${Number(c.dailyLimit)||10}"></div>
-  `;
-  document.getElementById('modalFoot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">إلغاء</button><button class="btn btn-gold" onclick='saveAdCompany(${JSON.stringify(name||null)})'>حفظ</button>`;
+    <div class="switch-row"><div class="lbl"><b>مفعّلة</b><span>إيقافها يخفي إعلاناتها عن المستخدمين ويرفضها السيرفر</span></div><label class="switch"><input type="checkbox" id="a_enabled" ${adOn(c)?'checked':''}><span class="slider"></span></label></div>`;
+  document.getElementById('modalFoot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">إلغاء</button><button class="btn btn-gold" onclick='saveAdCompany(${JSON.stringify(name)})'>حفظ</button>`;
   showModal();
 }
-
-function saveAdCompany(existingName){
-  const name = (existingName || document.getElementById('a_name').value.trim()).toLowerCase();
+function saveAdCompany(name){
   const reward = Number(document.getElementById('a_reward').value)||0;
   const dailyLimit = Number(document.getElementById('a_limit').value)||0;
-  if(!name){ toast('يرجى إدخال اسم الشركة', true); return; }
-  db.ref('config/adCompanies/'+name).update({reward, dailyLimit, deleted:false})
+  const enabled = document.getElementById('a_enabled').checked;
+  db.ref('config/adCompanies/'+name).update({reward, dailyLimit, enabled})
     .then(()=>{ toast('تم حفظ شركة الإعلانات ✓'); closeModal(); })
     .catch(err=>toast('خطأ: '+err.message, true));
 }
 function deleteAdCompany(name){
-  const isBuiltIn = !!KNOWN_AD_COMPANIES_DEFAULTS[name];
-  if(!confirm('حذف شركة "'+name+'" من اللوحة؟'+(isBuiltIn?'\n(الشركة مدمجة في البوت، فهيتم إيقافها وإخفاؤها ويمكنك استرجاعها لاحقًا)':''))) return;
-  const ref = db.ref('config/adCompanies/'+name);
-  const op = isBuiltIn ? ref.update({deleted:true, enabled:false}) : ref.remove();
-  op.then(()=>toast('تم الحذف')).catch(err=>toast('خطأ: '+err.message, true));
+  const builtin = !!KNOWN_AD_COMPANIES_DEFAULTS[name];
+  const msg = builtin
+    ? 'حذف شركة "'+name+'" من اللوحة؟\n\nالشركة مدمجة في كود البوت فالـ Worker بيعيد إنشاءها تلقائيًا لو اتمسحت من Firebase، عشان كده هيتم إيقافها وإخفاؤها من اللوحة (ويمكنك استرجاعها لاحقًا).'
+    : 'حذف شركة "'+name+'" نهائيًا؟';
+  if(!confirm(msg)) return;
+  const op = builtin
+    ? db.ref().update({ ['config/adCompanies/'+name+'/enabled']: false, ['panelSettings/hiddenAdCompanies/'+name]: true })
+    : db.ref('config/adCompanies/'+name).remove();
+  op.then(()=>toast('تم حذف الشركة من اللوحة')).catch(err=>toast('خطأ: '+err.message, true));
+}
+function openHiddenAds(){
+  const names = Object.keys(hiddenAds);
+  document.getElementById('modalTitle').textContent = 'شركات محذوفة من اللوحة';
+  document.getElementById('modalBody').innerHTML = names.map(n=>`<div class="mini-row"><span style="text-transform:capitalize">${escapeHtml(n)}</span><button class="btn btn-gold btn-sm" onclick="restoreAd('${n}')">استرجاع</button></div>`).join('') || '<div class="empty">لا توجد شركات محذوفة</div>';
+  document.getElementById('modalFoot').innerHTML = '<button class="btn btn-ghost" onclick="closeModal()">إغلاق</button>';
+  showModal();
+}
+function restoreAd(name){
+  db.ref('panelSettings/hiddenAdCompanies/'+name).remove().then(()=>{ toast('تم الاسترجاع — الشركة لسه موقوفة، شغّلها من زر "تشغيل"'); closeModal(); }).catch(err=>toast('خطأ: '+err.message, true));
 }
 
 document.getElementById('saveAdDailyLimitBtn').addEventListener('click', ()=>{
@@ -1761,140 +1683,18 @@ document.getElementById('saveAdDailyLimitBtn').addEventListener('click', ()=>{
 });
 
 /* =========================================================
-   CONTEST MANAGEMENT  (weeklyContest/*)
-   ========================================================= */
-let contestState = null, contestAdj = {};
-function contestPrizesArr(){
-  const a = configCache.weeklyContestPrizesTon;
-  return (Array.isArray(a) && a.length===10) ? a.map(n=>Number(n)||0) : [1,0.5,0.5,0.25,0.25,0.1,0.1,0.1,0.1,0.1];
-}
-function toLocalInput(ts){
-  const d = new Date(ts - new Date(ts).getTimezoneOffset()*60000);
-  return d.toISOString().slice(0,16);
-}
-db.ref('weeklyContest/state').on('value', snap=>{
-  contestState = snap.val();
-  if(contestState && contestState.endTs){
-    const el = document.getElementById('ct_endTs'); if(el) el.value = toLocalInput(contestState.endTs);
-    const h = document.getElementById('ctStateHint');
-    if(h) h.textContent = 'بدأت: '+fmtDate(contestState.startTs)+' — تنتهي: '+fmtDate(contestState.endTs);
-  }
-});
-function renderContestPrizeInputs(){
-  const box = document.getElementById('ctPrizes'); if(!box) return;
-  if(box.dataset.filled && box.contains(document.activeElement)) return;
-  const p = contestPrizesArr();
-  box.innerHTML = p.map((v,i)=>`<div class="field"><label>المركز ${i+1}</label><input type="number" step="0.01" id="ct_prize_${i}" value="${v}"></div>`).join('');
-  box.dataset.filled = '1';
-}
-document.getElementById('nav').addEventListener('click', ()=> setTimeout(renderContestPrizeInputs, 0));
-
-function saveContestEnd(){
-  const v = document.getElementById('ct_endTs').value;
-  const ts = new Date(v).getTime();
-  if(!v || !Number.isFinite(ts)){ toast('اختر تاريخ صحيح', true); return; }
-  if(contestState && ts <= contestState.startTs){ toast('وقت الانتهاء لازم يكون بعد وقت البداية', true); return; }
-  db.ref('weeklyContest/state/endTs').set(ts).then(()=>toast('تم تعديل وقت الانتهاء ✓')).catch(e=>toast('خطأ: '+e.message,true));
-}
-function extendContest(days){
-  if(!contestState){ toast('لا توجد جولة حالية', true); return; }
-  db.ref('weeklyContest/state/endTs').set(Number(contestState.endTs)+days*86400000)
-    .then(()=>toast('تم التمديد ✓')).catch(e=>toast('خطأ: '+e.message,true));
-}
-function endContestNow(){
-  if(!confirm('إنهاء الجولة فورًا؟ سيتم توزيع الجوائز على الفائزين عند أول طلب للبوت (أو خلال دقيقة).')) return;
-  db.ref('weeklyContest/state/endTs').set(Date.now()-1000)
-    .then(()=>toast('تم إنهاء الجولة — جاري التوزيع')).catch(e=>toast('خطأ: '+e.message,true));
-}
-function saveContestPrizes(){
-  const arr = [];
-  for(let i=0;i<10;i++) arr.push(Number(document.getElementById('ct_prize_'+i).value)||0);
-  db.ref('config/weeklyContestPrizesTon').set(arr).then(()=>toast('تم حفظ الجوائز ✓')).catch(e=>toast('خطأ: '+e.message,true));
-}
-function contestPeriodId(){ return contestState ? (contestState.periodId || ('wc_'+contestState.startTs)) : null; }
-function contestAdjRef(uid){ return db.ref('weeklyContest/adjustments/'+contestPeriodId()+'/'+uid); }
-function contestUidInput(){
-  const uid = (document.getElementById('ct_uid').value||'').trim();
-  if(!/^\d+$/.test(uid)){ toast('آيدي تيليجرام غير صحيح', true); return null; }
-  if(!contestState){ toast('لا توجد جولة حالية', true); return null; }
-  return uid;
-}
-function contestAdjust(sign){
-  const uid = contestUidInput(); if(!uid) return;
-  const n = Math.floor(Number(document.getElementById('ct_amount').value)||0);
-  if(n<=0){ toast('أدخل عددًا أكبر من صفر', true); return; }
-  contestAdjRef(uid).child('delta').transaction(cur => (Number(cur)||0) + sign*n)
-    .then(()=>{ toast((sign>0?'تمت إضافة ':'تم حذف ')+n+' ✓'); loadContestBoard(); })
-    .catch(e=>toast('خطأ: '+e.message,true));
-}
-function contestRemoveUser(flag){
-  const uid = contestUidInput(); if(!uid) return;
-  contestAdjRef(uid).child('removed').set(!!flag)
-    .then(()=>{ toast(flag?'تم استبعاد المستخدم من المسابقة':'تم إلغاء الاستبعاد'); loadContestBoard(); })
-    .catch(e=>toast('خطأ: '+e.message,true));
-}
-function contestResetAdj(uid){
-  if(!confirm('مسح كل التعديلات اليدوية لهذا المستخدم؟')) return;
-  contestAdjRef(uid).remove().then(()=>{ toast('تم المسح'); loadContestBoard(); }).catch(e=>toast('خطأ: '+e.message,true));
-}
-async function loadContestBoard(){
-  renderContestPrizeInputs();
-  const body = document.getElementById('ctBody');
-  const snapState = await db.ref('weeklyContest/state').once('value');
-  contestState = snapState.val();
-  if(!contestState){ body.innerHTML = emptyRow(6,'لا توجد جولة حالية بعد — ستُنشأ تلقائيًا عند أول طلب للبوت'); return; }
-  const [refSnap, adjSnap] = await Promise.all([
-    db.ref('referrals').once('value'),
-    db.ref('weeklyContest/adjustments/'+contestPeriodId()).once('value')
-  ]);
-  const allRefs = refSnap.val() || {};
-  contestAdj = adjSnap.val() || {};
-  const rows = {};
-  Object.entries(allRefs).forEach(([rid, refs])=>{
-    if(!refs || typeof refs!=='object') return;
-    let c = 0;
-    Object.values(refs).forEach(r=>{
-      const st = (r&&r.status)||'active';
-      const j = Number((r&&r.joinedAt)||0);
-      if((st==='active'||st==='completed') && j>=contestState.startTs && j<contestState.endTs) c++;
-    });
-    if(c>0) rows[rid] = c;
-  });
-  Object.keys(contestAdj).forEach(uid=>{ if(!(uid in rows)) rows[uid]=0; });
-  const list = Object.entries(rows).map(([uid,base])=>{
-    const a = contestAdj[uid] || {};
-    const delta = Number(a.delta)||0;
-    return { uid, base, delta, removed: !!a.removed, total: Math.max(0, base+delta) };
-  }).filter(r=> r.total>0 || r.removed || r.delta!==0)
-    .sort((x,y)=> (x.removed-y.removed) || (y.total-x.total));
-  const prizes = contestPrizesArr();
-  let rank = 0;
-  body.innerHTML = list.slice(0,25).map(r=>{
-    const u = usersCache[r.uid] || {};
-    const pos = r.removed ? '—' : (++rank);
-    const prize = (!r.removed && typeof pos==='number' && pos<=10) ? '$'+prizes[pos-1] : '—';
-    return `<tr>
-      <td>${pos}</td>
-      <td><div class="u-cell"><img src="${u.photoUrl||AVATAR_FALLBACK}" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name">${escapeHtml(displayName(u))}</div><div class="u-sub mono">${r.uid}</div></div></div></td>
-      <td class="mono"><b>${fmt(r.total)}</b>${r.removed?' <span class="badge b-red">مستبعد</span>':''}</td>
-      <td class="mono muted">${r.delta>0?'+':''}${r.delta||0}</td>
-      <td class="mono">${prize}</td>
-      <td>${(r.delta||r.removed)?`<button class="btn btn-ghost btn-sm" onclick="contestResetAdj('${r.uid}')">مسح التعديل</button>`:''}</td>
-    </tr>`;
-  }).join('') || emptyRow(6,'لا يوجد مشاركون بعد');
-}
-db.ref('config/weeklyContestPrizesTon').on('value', ()=>{ const b=document.getElementById('ctPrizes'); if(b){ delete b.dataset.filled; if(currentView==='contest') renderContestPrizeInputs(); } });
-
-
-/* =========================================================
    BLOCKED ACCOUNTS
    ========================================================= */
-db.ref('blocked_accounts').on('value', snap=>{
-  blockedCache = snap.val() || {};
-  renderBlocked();
-  renderDashboardStats();
+let blkAuto = {}, blkManual = {};
+function mergeBlocked(){
+  blockedCache = {};
+  Object.entries(blkAuto).forEach(([id,b])=>{ if(b) blockedCache[id] = { reason:b.reason, reasonCode:b.violation, score:100, ts:b.appliedAt, src:'auto' }; });
+  Object.entries(blkManual).forEach(([id,b])=>{ blockedCache[id] = { ...(b||{}), src:'manual' }; });
+  renderBlocked(); renderDashboardStats();
   if(currentView==='users') renderUsersTable();
-});
+}
+db.ref('blocks').on('value', snap=>{ blkAuto = snap.val() || {}; mergeBlocked(); });
+db.ref('blocked_accounts').on('value', snap=>{ blkManual = snap.val() || {}; mergeBlocked(); });
 function renderBlocked(){
   const entries = Object.entries(blockedCache).sort((a,b)=>(b[1].ts||0)-(a[1].ts||0));
   const body = document.getElementById('blockedBody');
@@ -1903,7 +1703,7 @@ function renderBlocked(){
     <tr>
       <td class="mono">${id}</td>
       <td>
-        <div>${escapeHtml(b.reason||'—')}</div>
+        <div><span class="badge ${b.src==='auto'?'b-orange':'b-gray'}" style="margin-left:6px">${b.src==='auto'?'تلقائي':'يدوي'}</span>${escapeHtml(b.reason||'—')}</div>
         ${b.reasonCode?`<div class="u-sub mono" style="margin-top:3px">${escapeHtml(b.reasonCode)}</div>`:''}
       </td>
       <td><span class="badge ${Number(b.score)>=70?'b-red':'b-gold'}">${fmt(b.score)}</span></td>
@@ -1911,9 +1711,14 @@ function renderBlocked(){
       <td><button class="btn btn-ghost btn-sm" onclick="unblockUser('${id}')">فك الحظر</button></td>
     </tr>`).join('');
 }
+function clearBlock(id){
+  const up = {}; up['blocks/'+id] = null; up['blocked_accounts/'+id] = null;
+  if(usersCache[id]){ up['users/'+id+'/isBlocked'] = false; up['users/'+id+'/blockReason'] = null; up['users/'+id+'/blockedAt'] = null; }
+  return db.ref().update(up);
+}
 function unblockUser(id){
   if(!confirm('فك الحظر عن هذا المستخدم؟')) return;
-  db.ref('blocked_accounts/'+id).remove().then(()=>toast('تم فك الحظر ✓')).catch(err=>toast('خطأ: '+err.message, true));
+  clearBlock(id).then(()=>toast('تم فك الحظر ✓')).catch(err=>toast('خطأ: '+err.message, true));
 }
 
 /* =========================================================
@@ -2067,50 +1872,222 @@ async function deletePartition(key){
 /* =========================================================
    CONFIG
    ========================================================= */
-const CFG_NUM_FIELDS = ['dailyBonusReward','referralReward',
-  'miningReward','gameDailyLimit','usdConversionRate',
-  'minWithdrawalUsd','usdPerTon','taskPricePer100Usd'];
+const CFG_FIELDS = [
+  {t:'sec', l:'التبديلات الرئيسية'},
+  {t:'sw', k:'mandatorySubEnabled', l:'الاشتراك الإجباري', d:'إجبار المستخدم على الاشتراك بالقنوات قبل الاستخدام'},
+  {t:'sw', k:'withdrawalEnabled', l:'نظام السحب', d:'تشغيل أو إيقاف السحب بالكامل لكل المستخدمين'},
+  {t:'sec', l:'المكافآت ('+COIN_NAME+')'},
+  {t:'num', k:'dailyBonusReward', l:'المكافأة اليومية'},
+  {t:'num', k:'referralReward', l:'مكافأة الإحالة (مرة واحدة بعد 10 إعلانات)'},
+  {t:'num', k:'taskDefaultReward', l:'المكافأة الافتراضية للمهام'},
+  {t:'num', k:'gameDailyLimit', l:'الحد اليومي للألعاب (لكل لعبة)'},
+  {t:'sec', l:'الإعلانات'},
+  {t:'num', k:'adCompanyDailyLimit', l:'الحد اليومي لكل شركة (احتياطي)'},
+  {t:'num', k:'adMinWatchMs', l:'أقل وقت مشاهدة (ملي ثانية)'},
+  {t:'num', k:'turnstileAdsInterval', l:'الكابتشا كل كم إعلان'},
+  {t:'sec', l:'الستيك (Staking)'},
+  {t:'num', k:'stakingRewardPercent', l:'نسبة المكافأة لكل دورة (%)'},
+  {t:'num', k:'stakingPeriodMs', l:'مدة الدورة (ساعات)', mul:3600000},
+  {t:'num', k:'stakingMinAmount', l:'أقل مبلغ ستيك ('+COIN_NAME+')'},
+  {t:'sec', l:'الدولار والتحويل'},
+  {t:'num', k:'usdConversionRate', l:'عدد '+COIN_NAME+' مقابل 1 دولار'},
+  {t:'num', k:'usdPerTon', l:'سعر 1 TON بالدولار'},
+  {t:'num', k:'taskPricePer100Usd', l:'سعر ترويج القناة لكل 100 عضو ($)'},
+  {t:'sec', l:'إعدادات البوت'},
+  {t:'txt', k:'botUsername', l:'يوزر البوت (ثابت من كود الـ Worker)', ro:true},
+  {t:'pwd', k:'botToken', l:'توكن البوت — حساس، لا تشاركه'},
+];
+function buildCfgForm(){
+  let h = '', open = false;
+  CFG_FIELDS.forEach(f=>{
+    if(f.t==='sec'){ if(open) h += '</div>'; h += `<div class="section-title">${f.l}</div><div class="field-grid">`; open = true; return; }
+    if(f.t==='sw'){ h += `<div class="switch-row" style="grid-column:span 1"><div class="lbl"><b>${f.l}</b><span>${f.d}</span></div><label class="switch"><input type="checkbox" id="cfg_${f.k}"><span class="slider"></span></label></div>`; return; }
+    const type = f.t==='pwd' ? 'password' : f.t==='txt' ? 'text' : 'number';
+    h += `<div class="field"><label>${f.l} <span class="tip">${f.k}</span></label><input type="${type}" ${type==='number'?'step="any"':'class="sans"'} id="cfg_${f.k}" ${f.ro?'disabled':''}></div>`;
+  });
+  document.getElementById('cfgForm').innerHTML = h + '</div>';
+}
+buildCfgForm();
 
 db.ref('config').on('value', snap=>{
   configCache = snap.val() || {};
   fillConfigForm();
   renderAdCompanies();
+  fillContestSettings();
 });
 
 function fillConfigForm(){
   const c = configCache;
-  CFG_NUM_FIELDS.forEach(key=>{
-    const el = document.getElementById('cfg_'+key);
-    if(el && c[key] !== undefined) el.value = c[key];
+  CFG_FIELDS.forEach(f=>{
+    const el = document.getElementById('cfg_'+f.k);
+    if(!el) return;
+    const v = c[f.k];
+    if(f.t==='sw') el.checked = v !== false;
+    else if(v !== undefined && v !== null) el.value = f.mul ? +(Number(v)/f.mul).toFixed(4) : v;
   });
-  document.getElementById('cfg_miningDurationMin').value = c.miningDurationMs ? Math.round(c.miningDurationMs/60000) : 60;
-  document.getElementById('cfg_botUsername').value = c.botUsername || '';
-  document.getElementById('cfg_botToken').value = c.botToken || '';
-  document.getElementById('cfg_mandatorySubEnabled').checked = c.mandatorySubEnabled !== false;
-  document.getElementById('cfg_withdrawalEnabled').checked = c.withdrawalEnabled !== false;
   const adDailyLimitEl = document.getElementById('cfg_adDailyLimit_ads');
   if(adDailyLimitEl && c.adDailyLimit !== undefined) adDailyLimitEl.value = c.adDailyLimit;
 }
 
 document.getElementById('saveConfigBtn').addEventListener('click', ()=>{
   const updates = {};
-  CFG_NUM_FIELDS.forEach(key=>{
-    const el = document.getElementById('cfg_'+key);
-    if(el && el.value !== '') updates[key] = Number(el.value)||0;
+  CFG_FIELDS.forEach(f=>{
+    if(f.t==='sec' || f.ro) return;
+    const el = document.getElementById('cfg_'+f.k);
+    if(!el) return;
+    if(f.t==='sw') updates[f.k] = el.checked;
+    else if(f.t==='txt' || f.t==='pwd') updates[f.k] = el.value.trim();
+    else { const n = Number(el.value); if(el.value !== '' && Number.isFinite(n)) updates[f.k] = n * (f.mul||1); }
   });
-  updates.miningDurationMs = (Number(document.getElementById('cfg_miningDurationMin').value)||60) * 60000;
-  const _bu = document.getElementById('cfg_botUsername').value.trim(); if(_bu) updates.botUsername = _bu;
-  const _bt = document.getElementById('cfg_botToken').value.trim(); if(_bt) updates.botToken = _bt;
-  updates.mandatorySubEnabled = document.getElementById('cfg_mandatorySubEnabled').checked;
-  updates.withdrawalEnabled = document.getElementById('cfg_withdrawalEnabled').checked;
-
   const btn = document.getElementById('saveConfigBtn');
   btn.disabled = true; btn.textContent = 'جارِ الحفظ...';
   db.ref('config').update(updates)
-    .then(()=>{ toast('تم حفظ الإعدادات وتطبيقها على البوت فورًا ✓'); })
+    .then(()=>{ toast('تم حفظ الإعدادات وتطبيقها على البوت خلال ثوانٍ ✓'); })
     .catch(err=>toast('خطأ أثناء الحفظ: '+err.message, true))
     .finally(()=>{ btn.disabled=false; btn.textContent='حفظ كل التغييرات'; });
 });
+
+/* =========================================================
+   CONTEST — weeklyContest/{state, adjustments/<periodId>/<uid>}
+   يطابق منطق الـ Worker: تعديلات الأدمن { delta, removed }
+   ========================================================= */
+const DEFAULT_PRIZES = [1,0.5,0.5,0.25,0.25,0.1,0.1,0.1,0.1,0.1];
+let ctState = null, ctAdj = {}, ctRefs = null;
+db.ref('weeklyContest/state').on('value', snap=>{ ctState = snap.val(); renderContest(); fillContestSettings(); });
+db.ref('weeklyContest/adjustments').on('value', snap=>{ ctAdj = snap.val() || {}; renderContest(); });
+function loadContestRefs(){
+  db.ref('referrals').once('value').then(snap=>{ ctRefs = snap.val() || {}; renderContest(); }).catch(err=>toast('خطأ: '+err.message, true));
+}
+const ctPid = () => ctState ? (ctState.periodId || ('wc_'+ctState.startTs)) : null;
+const ctPrizes = () => { const a = configCache.weeklyContestPrizesTon; return (Array.isArray(a) && a.length===10) ? a.map(Number) : DEFAULT_PRIZES; };
+const toLocalInput = ts => new Date(ts - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);
+
+function ctRows(){
+  if(!ctState || !ctRefs) return [];
+  const adj = ctAdj[ctPid()] || {}, m = {};
+  Object.entries(ctRefs).forEach(([rid, refs])=>{
+    let c = 0, e = Infinity;
+    Object.values(refs || {}).forEach(r=>{
+      const st = (r && r.status) || 'active', j = Number(r && r.joinedAt) || 0;
+      if((st==='active' || st==='completed') && j >= ctState.startTs && j < ctState.endTs){ c++; if(j<e) e=j; }
+    });
+    if(c>0) m[rid] = { id:rid, base:c, e };
+  });
+  Object.keys(adj).forEach(id=>{ if(!m[id]) m[id] = { id, base:0, e:ctState.startTs }; });
+  return Object.values(m).map(r=>{
+    const a = adj[r.id] || {}, delta = Number(a.delta) || 0;
+    return { ...r, delta, removed: !!a.removed, final: Math.max(0, r.base + delta) };
+  }).filter(r=>r.base>0 || r.delta!==0 || r.removed)
+    .sort((a,b)=>(a.removed-b.removed) || (b.final-a.final) || (a.e-b.e) || String(a.id).localeCompare(String(b.id)));
+}
+
+function renderContest(){
+  const info = document.getElementById('ctInfo'); if(!info) return;
+  if(!ctState){
+    info.innerHTML = '<span class="muted">لا توجد جولة حالية بعد — تبدأ تلقائيًا عند أول طلب من أي مستخدم.</span>';
+  } else {
+    const left = ctState.endTs - Date.now();
+    info.innerHTML = `
+      <div class="mini-row"><span>بداية الجولة</span><b>${fmtDate(ctState.startTs)}</b></div>
+      <div class="mini-row"><span>نهاية الجولة</span><b>${fmtDate(ctState.endTs)}</b></div>
+      <div class="mini-row"><span>المتبقي</span><b>${left>0 ? Math.floor(left/86400000)+' يوم '+Math.floor(left%86400000/3600000)+' س '+Math.floor(left%3600000/60000)+' د' : 'انتهت — بانتظار التوزيع التلقائي'}</b></div>`;
+  }
+  const body = document.getElementById('ctBody'), pr = ctPrizes(), rows = ctRows();
+  let rank = 0;
+  body.innerHTML = rows.length ? rows.slice(0,100).map(r=>{
+    const u = usersCache[r.id] || {}, ranked = !r.removed && r.final>0;
+    if(ranked) rank++;
+    return `<tr${r.removed?' style="opacity:.55"':''}>
+      <td class="mono">${ranked?rank:'—'}</td>
+      <td><div class="u-cell"><img src="${u.photoUrl||AVATAR_FALLBACK}" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name">${escapeHtml(displayName(u))}</div><div class="u-sub mono">${r.id}</div></div></div></td>
+      <td class="mono">${r.base}</td>
+      <td class="mono" style="color:${r.delta>0?'#7ee6a0':r.delta<0?'#ff92a6':'inherit'}">${r.delta>0?'+':''}${r.delta}</td>
+      <td class="mono"><b>${r.removed?'محذوف':r.final}</b></td>
+      <td class="mono">${ranked && rank<=10 ? '$'+pr[rank-1] : '—'}</td>
+      <td><div class="row-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openCtAdjust('${r.id}')">إضافة / خصم رصيد</button>
+        ${r.removed ? `<button class="btn btn-gold btn-sm" onclick="ctRestore('${r.id}')">استعادة</button>` : `<button class="btn btn-danger btn-sm" onclick="ctRemove('${r.id}')">حذف</button>`}
+      </div></td></tr>`;
+  }).join('') : emptyRow(7, ctRefs ? 'لا توجد نقاط في الجولة الحالية بعد' : 'جارِ تحميل الإحالات...');
+}
+
+function fillContestSettings(){
+  const set = (id,v)=>{ const el = document.getElementById(id); if(el && document.activeElement!==el) el.value = v; };
+  if(ctState) set('ct_end', toLocalInput(ctState.endTs));
+  const d = Number(configCache.weeklyContestDurationMs) || 10*86400000;
+  set('ct_dur', +(d/86400000).toFixed(2));
+  const pr = ctPrizes();
+  pr.forEach((p,i)=>set('ct_prize_'+i, p));
+  const t = document.getElementById('ctPrizeTotal'); if(t) t.textContent = '$'+pr.reduce((a,b)=>a+b,0).toFixed(2);
+}
+
+function saveCtEnd(addMs){
+  if(!ctState){ toast('لا توجد جولة حالية', true); return; }
+  const end = addMs ? ctState.endTs + addMs : new Date(document.getElementById('ct_end').value).getTime();
+  if(!Number.isFinite(end) || end <= ctState.startTs){ toast('وقت غير صالح — يجب أن يكون بعد بداية الجولة', true); return; }
+  if(end <= Date.now() && !confirm('الوقت في الماضي — ستنتهي الجولة فورًا وتُوزَّع الجوائز تلقائيًا على أول 10 مراكز. متأكد؟')) return;
+  db.ref('weeklyContest/state').update({ endTs:end }).then(()=>toast('تم تعديل وقت انتهاء المسابقة ✓')).catch(err=>toast('خطأ: '+err.message, true));
+}
+function saveCtDuration(){
+  const days = Number(document.getElementById('ct_dur').value);
+  if(!(days>0)){ toast('أدخل عدد أيام صحيح', true); return; }
+  db.ref('config/weeklyContestDurationMs').set(Math.round(days*86400000)).then(()=>toast('تم حفظ مدة الجولات القادمة ✓')).catch(err=>toast('خطأ: '+err.message, true));
+}
+function saveCtPrizes(){
+  const arr = [...Array(10)].map((_,i)=>Number(document.getElementById('ct_prize_'+i).value));
+  if(arr.some(n=>!Number.isFinite(n) || n<0)){ toast('كل الجوائز لازم تكون أرقام صحيحة (10 مراكز)', true); return; }
+  db.ref('config/weeklyContestPrizesTon').set(arr).then(()=>toast('تم حفظ الجوائز ✓')).catch(err=>toast('خطأ: '+err.message, true));
+}
+
+function ctSetAdj(id, fn){
+  if(!ctState){ toast('لا توجد جولة حالية', true); return Promise.reject(new Error('no round')); }
+  return db.ref('weeklyContest/adjustments/'+ctPid()+'/'+id).transaction(a=>fn(a || {}));
+}
+function openCtAdjust(id){
+  const r = ctRows().find(x=>x.id===id) || { base:0, delta:0, final:0 }, u = usersCache[id] || {};
+  document.getElementById('modalTitle').textContent = 'رصيد المسابقة: ' + displayName(u);
+  document.getElementById('modalBody').innerHTML = `
+    <div class="mini-row"><span>إحالات حقيقية في الجولة</span><b>${r.base}</b></div>
+    <div class="mini-row"><span>تعديل الأدمن الحالي</span><b>${r.delta>0?'+':''}${r.delta}</b></div>
+    <div class="mini-row"><span>الرصيد النهائي</span><b>${r.final}</b></div>
+    <div class="field"><label>إضافة / خصم (رقم موجب للإضافة، سالب للخصم)</label><input type="number" id="ct_amt" value="1" step="1"></div>`;
+  document.getElementById('modalFoot').innerHTML = `
+    <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+    <button class="btn btn-warning" onclick="ctResetAdj('${id}')">تصفير التعديلات</button>
+    <button class="btn btn-gold" onclick="ctApply('${id}')">تطبيق</button>`;
+  showModal();
+}
+function ctApply(id){
+  const n = Math.trunc(Number(document.getElementById('ct_amt').value));
+  if(!n){ toast('أدخل رقمًا غير الصفر', true); return; }
+  ctSetAdj(id, a=>({ ...a, delta:(Number(a.delta)||0)+n, removed:false })).then(()=>{ toast('تم تعديل رصيد المسابقة ✓'); closeModal(); }).catch(err=>toast('خطأ: '+err.message, true));
+}
+function ctResetAdj(id){
+  if(!ctState) return;
+  db.ref('weeklyContest/adjustments/'+ctPid()+'/'+id).remove().then(()=>{ toast('تم تصفير تعديلات المستخدم'); closeModal(); }).catch(err=>toast('خطأ: '+err.message, true));
+}
+function ctRemove(id){
+  if(!confirm('حذف هذا المستخدم من تصنيف المسابقة الحالية؟ (يمكن استعادته لاحقًا)')) return;
+  ctSetAdj(id, a=>({ ...a, removed:true })).then(()=>toast('تم حذف المستخدم من التصنيف')).catch(err=>toast('خطأ: '+err.message, true));
+}
+function ctRestore(id){
+  ctSetAdj(id, a=>({ ...a, removed:false })).then(()=>toast('تمت استعادة المستخدم ✓')).catch(err=>toast('خطأ: '+err.message, true));
+}
+function openCtAdd(){
+  document.getElementById('modalTitle').textContent = 'إضافة رصيد مسابقة لمستخدم';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="field"><label>آيدي المستخدم (Telegram ID)</label><input type="text" class="mono" id="ct_uid" placeholder="مثال: 123456789"></div>
+    <div class="field"><label>عدد النقاط (الإحالات) المضافة</label><input type="number" id="ct_amt" value="1" step="1" min="1"></div>`;
+  document.getElementById('modalFoot').innerHTML = '<button class="btn btn-ghost" onclick="closeModal()">إلغاء</button><button class="btn btn-gold" onclick="ctAddUser()">إضافة</button>';
+  showModal();
+}
+function ctAddUser(){
+  const id = document.getElementById('ct_uid').value.trim(), n = Math.trunc(Number(document.getElementById('ct_amt').value));
+  if(!usersCache[id]){ toast('المستخدم غير موجود في قاعدة البيانات', true); return; }
+  if(!(n>0)){ toast('أدخل عددًا أكبر من صفر', true); return; }
+  ctSetAdj(id, a=>({ ...a, delta:(Number(a.delta)||0)+n, removed:false })).then(()=>{ toast('تمت إضافة الرصيد ✓'); closeModal(); }).catch(err=>toast('خطأ: '+err.message, true));
+}
+document.getElementById('ctPrizes').innerHTML = [...Array(10)].map((_,i)=>`<div class="field"><label>المركز ${i+1} ($)</label><input type="number" step="0.01" id="ct_prize_${i}"></div>`).join('');
 
 /* =========================================================
    MODAL helpers
