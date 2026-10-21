@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>ZENOX | MONEY — لوحة التحكم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+<style>
+:root{
+  --bg:#0a0d16;
+  --bg-2:#0d111c;
+  --panel:#11162476;
+  --panel-solid:#121729;
+  --panel-2:#161c31;
+  --border:#212840;
+  --border-soft:#1a2036;
+  --gold:#f2b84b;
+  --gold-2:#d99c2e;
+  --gold-dim:#7a622c;
+  --cyan:#33d6c0;
+  --ton:#0098ea;
+  --danger:#ff5470;
+  --danger-dim:#5c1f2c;
+  --text:#eceef7;
+  --muted:#8890a6;
+  --muted-2:#5d6480;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Tajawal',sans-serif;
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--sans);
+  background:
+    radial-gradient(1100px 600px at 85% -10%, rgba(242,184,75,.09), transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, rgba(51,214,192,.06), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#232a44;border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#2c3453}
+
+/* ===== layout ===== */
+.app{display:flex;min-height:100vh}
+.sidebar{
+  width:264px;flex:none;position:sticky;top:0;height:100vh;
+  background:linear-gradient(180deg,#0d1220,#0a0d16 60%);
+  border-left:1px solid var(--border-soft);
+  display:flex;flex-direction:column;padding:22px 16px;gap:6px;
+  z-index:20;
+}
+.brand{display:flex;align-items:center;gap:12px;padding:6px 8px 22px 8px}
+.brand-coin{
+  width:42px;height:42px;border-radius:50%;object-fit:cover;
+  box-shadow:0 0 0 2px rgba(242,184,75,.35), 0 6px 18px rgba(242,184,75,.25);
+  animation:spin-slow 9s linear infinite;
+}
+@keyframes spin-slow{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
+.brand-txt b{display:block;font-weight:800;font-size:16.5px;letter-spacing:.2px}
+.brand-txt span{display:block;font-size:11.5px;color:var(--muted);margin-top:1px}
+
+.nav{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+.nav-item{
+  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:12px;
+  color:var(--muted);cursor:pointer;font-size:14.5px;font-weight:500;
+  border:1px solid transparent;transition:all .15s ease;position:relative;
+}
+.nav-item svg{width:18px;height:18px;flex:none;opacity:.85}
+.nav-item:hover{background:#141a2c;color:var(--text)}
+.nav-item.active{
+  background:linear-gradient(90deg, rgba(242,184,75,.14), rgba(242,184,75,.02));
+  color:var(--gold);border-color:rgba(242,184,75,.22);
+}
+.nav-item.active svg{opacity:1}
+.nav-badge{
+  margin-right:auto;font-family:var(--mono);font-size:10.5px;background:var(--danger-dim);
+  color:#ffb6c4;padding:1px 7px;border-radius:20px;font-weight:700;
+}
+.nav-sep{height:1px;background:var(--border-soft);margin:12px 6px}
+.sidebar-foot{margin-top:auto;padding:12px 10px 4px;font-size:11.5px;color:var(--muted-2);display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted-2);flex:none}
+.dot.on{background:var(--cyan);box-shadow:0 0 0 3px rgba(51,214,192,.18);animation:pulse 2s infinite}
+.dot.off{background:var(--danger)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(51,214,192,.18)}50%{box-shadow:0 0 0 5px rgba(51,214,192,.05)}}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{
+  position:sticky;top:0;z-index:15;display:flex;align-items:center;gap:14px;
+  padding:16px 26px;background:rgba(10,13,22,.72);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border-soft);
+}
+.topbar h1{font-size:19px;font-weight:800}
+.topbar .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+.topbar-actions{margin-right:auto;display:flex;align-items:center;gap:10px}
+.search-box{
+  display:flex;align-items:center;gap:8px;background:var(--panel-2);
+  border:1px solid var(--border);border-radius:11px;padding:8px 13px;min-width:230px;
+}
+.search-box input{background:none;border:none;outline:none;color:var(--text);font-family:var(--sans);font-size:13.5px;width:100%}
+.search-box svg{width:15px;height:15px;color:var(--muted);flex:none}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:11px;
+  font-family:var(--sans);font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid transparent;
+  transition:.15s;white-space:nowrap;
+}
+.btn-gold{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#241a05;box-shadow:0 4px 14px rgba(242,184,75,.22)}
+.btn-gold:hover{filter:brightness(1.07)}
+.btn-ghost{background:var(--panel-2);color:var(--text);border-color:var(--border)}
+.btn-ghost:hover{background:#1c2338}
+.btn-danger{background:rgba(255,84,112,.12);color:#ff92a6;border-color:rgba(255,84,112,.3)}
+.btn-danger:hover{background:rgba(255,84,112,.2)}
+.btn-sm{padding:6px 11px;font-size:12.5px;border-radius:9px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-warning{background:rgba(255,165,0,.15);color:#ffb347;border-color:rgba(255,165,0,.3)}
+.btn-warning:hover{background:rgba(255,165,0,.25)}
+
+.content{padding:24px 26px 60px;max-width:1440px;width:100%;margin:0 auto}
+.view{display:none;animation:fadein .25s ease}
+.view.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ===== cards / stats ===== */
+.grid-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+@media(max-width:1100px){.grid-stats{grid-template-columns:repeat(2,1fr)}}
+.stat-card{
+  background:var(--panel-solid);border:1px solid var(--border);border-radius:var(--radius);
+  padding:19px 20px;position:relative;overflow:hidden;
+}
+.stat-card::after{
+  content:'';position:absolute;inset:auto -30px -30px auto;width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle, var(--sc,rgba(242,184,75,.16)), transparent 70%);
+}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.stat-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(242,184,75,.12);color:var(--gold)}
+.stat-icon svg{width:19px;height:19px}
+.stat-label{font-size:12.5px;color:var(--muted);font-weight:500}
+.stat-value{font-family:var(--mono);font-size:27px;font-weight:700;letter-spacing:.2px;display:flex;align-items:center;gap:8px}
+.stat-value img{width:20px;height:20px;border-radius:50%}
+.stat-foot{font-size:11.5px;color:var(--muted-2);margin-top:8px}
+.live-chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--cyan);font-weight:700}
+.live-chip .dot{width:6px;height:6px}
+
+.panel{
+  background:var(--panel-solid);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px 22px;margin-bottom:20px;
+}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.panel-head h2{font-size:16px;font-weight:800}
+.panel-head .hint{font-size:12px;color:var(--muted);margin-top:3px}
+.panel-head .actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ===== tables ===== */
+.table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border-soft)}
+table{width:100%;border-collapse:collapse;font-size:13.3px;min-width:640px}
+thead th{
+  text-align:right;padding:11px 14px;background:#0e1220;color:var(--muted);
+  font-weight:700;font-size:12px;border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--border-soft);vertical-align:middle}
+tbody tr:hover{background:#131829}
+tbody tr:last-child td{border-bottom:none}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.u-cell{display:flex;align-items:center;gap:10px}
+.u-cell img{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#222;flex:none}
+.u-name{font-weight:700;font-size:13px}
+.u-sub{font-size:11.5px;color:var(--muted)}
+
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.b-green{background:rgba(51,214,192,.12);color:var(--cyan)}
+.b-gray{background:#1c2338;color:var(--muted)}
+.b-gold{background:rgba(242,184,75,.14);color:var(--gold)}
+.b-red{background:rgba(255,84,112,.14);color:#ff92a6}
+.b-orange{background:rgba(255,165,0,.14);color:#ffb347}
+
+.iconbtn{
+  width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;
+  background:var(--panel-2);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:.15s;
+}
+.iconbtn:hover{color:var(--text);border-color:var(--gold-dim)}
+.iconbtn svg{width:14px;height:14px}
+.row-actions{display:flex;gap:6px;justify-content:flex-start}
+
+.empty{padding:40px 20px;text-align:center;color:var(--muted-2)}
+.empty svg{width:34px;height:34px;margin-bottom:10px;opacity:.5}
+
+/* ===== forms / config ===== */
+.field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:1000px){.field-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.field-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:6px}
+.field label .tip{color:var(--muted-2);font-weight:400;font-size:10.5px}
+.field input,.field select,.field textarea{
+  background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;
+  color:var(--text);font-family:var(--mono);font-size:13.5px;outline:none;transition:.15s;width:100%;
+}
+.field input[type=text].sans,.field textarea{font-family:var(--sans)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold-dim);background:#181f36}
+.switch-row{display:flex;align-items:center;justify-content:space-between;background:var(--panel-2);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+.switch-row .lbl b{font-size:13.5px;display:block}
+.switch-row .lbl span{font-size:11.5px;color:var(--muted)}
+.switch{position:relative;width:44px;height:25px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:#2a3150;border-radius:20px;cursor:pointer;transition:.2s}
+.slider::before{content:'';position:absolute;width:19px;height:19px;left:3px;top:3px;background:#c7cbe0;border-radius:50%;transition:.2s}
+input:checked + .slider{background:var(--cyan)}
+input:checked + .slider::before{transform:translateX(-19px);background:#fff}
+
+.section-title{font-size:12.5px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.6px;margin:22px 0 12px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border-soft)}
+.section-title:first-child{margin-top:0}
+
+/* ===== ad companies / channels / tasks cards ===== */
+.mini-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.mini-card{background:var(--panel-2);border:1px solid var(--border);border-radius:13px;padding:15px}
+.mini-card h4{font-size:14px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.mini-row{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);padding:4px 0}
+.mini-row b{color:var(--text);font-family:var(--mono)}
+.add-card{
+  border:1.5px dashed var(--border);border-radius:13px;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);cursor:pointer;font-size:13px;font-weight:700;gap:8px;min-height:110px;transition:.15s;
+}
+.add-card:hover{border-color:var(--gold-dim);color:var(--gold)}
+
+/* ===== modal ===== */
+.overlay{
+  position:fixed;inset:0;background:rgba(5,7,12,.66);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;z-index:100;padding:20px;
+}
+.overlay.show{display:flex}
+.modal{
+  background:var(--panel-solid);border:1px solid var(--border);border-radius:18px;
+  width:100%;max-width:460px;max-height:88vh;overflow-y:auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+}
+.modal-head{padding:18px 22px;border-bottom:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-size:15.5px;font-weight:800}
+.modal-close{cursor:pointer;color:var(--muted);width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px}
+.modal-close:hover{background:#1c2338;color:var(--text)}
+.modal-body{padding:20px 22px;display:flex;flex-direction:column;gap:13px}
+.modal-foot{padding:16px 22px;border-top:1px solid var(--border-soft);display:flex;gap:10px;justify-content:flex-end}
+
+.toast-wrap{position:fixed;bottom:22px;left:22px;z-index:200;display:flex;flex-direction:column;gap:10px}
+.toast{
+  background:#141a2c;border:1px solid var(--border);border-right:3px solid var(--cyan);
+  padding:12px 16px;border-radius:11px;font-size:13px;min-width:240px;box-shadow:0 10px 30px rgba(0,0,0,.35);
+  animation:toastin .2s ease;
+}
+.toast.err{border-right-color:var(--danger)}
+@keyframes toastin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.loader{display:flex;align-items:center;justify-content:center;padding:50px;color:var(--muted)}
+.spin{width:22px;height:22px;border:3px solid #232a44;border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.tab-pills{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.pill{padding:8px 15px;border-radius:20px;background:var(--panel-2);border:1px solid var(--border);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s}
+.pill.active{background:rgba(242,184,75,.14);color:var(--gold);border-color:rgba(242,184,75,.3)}
+
+@media(max-width:900px){
+  .sidebar{position:fixed;right:0;transform:translateX(100%);transition:.25s;box-shadow:-10px 0 40px rgba(0,0,0,.4)}
+  .sidebar.open{transform:translateX(0)}
+  .menu-btn{display:flex!important}
+  .content{padding:18px}
+  .field-grid{grid-template-columns:1fr 1fr}
+}
+.menu-btn{display:none;width:36px;height:36px;border-radius:10px;background:var(--panel-2);border:1px solid var(--border);color:var(--text);align-items:center;justify-content:center;cursor:pointer}
+
+/* ===== login screen ===== */
+.login-screen{
+  position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(1100px 600px at 85% -10%, rgba(242,184,75,.10), transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, rgba(51,214,192,.07), transparent 55%),
+    var(--bg);
+  padding:20px;
+}
+.login-box{
+  width:100%;max-width:380px;background:var(--panel-solid);border:1px solid var(--border);
+  border-radius:20px;padding:34px 30px;box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.login-box .brand{justify-content:center;padding:0 0 22px 0}
+.login-box .brand-txt{text-align:center}
+.login-title{text-align:center;font-size:15px;color:var(--muted);margin-bottom:26px}
+.login-field{margin-bottom:16px}
+.login-field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:7px;font-weight:500}
+.login-field input{
+  width:100%;background:var(--panel-2);border:1px solid var(--border);border-radius:11px;
+  padding:12px 14px;color:var(--text);font-family:var(--sans);font-size:14px;outline:none;transition:.15s;
+}
+.login-field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,184,75,.12)}
+.login-error{
+  display:none;background:rgba(255,84,112,.1);border:1px solid rgba(255,84,112,.3);color:#ff92a6;
+  font-size:12.5px;padding:9px 12px;border-radius:9px;margin-bottom:16px;text-align:center;
+}
+.login-error.show{display:block}
+.login-btn{width:100%;justify-content:center;padding:12px;font-size:14.5px}
+.login-screen.hidden{display:none}
+.app{display:flex}
+</style>
+</head>
+<body>
+
+<div class="app" id="appRoot">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <img class="brand-coin" src="https://silent-block-bedf.ahmedrabieharoun.workers.dev/zenox-icon.png" alt="ZNX">
+      <div class="brand-txt"><b>ZENOX | MONEY</b><span>لوحة تحكم الإدارة</span></div>
+    </div>
+    <nav class="nav" id="nav">
+      <div class="nav-item active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        الرئيسية
+      </div>
+      <div class="nav-item" data-view="users">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.3"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="8" r="2.6"/><path d="M15.5 14.2c2.6.3 4.5 2.5 4.5 5.8"/></svg>
+        المستخدمين
+      </div>
+      <div class="nav-item" data-view="withdrawals">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="6" width="19" height="13" rx="2.2"/><path d="M2.5 10.5h19"/><path d="M6 15h4"/></svg>
+        طلبات السحب
+        <span class="nav-badge" id="wdBadge" style="display:none">0</span>
+      </div>
+      <div class="nav-item" data-view="tasks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg>
+        المهام
+      </div>
+      <div class="nav-item" data-view="channels">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 4L3 11.5l6.5 2.2M21 4l-4 17-7.3-9.3M21 4L9.5 13.7"/></svg>
+        الاشتراك الإجباري
+      </div>
+      <div class="nav-item" data-view="promocodes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5V6.8A1.8 1.8 0 0 1 4.8 5h14.4A1.8 1.8 0 0 1 21 6.8v1.7a2.2 2.2 0 0 0 0 4.3v1.4a1.8 1.8 0 0 1-1.8 1.8H4.8A1.8 1.8 0 0 1 3 14.2v-1.4a2.2 2.2 0 0 0 0-4.3z"/><path d="M10 5v14" stroke-dasharray="2.2 2.2"/></svg>
+        أكواد البرومو
+      </div>
+      <div class="nav-item" data-view="ads">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="14" rx="2.5"/><path d="M2.5 9h19"/><circle cx="7" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg>
+        شركات الإعلانات
+      </div>
+      <div class="nav-item" data-view="contest">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M17 5h3v2a3 3 0 01-3 3M7 5H4v2a3 3 0 003 3"/></svg>
+        إدارة المسابقة
+      </div>
+      <div class="nav-item" data-view="blocked">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M5.5 5.5l13 13"/></svg>
+        الحسابات المحظورة
+      </div>
+      <div class="nav-item" data-view="partitions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+        أقسام قاعدة البيانات
+      </div>
+      <div class="nav-sep"></div>
+      <div class="nav-item" data-view="config">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.6 7.6 0 000-3l2-1.5-2-3.4-2.3.9a7.6 7.6 0 00-2.6-1.5L14 2.5h-4l-.5 2.5a7.6 7.6 0 00-2.6 1.5l-2.3-.9-2 3.4 2 1.5a7.6 7.6 0 000 3l-2 1.6 2 3.4 2.3-1a7.6 7.6 0 002.6 1.6l.5 2.4h4l.5-2.4a7.6 7.6 0 002.6-1.6l2.3 1 2-3.4z"/></svg>
+        الإعدادات العامة
+      </div>
+    </nav>
+    <div class="sidebar-foot" style="flex-direction:column;align-items:stretch;gap:10px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="dot off" id="connDot"></span>
+        <span id="connTxt">جارِ الاتصال بقاعدة البيانات...</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <div class="topbar">
+      <div class="menu-btn" id="menuBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </div>
+      <div>
+        <h1 id="pageTitle">الرئيسية</h1>
+        <div class="sub" id="pageSub">نظرة عامة سريعة على أداء البوت الآن</div>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-box" id="globalSearchBox" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input id="globalSearch" placeholder="ابحث بالاسم، اليوزر، أو الآيدي...">
+        </div>
+        <button class="btn btn-ghost btn-sm" id="refreshBtn" title="تحديث">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 10-3 6.7"/><path d="M21 4v6h-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ================= DASHBOARD ================= -->
+      <section class="view active" id="view-dashboard">
+        <div class="grid-stats">
+          <div class="stat-card" style="--sc:rgba(242,184,75,.18)">
+            <div class="stat-top"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.3"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="8" r="2.6"/><path d="M15.5 14.2c2.6.3 4.5 2.5 4.5 5.8"/></svg></div><span class="stat-label">إجمالي المستخدمين</span></div>
+            <div class="stat-value" id="statTotalUsers">—</div>
+            <div class="stat-foot">كل الحسابات المسجّلة في البوت</div>
+          </div>
+          <div class="stat-card" style="--sc:rgba(51,214,192,.18)">
+            <div class="stat-top"><div class="stat-icon" style="background:rgba(51,214,192,.14);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.3 2"/></svg></div><span class="live-chip"><span class="dot on"></span>مباشر</span></div>
+            <div class="stat-label" style="margin-bottom:8px">أونلاين الآن (آخر 5 دقائق)</div>
+            <div class="stat-value" id="statOnline">—</div>
+            <div class="stat-foot">يُحسب من آخر ظهور لكل مستخدم</div>
+          </div>
+          <div class="stat-card" style="--sc:rgba(242,184,75,.18)">
+            <div class="stat-top"><div class="stat-icon"><img src="https://silent-block-bedf.ahmedrabieharoun.workers.dev/zenox-icon.png" style="width:22px;height:22px;border-radius:50%"></div><span class="stat-label">إجمالي أرصدة ZNX</span></div>
+            <div class="stat-value" id="statTotalPmt">—</div>
+            <div class="stat-foot" id="statAvgPmt">متوسط الرصيد لكل مستخدم: —</div>
+          </div>
+          <div class="stat-card" style="--sc:rgba(0,152,234,.18)">
+            <div class="stat-top"><div class="stat-icon" style="background:rgba(0,152,234,.14);color:var(--ton)"><b style="font-size:18px">$</b></div><span class="stat-label">إجمالي أرصدة الدولار</span></div>
+            <div class="stat-value" id="statTotalTon">—</div>
+            <div class="stat-foot" id="statPendingWd">طلبات سحب معلّقة: —</div>
+          </div>
+        </div>
+
+        <div class="grid-stats" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-card" style="--sc:rgba(242,184,75,.14)">
+            <div class="stat-top"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="14" rx="2.5"/><path d="M2.5 9h19"/><circle cx="7" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg></div><span class="stat-label">إعلانات مشاهدة اليوم</span></div>
+            <div class="stat-value" id="statAdsToday">—</div>
+            <div class="stat-foot">جميع شركات الإعلانات مجتمعة</div>
+          </div>
+          <div class="stat-card" style="--sc:rgba(255,84,112,.14)">
+            <div class="stat-top"><div class="stat-icon" style="background:rgba(255,84,112,.13);color:#ff92a6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M5.5 5.5l13 13"/></svg></div><span class="stat-label">حسابات محظورة</span></div>
+            <div class="stat-value" id="statBlocked">—</div>
+            <div class="stat-foot">نظام مكافحة الاحتيال</div>
+          </div>
+          <div class="stat-card" style="--sc:rgba(51,214,192,.14)">
+            <div class="stat-top"><div class="stat-icon" style="background:rgba(51,214,192,.14);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg></div><span class="stat-label">المهام النشطة</span></div>
+            <div class="stat-value" id="statActiveTasks">—</div>
+            <div class="stat-foot">مهام قنوات وبوتات ودعوات</div>
+          </div>
+        </div>
+
+        <div class="grid-stats" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-card" style="--sc:rgba(242,184,75,.14)">
+            <div class="stat-top"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.3"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M18 8v5M15.5 10.5h5"/></svg></div><span class="stat-label">مستخدمون جدد اليوم</span></div>
+            <div class="stat-value" id="statNewToday">—</div>
+            <div class="stat-foot">حسب توقيت القاهرة</div>
+          </div>
+          <div class="stat-card" style="--sc:rgba(242,184,75,.14)">
+            <div class="stat-top"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="14" rx="2.5"/><path d="M2.5 9h19"/><circle cx="7" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg></div><span class="stat-label">إجمالي الإعلانات (كل الوقت)</span></div>
+            <div class="stat-value" id="statAdsAllTime">—</div>
+            <div class="stat-foot">مجموع كل المشاهدات منذ البداية</div>
+          </div>
+          <div class="stat-card" style="--sc:rgba(51,214,192,.14)">
+            <div class="stat-top"><div class="stat-icon" style="background:rgba(51,214,192,.14);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 4L3 11.5l6.5 2.2M21 4l-4 17-7.3-9.3M21 4L9.5 13.7"/></svg></div><span class="stat-label">قنوات إجبارية مفعّلة</span></div>
+            <div class="stat-value" id="statActiveChannels">—</div>
+            <div class="stat-foot">من إجمالي القنوات المضافة</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>أحدث المستخدمين</h2><div class="hint">آخر 8 حسابات انضمت للبوت</div></div>
+            <div class="pill active" onclick="switchView('users')" style="cursor:pointer">عرض الكل ←</div>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>المستخدم</th><th>آيدي تيليجرام</th><th>رصيد ZNX</th><th>رصيد الدولار ($)</th><th>تاريخ الانضمام</th><th>الحالة</th></tr></thead>
+            <tbody id="latestUsersBody"><tr><td colspan="6" class="loader"><span class="spin"></span></td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ================= USERS ================= -->
+      <section class="view" id="view-users">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>إدارة المستخدمين</h2><div class="hint" id="usersCount">جارِ التحميل...</div></div>
+            <div class="actions">
+              <button class="btn btn-warning btn-sm" onclick="openResetBalanceModal()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M8 12l3 3 5-5"/><path d="M12 8v4"/></svg>
+                تصفير الأرصدة
+              </button>
+            </div>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>المستخدم</th><th>آيدي تيليجرام</th><th>رصيد ZNX</th><th>رصيد الدولار ($)</th><th>إعلانات اليوم</th><th>إجمالي الإعلانات</th><th>آخر ظهور</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+            <tbody id="usersBody"><tr><td colspan="9" class="loader"><span class="spin"></span></td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ================= WITHDRAWALS ================= -->
+      <section class="view" id="view-withdrawals">
+        <div class="tab-pills" id="wdFilterPills">
+          <div class="pill active" data-f="pending">معلّقة</div>
+          <div class="pill" data-f="completed">مكتملة</div>
+          <div class="pill" data-f="rejected">مرفوضة</div>
+          <div class="pill" data-f="all">الكل</div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h2>طلبات السحب</h2><div class="hint">التحقق والموافقة أو الرفض يدويًا</div></div></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>المستخدم</th><th>المبلغ المطلوب</th><th>الرسوم</th><th>الصافي</th><th>محفظة TON</th><th>التاريخ</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+            <tbody id="wdBody"><tr><td colspan="8" class="loader"><span class="spin"></span></td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ================= TASKS ================= -->
+      <section class="view" id="view-tasks">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>مهام القنوات والبوتات</h2><div class="hint">إدارة المهام المتاحة للمستخدمين</div></div>
+            <button class="btn btn-gold btn-sm" onclick="openTaskModal()">+ مهمة جديدة</button>
+          </div>
+          <div class="mini-cards" id="tasksCards"><div class="loader"><span class="spin"></span></div></div>
+        </div>
+      </section>
+
+      <!-- ================= CHANNELS ================= -->
+      <section class="view" id="view-channels">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>قنوات الاشتراك الإجباري</h2><div class="hint">القنوات التي يجب على المستخدم الاشتراك بها لاستخدام البوت</div></div>
+            <button class="btn btn-gold btn-sm" onclick="openChannelModal()">+ قناة جديدة</button>
+          </div>
+          <div class="mini-cards" id="channelsCards"><div class="loader"><span class="spin"></span></div></div>
+        </div>
+      </section>
+
+      <!-- ================= PROMO CODES ================= -->
+      <section class="view" id="view-promocodes">
+        <div class="grid-stats" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-card">
+            <div class="stat-top"><span class="stat-label">إجمالي الأكواد</span>
+              <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5V6.8A1.8 1.8 0 0 1 4.8 5h14.4A1.8 1.8 0 0 1 21 6.8v1.7a2.2 2.2 0 0 0 0 4.3v1.4a1.8 1.8 0 0 1-1.8 1.8H4.8A1.8 1.8 0 0 1 3 14.2v-1.4a2.2 2.2 0 0 0 0-4.3z"/></svg></div>
+            </div>
+            <div class="stat-value" id="statPromoTotal">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top"><span class="stat-label">أكواد مفعّلة</span>
+              <div class="stat-icon" style="background:rgba(51,214,192,.12);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg></div>
+            </div>
+            <div class="stat-value" id="statPromoActive">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top"><span class="stat-label">إجمالي مرات الاستخدام</span>
+              <div class="stat-icon" style="background:rgba(255,84,112,.1);color:#ff92a6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.3"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/></svg></div>
+            </div>
+            <div class="stat-value" id="statPromoUses">0</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>أكواد البرومو</h2><div class="hint">إنشاء وإدارة أكواد الخصم / المكافآت وحالتها</div></div>
+            <button class="btn btn-gold btn-sm" onclick="openPromoCodeModal()">+ كود جديد</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>الكود</th><th>المكافأة</th><th>الاستخدام</th><th>تاريخ الانتهاء</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+            <tbody id="promoCodesBody"><tr><td colspan="6" class="loader"><span class="spin"></span></td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ================= ADS ================= -->
+      <section class="view" id="view-ads">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>الحد اليومي الإجمالي للإعلانات</h2><div class="hint">أقصى عدد إعلانات يمكن لأي مستخدم مشاهدتها يوميًا من جميع الشركات مجتمعة</div></div>
+            <button class="btn btn-gold btn-sm" id="saveAdDailyLimitBtn">حفظ</button>
+          </div>
+          <div class="field-grid">
+            <div class="field"><label>الحد اليومي الإجمالي للإعلانات <span class="tip">adDailyLimit</span></label><input type="number" id="cfg_adDailyLimit_ads"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>شركات الإعلانات</h2><div class="hint">مكافأة كل إعلان والحد اليومي المسموح لكل شركة على حدة</div></div>
+            <button class="btn btn-gold btn-sm" onclick="openAdCompanyModal()">+ شركة جديدة</button>
+          </div>
+          <div class="mini-cards" id="adsCards"><div class="loader"><span class="spin"></span></div></div>
+        </div>
+      </section>
+
+      <!-- ================= CONTEST ================= -->
+      <section class="view" id="view-contest">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>الجولة الحالية</h2><div class="hint" id="ctStateHint">جارِ التحميل...</div></div>
+            <div class="actions"><button class="btn btn-ghost btn-sm" onclick="loadContestBoard()">تحديث الترتيب</button></div>
+          </div>
+          <div class="field-grid">
+            <div class="field"><label>وقت انتهاء المسابقة</label><input type="datetime-local" id="ct_endTs"></div>
+          </div>
+          <div class="row-actions" style="margin-top:10px;flex-wrap:wrap">
+            <button class="btn btn-gold btn-sm" onclick="saveContestEnd()">حفظ وقت الانتهاء</button>
+            <button class="btn btn-ghost btn-sm" onclick="extendContest(1)">+ يوم</button>
+            <button class="btn btn-ghost btn-sm" onclick="extendContest(7)">+ 7 أيام</button>
+            <button class="btn btn-danger btn-sm" onclick="endContestNow()">إنهاء الآن وتوزيع الجوائز</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h2>الجوائز ($)</h2><div class="hint">جائزة كل مركز من 1 إلى 10 بالدولار</div></div>
+            <button class="btn btn-gold btn-sm" onclick="saveContestPrizes()">حفظ الجوائز</button></div>
+          <div class="field-grid" id="ctPrizes"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h2>إضافة / حذف رصيد (نقاط الإحالات)</h2><div class="hint">يعدّل عدد إحالات المستخدم في ترتيب الجولة الحالية فقط، ولا يمس رصيد المحفظة</div></div></div>
+          <div class="field-grid">
+            <div class="field"><label>آيدي تيليجرام</label><input type="text" class="mono" id="ct_uid" placeholder="123456789"></div>
+            <div class="field"><label>العدد</label><input type="number" id="ct_amount" value="1" min="1"></div>
+          </div>
+          <div class="row-actions" style="margin-top:10px;flex-wrap:wrap">
+            <button class="btn btn-gold btn-sm" onclick="contestAdjust(1)">+ إضافة رصيد</button>
+            <button class="btn btn-ghost btn-sm" onclick="contestAdjust(-1)">− حذف رصيد</button>
+            <button class="btn btn-danger btn-sm" onclick="contestRemoveUser(true)">استبعاد من المسابقة</button>
+            <button class="btn btn-ghost btn-sm" onclick="contestRemoveUser(false)">إلغاء الاستبعاد</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h2>ترتيب المسابقة</h2><div class="hint">أعلى 25 مستخدم</div></div></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>المستخدم</th><th>الإحالات</th><th>التعديل اليدوي</th><th>الجائزة</th><th></th></tr></thead>
+            <tbody id="ctBody"><tr><td colspan="6"><div class="loader"><span class="spin"></span></div></td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ================= BLOCKED ================= -->
+      <section class="view" id="view-blocked">
+        <div class="panel">
+          <div class="panel-head"><div><h2>الحسابات المحظورة تلقائيًا</h2><div class="hint">حسابات أوقفها نظام مكافحة الاحتيال (10 طبقات حماية)</div></div></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>آيدي تيليجرام</th><th>السبب</th><th>درجة الخطورة</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+            <tbody id="blockedBody"><tr><td colspan="5" class="loader"><span class="spin"></span></td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ================= CONFIG ================= -->
+      <section class="view" id="view-config">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>الإعدادات العامة</h2><div class="hint">أي تغيير هنا يُطبَّق فورًا على كل المستخدمين — يُحفظ مباشرة في Firebase</div></div>
+            <button class="btn btn-gold" id="saveConfigBtn">حفظ كل التغييرات</button>
+          </div>
+
+          <div class="section-title">التبديلات الرئيسية</div>
+          <div class="field-grid" style="grid-template-columns:repeat(2,1fr)">
+            <div class="switch-row">
+              <div class="lbl"><b>الاشتراك الإجباري</b><span>إجبار المستخدم على الاشتراك بالقنوات قبل الاستخدام</span></div>
+              <label class="switch"><input type="checkbox" id="cfg_mandatorySubEnabled"><span class="slider"></span></label>
+            </div>
+            <div class="switch-row">
+              <div class="lbl"><b>نظام السحب</b><span>تشغيل أو إيقاف السحب بالكامل لكل المستخدمين</span></div>
+              <label class="switch"><input type="checkbox" id="cfg_withdrawalEnabled"><span class="slider"></span></label>
+            </div>
+          </div>
+
+          <div class="section-title">المكافآت الأساسية (ZNX)</div>
+          <div class="field-grid">
+            <div class="field"><label>مكافأة اليوم الواحد <span class="tip">dailyBonusReward</span></label><input type="number" id="cfg_dailyBonusReward"></div>
+            <div class="field"><label>مكافأة الإحالة اليومية <span class="tip">referralReward</span></label><input type="number" id="cfg_referralReward"></div>
+            <div class="field"><label>مكافأة التعدين <span class="tip">miningReward</span></label><input type="number" id="cfg_miningReward"></div>
+            <div class="field"><label>مدة التعدين (دقائق) <span class="tip">miningDurationMs</span></label><input type="number" id="cfg_miningDurationMin"></div>
+            <div class="field"><label>الحد اليومي للألعاب <span class="tip">gameDailyLimit</span></label><input type="number" id="cfg_gameDailyLimit"></div>
+          </div>
+
+          <div class="section-title">السحب والتحويل</div>
+          <div class="field-grid">
+            <div class="field"><label>كم ZNX = 1 دولار <span class="tip">usdConversionRate</span></label><input type="number" id="cfg_usdConversionRate"></div>
+            <div class="field"><label>أقل مبلغ سحب ($) <span class="tip">minWithdrawalUsd</span></label><input type="number" step="0.01" id="cfg_minWithdrawalUsd"></div>
+            <div class="field"><label>سعر TON بالدولار <span class="tip">usdPerTon</span></label><input type="number" step="0.01" id="cfg_usdPerTon"></div>
+          </div>
+
+          <div class="section-title">ترويج القناة (السعر لكل 100 عضو)</div>
+          <div class="field-grid">
+            <div class="field"><label>بالدولار ($) <span class="tip">taskPricePer100Usd</span></label><input type="number" step="0.001" id="cfg_taskPricePer100Usd"></div>
+          </div>
+
+          <div class="section-title">إعدادات البوت</div>
+          <div class="field-grid">
+            <div class="field"><label>يوزر البوت <span class="tip">botUsername</span></label><input type="text" class="sans" id="cfg_botUsername"></div>
+            <div class="field" style="grid-column:span 2"><label>توكن البوت <span class="tip">botToken — حساس، لا تشاركه</span></label><input type="password" class="sans" id="cfg_botToken"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= DATABASE PARTITIONS ================= -->
+      <section class="view" id="view-partitions">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>أقسام قاعدة البيانات (Root Partitions)</h2><div class="hint">كل قسم رئيسي موجود فعليًا داخل Firebase — استكشف محتواه أو احذفه بالكامل. ⚠️ الحذف هنا نهائي ولا يمكن التراجع عنه.</div></div>
+            <button class="btn btn-ghost btn-sm" onclick="loadPartitions()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 10-3 6.7"/><path d="M21 4v6h-6"/></svg>
+              تحديث
+            </button>
+          </div>
+          <div class="mini-cards" id="partitionsCards"><div class="loader"><span class="spin"></span></div></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ===== generic modal ===== -->
+<div class="overlay" id="modalOverlay">
+  <div class="modal" id="modalBox">
+    <div class="modal-head"><h3 id="modalTitle">—</h3><div class="modal-close" onclick="closeModal()">✕</div></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ZENOX | MONEY — Admin Control Panel
+   Direct Firebase Realtime Database binding
+   ========================================================= */
+/* ⚙️ إعدادات Firebase الخاصة بالبوت الجديد (نفس قاعدة FIREBASE_DATABASE_URL المضبوطة في الـ Worker).
+   املأ القيم هنا مرة واحدة، أو اتركها فاضية وهتظهر لك نافذة تطلبها وتحفظها في المتصفح. */
+const FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",   // مثال: https://your-project-default-rtdb.firebaseio.com
+  projectId: ""
+};
+function loadFirebaseConfig(){
+  if(FIREBASE_CONFIG.databaseURL) return FIREBASE_CONFIG;
+  try{
+    const saved = JSON.parse(localStorage.getItem('znx_admin_fb')||'null');
+    if(saved && saved.databaseURL) return saved;
+  }catch(_){}
+  const input = prompt('الصق رابط Firebase Realtime Database (databaseURL) الخاص بالبوت الجديد،\nأو الصق كائن firebaseConfig كامل بصيغة JSON:');
+  if(!input) { document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#fff;font-family:sans-serif">لازم تدخل إعدادات Firebase — أعد تحميل الصفحة.</div>'; throw new Error('Firebase config required'); }
+  let cfg;
+  try{ cfg = JSON.parse(input); }catch(_){ cfg = { databaseURL: input.trim() }; }
+  if(!cfg.databaseURL){ alert('databaseURL مفقود'); throw new Error('bad config'); }
+  try{ localStorage.setItem('znx_admin_fb', JSON.stringify(cfg)); }catch(_){}
+  return cfg;
+}
+firebase.initializeApp(loadFirebaseConfig());
+const db = firebase.database();
+
+const AVATAR_FALLBACK = 'https://silent-block-bedf.ahmedrabieharoun.workers.dev/zenox-icon.png';
+const TON_ICON = 'https://cdn.simpleicons.org/ton/0098EA';
+const COIN_ICON = 'https://silent-block-bedf.ahmedrabieharoun.workers.dev/zenox-icon.png';
+function usdOf(u){ return (u && u.usdBalance!=null) ? (Number(u.usdBalance)||0) : Number((u&&u.tonBalance)||0); }
+const ONLINE_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+
+/* ---------- state ---------- */
+let usersCache = {};
+let withdrawalsCache = {};
+let tasksCache = {};
+let channelsCache = {};
+let promoCodesCache = {};
+let blockedCache = {};
+let configCache = {};
+let currentView = 'dashboard';
+let wdFilter = 'pending';
+
+function debounce(fn, wait){
+  let t = null;
+  return function(...args){
+    clearTimeout(t);
+    t = setTimeout(()=> fn.apply(this, args), wait);
+  };
+}
+
+/* ---------- helpers ---------- */
+function fmt(n){
+  n = Number(n)||0;
+  return n.toLocaleString('en-US', {maximumFractionDigits:0});
+}
+function fmtTon(n){
+  n = Number(n)||0;
+  return n.toLocaleString('en-US', {minimumFractionDigits:4, maximumFractionDigits:4});
+}
+function fmtDate(ts){
+  if(!ts) return '—';
+  const d = new Date(Number(ts));
+  return d.toLocaleDateString('ar-EG',{day:'2-digit',month:'2-digit',year:'numeric'}) + ' — ' + d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+}
+function timeAgo(ts){
+  if(!ts) return 'لم يسجّل دخول بعد';
+  const diff = Date.now() - Number(ts);
+  if(diff < 60000) return 'الآن';
+  if(diff < 3600000) return Math.floor(diff/60000) + ' د';
+  if(diff < 86400000) return Math.floor(diff/3600000) + ' س';
+  return Math.floor(diff/86400000) + ' يوم';
+}
+function isOnline(ts){ return ts && (Date.now() - Number(ts) < ONLINE_WINDOW_MS); }
+function todayKeyCairo(){
+  return new Intl.DateTimeFormat('en-CA', {timeZone:'Africa/Cairo', year:'numeric', month:'2-digit', day:'2-digit'}).format(new Date());
+}
+function displayName(u){
+  const n = [u.firstName, u.lastName].filter(Boolean).join(' ').trim();
+  return n || (u.username ? '@'+u.username : 'مستخدم بدون اسم');
+}
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function toast(msg, isErr){
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = 'toast' + (isErr?' err':'');
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='.3s'; setTimeout(()=>el.remove(),300); }, 3200);
+}
+
+/* ---------- connection status ---------- */
+db.ref('.info/connected').on('value', snap=>{
+  const dot = document.getElementById('connDot');
+  const txt = document.getElementById('connTxt');
+  if(snap.val() === true){
+    dot.className = 'dot on'; txt.textContent = 'متصل بقاعدة البيانات';
+  } else {
+    dot.className = 'dot off'; txt.textContent = 'غير متصل...';
+  }
+});
+
+/* ---------- navigation ---------- */
+function switchView(view){
+  currentView = view;
+  document.querySelectorAll('.nav-item').forEach(el=> el.classList.toggle('active', el.dataset.view===view));
+  document.querySelectorAll('.view').forEach(el=> el.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  const titles = {
+    dashboard:['الرئيسية','نظرة عامة سريعة على أداء البوت الآن'],
+    users:['المستخدمين','إدارة كاملة لأرصدة وبيانات كل مستخدم'],
+    withdrawals:['طلبات السحب','مراجعة والموافقة أو رفض طلبات السحب (المبالغ بالدولار — الدفع بعملة TON)'],
+    tasks:['المهام','إدارة مهام القنوات والبوتات والمكافآت'],
+    channels:['الاشتراك الإجباري','قنوات يجب الاشتراك بها لاستخدام البوت'],
+    promocodes:['أكواد البرومو','إنشاء ومتابعة أكواد الخصم والمكافآت'],
+    ads:['شركات الإعلانات','مكافأة وحد كل شركة إعلانات على حدة'],
+    contest:['إدارة المسابقة','الجوائز ووقت الانتهاء وإضافة/حذف رصيد المشاركين'],
+    blocked:['الحسابات المحظورة','حسابات أوقفها نظام مكافحة الاحتيال'],
+    config:['الإعدادات العامة','كل قيم البوت قابلة للتعديل من هنا مباشرة'],
+    partitions:['أقسام قاعدة البيانات','كل قسم رئيسي موجود فعليًا في Firebase — استكشاف أو حذف كامل'],
+  };
+  document.getElementById('pageTitle').textContent = titles[view][0];
+  document.getElementById('pageSub').textContent = titles[view][1];
+  document.getElementById('globalSearchBox').style.display = (view==='users') ? 'flex' : 'none';
+  if(window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
+  if(view==='users') renderUsersTable();
+  if(view==='withdrawals') renderWithdrawals();
+  if(view==='partitions') loadPartitions();
+  if(view==='contest') loadContestBoard();
+}
+document.getElementById('nav').addEventListener('click', e=>{
+  const item = e.target.closest('.nav-item');
+  if(item) switchView(item.dataset.view);
+});
+document.getElementById('menuBtn').addEventListener('click', ()=> document.getElementById('sidebar').classList.toggle('open'));
+document.getElementById('refreshBtn').addEventListener('click', ()=>{ toast('البيانات محدثة تلقائيًا في الوقت الحقيقي ✓'); });
+
+/* =========================================================
+   DASHBOARD + USERS  (single users listener drives both)
+   ========================================================= */
+const handleUsersUpdate = debounce(function(){
+  renderDashboardStats();
+  renderLatestUsers();
+  if(currentView==='users') renderUsersTable();
+}, 700);
+
+db.ref('users').on('value', snap=>{
+  usersCache = snap.val() || {};
+  handleUsersUpdate();
+});
+
+function renderDashboardStats(){
+  const list = Object.entries(usersCache);
+  const total = list.length;
+  const today = todayKeyCairo();
+  let online=0, totalPmt=0, totalTon=0, adsToday=0, adsAll=0, newToday=0;
+  const todayStartCairo = new Date(new Date().toLocaleString('en-US',{timeZone:'Africa/Cairo'}));
+  todayStartCairo.setHours(0,0,0,0);
+
+  list.forEach(([id,u])=>{
+    if(isOnline(u.lastLogin)) online++;
+    totalPmt += Number(u.balance||0);
+    totalTon += usdOf(u);
+    adsAll += Number(u.totalAdsWatched||0);
+    if(u.adWatchDate === today){
+      if(u.adsWatchedByCompany){
+        adsToday += Object.values(u.adsWatchedByCompany).reduce((s,c)=>s+Number(c||0),0);
+      } else {
+        adsToday += Number(u.adsWatchedToday||0);
+      }
+    }
+    if(u.createdAt){
+      const cd = new Date(u.createdAt).toLocaleDateString('en-CA',{timeZone:'Africa/Cairo'});
+      if(cd === today) newToday++;
+    }
+  });
+
+  document.getElementById('statTotalUsers').textContent = fmt(total);
+  document.getElementById('statNewToday').textContent = fmt(newToday);
+  document.getElementById('statOnline').textContent = fmt(online);
+  document.getElementById('statTotalPmt').innerHTML = fmt(totalPmt) + ' <img src="'+COIN_ICON+'">';
+  document.getElementById('statAvgPmt').textContent = 'متوسط الرصيد لكل مستخدم: ' + fmt(total? totalPmt/total:0);
+  document.getElementById('statTotalTon').innerHTML = '$' + fmtTon(totalTon);
+  document.getElementById('statAdsToday').textContent = fmt(adsToday);
+  document.getElementById('statAdsAllTime').textContent = fmt(adsAll);
+
+  const blockedCount = Object.keys(blockedCache).length;
+  document.getElementById('statBlocked').textContent = fmt(blockedCount);
+}
+
+function renderLatestUsers(){
+  const list = Object.entries(usersCache).sort((a,b)=> (b[1].createdAt||0)-(a[1].createdAt||0)).slice(0,8);
+  const body = document.getElementById('latestUsersBody');
+  if(!list.length){ body.innerHTML = emptyRow(6,'لا يوجد مستخدمون بعد'); return; }
+  body.innerHTML = list.map(([id,u])=>`
+    <tr>
+      <td><div class="u-cell"><img src="${u.photoUrl||AVATAR_FALLBACK}" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name">${escapeHtml(displayName(u))}</div><div class="u-sub">${u.username?'@'+escapeHtml(u.username):'—'}</div></div></div></td>
+      <td class="mono muted">${id}</td>
+      <td class="mono">${fmt(u.balance)}</td>
+      <td class="mono">${fmtTon(usdOf(u))}</td>
+      <td class="muted">${fmtDate(u.createdAt)}</td>
+      <td>${isOnline(u.lastLogin)?'<span class="badge b-green">أونلاين</span>':'<span class="badge b-gray">غير متصل</span>'}</td>
+    </tr>`).join('');
+}
+
+function emptyRow(cols, msg){
+  return `<tr><td colspan="${cols}"><div class="empty">${escapeHtml(msg)}</div></td></tr>`;
+}
+
+let userSearchTerm = '';
+document.getElementById('globalSearch').addEventListener('input', e=>{
+  userSearchTerm = e.target.value.trim().toLowerCase();
+  renderUsersTable();
+});
+
+function renderUsersTable(){
+  let list = Object.entries(usersCache);
+  document.getElementById('usersCount').textContent = fmt(list.length) + ' مستخدم مسجّل';
+  if(userSearchTerm){
+    list = list.filter(([id,u])=>{
+      return id.includes(userSearchTerm) ||
+        (u.username||'').toLowerCase().includes(userSearchTerm) ||
+        (u.firstName||'').toLowerCase().includes(userSearchTerm) ||
+        (u.lastName||'').toLowerCase().includes(userSearchTerm);
+    });
+  }
+  list.sort((a,b)=> (b[1].lastLogin||0)-(a[1].lastLogin||0));
+  const body = document.getElementById('usersBody');
+  if(!list.length){ body.innerHTML = emptyRow(9,'لا توجد نتائج مطابقة'); return; }
+
+  const today = todayKeyCairo();
+  body.innerHTML = list.slice(0,300).map(([id,u])=>{
+    let adsToday = 0;
+    if(u.adWatchDate === today){
+      adsToday = u.adsWatchedByCompany ? Object.values(u.adsWatchedByCompany).reduce((s,c)=>s+Number(c||0),0) : Number(u.adsWatchedToday||0);
+    }
+    const blocked = !!blockedCache[id];
+    return `
+    <tr>
+      <td><div class="u-cell"><img src="${u.photoUrl||AVATAR_FALLBACK}" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name">${escapeHtml(displayName(u))}</div><div class="u-sub">${u.username?'@'+escapeHtml(u.username):'—'}</div></div></div></td>
+      <td class="mono muted">${id}</td>
+      <td class="mono" id="bal_${id}">${fmt(u.balance)}</td>
+      <td class="mono" id="ton_${id}">${fmtTon(usdOf(u))}</td>
+      <td class="mono">${fmt(adsToday)}</td>
+      <td class="mono">${fmt(u.totalAdsWatched)}</td>
+      <td class="muted">${timeAgo(u.lastLogin)}</td>
+      <td>${blocked?'<span class="badge b-red">محظور</span>':(isOnline(u.lastLogin)?'<span class="badge b-green">أونلاين</span>':'<span class="badge b-gray">غير متصل</span>')}</td>
+      <td><div class="row-actions">
+        <div class="iconbtn" title="تعديل الرصيد" onclick="openEditUser('${id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4l10-10-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></div>
+        <div class="iconbtn" title="عرض التفاصيل" onclick="openViewUser('${id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="iconbtn" title="تصفير الرصيد" onclick="openResetSingleUser('${id}')" style="color:#ffb347"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M8 12l3 3 5-5"/></svg></div>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function openEditUser(id){
+  const u = usersCache[id] || {};
+  document.getElementById('modalTitle').textContent = 'تعديل رصيد: ' + displayName(u);
+  document.getElementById('modalBody').innerHTML = `
+    <div class="field"><label>رصيد ZNX</label><input type="number" id="m_balance" value="${Number(u.balance||0)}"></div>
+    <div class="field"><label>رصيد الدولار ($)</label><input type="number" step="0.0001" id="m_tonBalance" value="${usdOf(u)}"></div>
+    <div class="field"><label>محفظة TON المرتبطة</label><input type="text" class="sans" id="m_tonWallet" value="${escapeHtml(u.tonWallet||u.wallet||'')}"></div>
+    <div class="switch-row" style="margin-top:4px">
+      <div class="lbl"><b>حظر الحساب</b><span>منع الحساب فورًا من استخدام البوت ومكافآت الإحالة</span></div>
+      <label class="switch"><input type="checkbox" id="m_blocked" ${blockedCache[id]?'checked':''}><span class="slider"></span></label>
+    </div>
+  `;
+  document.getElementById('modalFoot').innerHTML = `
+    <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+    <button class="btn btn-gold" onclick="saveUserEdit('${id}')">حفظ التغييرات</button>
+  `;
+  showModal();
+}
+
+function saveUserEdit(id){
+  const balance = Number(document.getElementById('m_balance').value)||0;
+  const tonBalance = Number(document.getElementById('m_tonBalance').value)||0;
+  const tonWallet = document.getElementById('m_tonWallet').value.trim();
+  const blockedNow = document.getElementById('m_blocked').checked;
+
+  const updates = { balance, usdBalance: tonBalance, tonBalance: 0, tonWallet };
+  db.ref('users/'+id).update(updates)
+    .then(()=>{
+      const wasBlocked = !!blockedCache[id];
+      if(blockedNow && !wasBlocked){
+        return db.ref('blocked_accounts/'+id).set({reason:'حظر يدوي من لوحة التحكم', score:100, ts:Date.now()});
+      } else if(!blockedNow && wasBlocked){
+        return db.ref('blocked_accounts/'+id).remove();
+      }
+    })
+    .then(()=>{ toast('تم حفظ بيانات المستخدم ✓'); closeModal(); })
+    .catch(err=>toast('خطأ: '+err.message, true));
+}
+
+function openViewUser(id){
+  const u = usersCache[id] || {};
+  const today = todayKeyCairo();
+  const adsToday = u.adWatchDate===today ? (u.adsWatchedByCompany?Object.values(u.adsWatchedByCompany).reduce((s,c)=>s+Number(c||0),0):Number(u.adsWatchedToday||0)) : 0;
+  document.getElementById('modalTitle').textContent = 'تفاصيل المستخدم';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="u-cell" style="margin-bottom:8px"><img src="${u.photoUrl||AVATAR_FALLBACK}" style="width:46px;height:46px" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name" style="font-size:15px">${escapeHtml(displayName(u))}</div><div class="u-sub">${u.username?'@'+escapeHtml(u.username):'بدون يوزر'}</div></div></div>
+    <div class="mini-row"><span>آيدي تيليجرام</span><b>${id}</b></div>
+    <div class="mini-row"><span>رصيد ZNX</span><b>${fmt(u.balance)}</b></div>
+    <div class="mini-row"><span>رصيد الدولار</span><b>${fmtTon(usdOf(u))}</b></div>
+    <div class="mini-row"><span>كود الإحالة</span><b>${escapeHtml(u.referralCode||'—')}</b></div>
+    <div class="mini-row"><span>تمت إحالته بواسطة</span><b>${escapeHtml(u.referredBy||'—')}</b></div>
+    <div class="mini-row"><span>إعلانات اليوم</span><b>${fmt(adsToday)}</b></div>
+    <div class="mini-row"><span>إجمالي الإعلانات</span><b>${fmt(u.totalAdsWatched)}</b></div>
+    <div class="mini-row"><span>إجمالي الإحالات</span><b id="vu_refTotal">جارٍ التحميل...</b></div>
+    <div class="mini-row"><span>الإحالات النشطة</span><b id="vu_refActive">جارٍ التحميل...</b></div>
+    <div class="mini-row"><span>اجتاز الاشتراك الإجباري</span><b>${u.forceSubPassed?'نعم':'لا'}</b></div>
+    <div class="mini-row"><span>محفظة TON</span><b style="font-size:11px">${escapeHtml(u.tonWallet||u.wallet||'—')}</b></div>
+    <div class="mini-row"><span>تاريخ الانضمام</span><b>${fmtDate(u.createdAt)}</b></div>
+    <div class="mini-row"><span>آخر ظهور</span><b>${timeAgo(u.lastLogin)}</b></div>
+    <div class="row-actions" style="margin-top:10px">
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="loadUserReferrals('${id}')">عرض الإحالات ودرجة النشاط</button>
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="loadUserHistory('${id}')">آخر 5 عمليات من السجل</button>
+    </div>
+    <div id="vu_extra"></div>
+  `;
+  document.getElementById('modalFoot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">إغلاق</button><button class="btn btn-gold" onclick="closeModal();openEditUser('${id}')">تعديل الرصيد</button>`;
+  showModal();
+
+  db.ref('referrals/'+id).once('value').then(snap=>{
+    const refs = snap.val() || {};
+    const list = Object.values(refs);
+    const total = list.length;
+    const active = list.filter(r=> r && (r.status==='active' || r.status==='completed')).length;
+    const totalEl = document.getElementById('vu_refTotal');
+    const activeEl = document.getElementById('vu_refActive');
+    if(totalEl) totalEl.textContent = fmt(total);
+    if(activeEl) activeEl.textContent = fmt(active);
+  }).catch(()=>{
+    const totalEl = document.getElementById('vu_refTotal');
+    const activeEl = document.getElementById('vu_refActive');
+    if(totalEl) totalEl.textContent = '—';
+    if(activeEl) activeEl.textContent = '—';
+  });
+}
+
+function loadUserReferrals(id){
+  const box = document.getElementById('vu_extra');
+  if(!box) return;
+  box.innerHTML = '<div class="loader" style="padding:14px 0"><span class="spin"></span></div>';
+  db.ref('referrals/'+id).once('value').then(snap=>{
+    const refs = snap.val() || {};
+    const entries = Object.entries(refs);
+    if(!entries.length){
+      box.innerHTML = '<div class="empty" style="padding:14px 0">لا يوجد إحالات لهذا المستخدم</div>';
+      return;
+    }
+    const payoutDays = Math.max(1, Math.floor(Number(configCache.referralPayoutDays) || 3));
+    entries.sort((a,b)=>(b[1].joinedAt||0)-(a[1].joinedAt||0));
+    const dayHeaders = Array.from({length:payoutDays}, (_,i)=>`<th>يوم ${i+1}</th>`).join('');
+    const rows = entries.map(([rid, r])=>{
+      const dr = r.dailyRewards || {};
+      const statusBadge = r.status==='completed' ? '<span class="badge b-green">مكتمل</span>'
+        : r.status==='active' ? '<span class="badge b-gold">نشط</span>'
+        : '<span class="badge b-gray">معلّق</span>';
+      const dayCells = Array.from({length:payoutDays}, (_,i)=>{
+        const d = dr['day'+(i+1)] || {};
+        const claimed = !!d.claimed;
+        const watched = Number(d.adsWatched || 0);
+        return `<td class="mono" style="font-size:11.5px">${claimed ? '✅ 10/10' : (watched+'/10')}</td>`;
+      }).join('');
+      return `<tr>
+        <td><div class="u-name" style="font-size:12.5px">${escapeHtml(r.firstName || (r.username?'@'+r.username:'') || rid)}</div><div class="u-sub mono" style="font-size:10.5px">${escapeHtml(rid)}</div></td>
+        <td>${statusBadge}</td>
+        ${dayCells}
+      </tr>`;
+    }).join('');
+    box.innerHTML = `
+      <div style="margin:12px 0 6px;font-size:12.5px;font-weight:800;color:var(--muted)">قائمة الإحالات ودرجة النشاط (${entries.length})</div>
+      <div class="table-wrap" style="max-height:260px;overflow-y:auto">
+        <table style="width:100%">
+          <thead><tr><th>المُحال</th><th>الحالة</th>${dayHeaders}</tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    `;
+  }).catch(err=>{
+    box.innerHTML = '<div class="empty" style="padding:14px 0">تعذر تحميل الإحالات: '+escapeHtml(err.message)+'</div>';
+  });
+}
+
+const HISTORY_TYPE_LABELS = {
+  daily_bonus: 'المكافأة اليومية',
+  redeem_code: 'استخدام كود برومو',
+  ad_reward: 'مشاهدة إعلان',
+  mining_reward: 'مكافأة التعدين',
+  game_reward: 'مكافأة لعبة',
+  task_reward: 'مكافأة مهمة (قناة/بوت)',
+  claim_task: 'استلام مكافأة مهمة',
+  wheel_spin: 'عجلة الحظ',
+  combo_claim: 'الكومبو اليومي',
+  referral_daily_reward: 'مكافأة إحالة يومية',
+  referral_commission: 'عمولة إحالة',
+  task_promotion_payment: 'دفع ترويج قناة',
+  withdrawal: 'طلب سحب',
+  deposit: 'إيداع',
+  pmt_to_ton: 'تحويل ZNX إلى TON',
+};
+
+function loadUserHistory(id){
+  const box = document.getElementById('vu_extra');
+  if(!box) return;
+  box.innerHTML = '<div class="loader" style="padding:14px 0"><span class="spin"></span></div>';
+  db.ref('balanceLogs/'+id).limitToLast(5).once('value').then(snap=>{
+    const logs = snap.val() || {};
+    const entries = Object.entries(logs).sort((a,b)=>(b[1].ts||0)-(a[1].ts||0));
+    if(!entries.length){
+      box.innerHTML = '<div class="empty" style="padding:14px 0">لا يوجد عمليات مسجّلة لهذا المستخدم</div>';
+      return;
+    }
+    const rows = entries.map(([lid, l])=>{
+      const amt = Number(l.amount || 0);
+      const sign = amt >= 0 ? '+' : '';
+      const color = amt >= 0 ? '#7ee6a0' : '#ff92a6';
+      const label = HISTORY_TYPE_LABELS[l.type] || l.type || 'عملية';
+      const currency = l.currency || 'ZNX';
+      return `<div class="mini-row"><span>${escapeHtml(label)} — ${fmtDate(l.ts)}</span><b style="color:${color}">${sign}${fmt(amt)} ${escapeHtml(currency)}</b></div>`;
+    }).join('');
+    box.innerHTML = `
+      <div style="margin:12px 0 6px;font-size:12.5px;font-weight:800;color:var(--muted)">آخر 5 عمليات من السجل</div>
+      ${rows}
+    `;
+  }).catch(err=>{
+    box.innerHTML = '<div class="empty" style="padding:14px 0">تعذر تحميل السجل: '+escapeHtml(err.message)+'</div>';
+  });
+}
+
+/* =========================================================
+   RESET BALANCES
+   ========================================================= */
+function openResetBalanceModal(){
+  document.getElementById('modalTitle').textContent = '⚠️ تصفير أرصدة المستخدمين';
+  document.getElementById('modalBody').innerHTML = `
+    <div style="background:rgba(255,165,0,.08);border:1px solid rgba(255,165,0,.2);border-radius:10px;padding:12px;color:#ffb347;font-size:13px;margin-bottom:4px">
+      ⚠️ هذا الإجراء نهائي ولا يمكن التراجع عنه. سيتم تصفير جميع أرصدة ZNX والدولار للمستخدمين المختارين.
+    </div>
+    <div class="field">
+      <label>نطاق التصفير</label>
+      <select id="reset_scope" style="background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:var(--sans);font-size:13.5px;outline:none;width:100%">
+        <option value="all">جميع المستخدمين</option>
+        <option value="single">مستخدم واحد فقط (سأدخل الآيدي)</option>
+      </select>
+    </div>
+    <div class="field" id="reset_userid_field" style="display:none">
+      <label>آيدي المستخدم (Telegram ID)</label>
+      <input type="text" class="mono" id="reset_userid" placeholder="مثال: 123456789">
+    </div>
+    <div class="field">
+      <label>العملات المطلوب تصفيرها</label>
+      <div style="display:flex;gap:14px;padding:6px 0">
+        <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="reset_pmt" checked> ZNX
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="reset_ton" checked> الدولار ($)
+        </label>
+      </div>
+    </div>
+  `;
+  document.getElementById('reset_scope').addEventListener('change', function(){
+    document.getElementById('reset_userid_field').style.display = this.value === 'single' ? 'flex' : 'none';
+  });
+  document.getElementById('modalFoot').innerHTML = `
+    <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+    <button class="btn btn-danger" onclick="executeResetBalances()">تأكيد التصفير</button>
+  `;
+  showModal();
+}
+
+function openResetSingleUser(id){
+  const u = usersCache[id] || {};
+  document.getElementById('modalTitle').textContent = '⚠️ تصفير رصيد: ' + displayName(u);
+  document.getElementById('modalBody').innerHTML = `
+    <div style="background:rgba(255,165,0,.08);border:1px solid rgba(255,165,0,.2);border-radius:10px;padding:12px;color:#ffb347;font-size:13px;margin-bottom:4px">
+      ⚠️ سيتم تصفير رصيد المستخدم <strong>${escapeHtml(displayName(u))}</strong> (${id})
+    </div>
+    <div class="field">
+      <label>العملات المطلوب تصفيرها</label>
+      <div style="display:flex;gap:14px;padding:6px 0">
+        <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="reset_single_pmt" checked> ZNX
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="reset_single_ton" checked> الدولار ($)
+        </label>
+      </div>
+    </div>
+    <input type="hidden" id="reset_single_id" value="${id}">
+  `;
+  document.getElementById('modalFoot').innerHTML = `
+    <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+    <button class="btn btn-danger" onclick="executeResetSingleUser()">تأكيد التصفير</button>
+  `;
+  showModal();
+}
+
+function executeResetSingleUser(){
+  const id = document.getElementById('reset_single_id').value;
+  const resetZNX = document.getElementById('reset_single_pmt').checked;
+  const resetTON = document.getElementById('reset_single_ton').checked;
+  if(!resetZNX && !resetTON){
+    toast('يرجى اختيار عملة واحدة على الأقل للتصفير', true);
+    return;
+  }
+  if(!confirm(`⚠️ هل أنت متأكد من تصفير رصيد المستخدم ${id} نهائيًا؟ لا يمكن التراجع!`)) return;
+  const updates = {};
+  if(resetZNX) updates.balance = 0;
+  if(resetTON){ updates.usdBalance = 0; updates.tonBalance = 0; }
+  db.ref('users/'+id).update(updates)
+    .then(()=>{
+      toast('✓ تم تصفير رصيد المستخدم ' + id);
+      closeModal();
+    })
+    .catch(err=>toast('خطأ: '+err.message, true));
+}
+
+function executeResetBalances(){
+  const scope = document.getElementById('reset_scope').value;
+  const resetZNX = document.getElementById('reset_pmt').checked;
+  const resetTON = document.getElementById('reset_ton').checked;
+  if(!resetZNX && !resetTON){
+    toast('يرجى اختيار عملة واحدة على الأقل للتصفير', true);
+    return;
+  }
+  if(scope === 'single'){
+    const userId = document.getElementById('reset_userid').value.trim();
+    if(!userId){
+      toast('يرجى إدخال آيدي المستخدم', true);
+      return;
+    }
+    if(!confirm(`⚠️ هل أنت متأكد من تصفير رصيد المستخدم ${userId} نهائيًا؟ لا يمكن التراجع!`)) return;
+    const updates = {};
+    if(resetZNX) updates.balance = 0;
+    if(resetTON){ updates.usdBalance = 0; updates.tonBalance = 0; }
+    db.ref('users/'+userId).update(updates)
+      .then(()=>{ toast('✓ تم تصفير رصيد المستخدم ' + userId); closeModal(); })
+      .catch(err=>toast('خطأ: '+err.message, true));
+    return;
+  }
+  // ALL users
+  const list = Object.keys(usersCache);
+  if(!list.length){ toast('لا يوجد مستخدمين للتصفير', true); return; }
+  if(!confirm(`⚠️ هل أنت متأكد من تصفير أرصدة جميع المستخدمين (${list.length} مستخدم) نهائيًا؟ لا يمكن التراجع!`)) return;
+
+  const updates = {};
+  list.forEach(id=>{
+    const u = {};
+    if(resetZNX) u.balance = 0;
+    if(resetTON){ u.usdBalance = 0; u.tonBalance = 0; }
+    if(Object.keys(u).length) updates['users/'+id] = u;
+  });
+  db.ref().update(updates)
+    .then(()=>{ toast('✓ تم تصفير أرصدة ' + list.length + ' مستخدم'); closeModal(); })
+    .catch(err=>toast('خطأ: '+err.message, true));
+}
+
+/* =========================================================
+   WITHDRAWALS
+   ========================================================= */
+const handleWithdrawalsUpdate = debounce(function(){ renderWithdrawals(); }, 700);
+db.ref('withdrawals').on('value', snap=>{
+  withdrawalsCache = snap.val() || {};
+  handleWithdrawalsUpdate();
+});
+let withdrawQueueCache = {};
+db.ref('withdrawQueue').on('value', snap=>{
+  withdrawQueueCache = snap.val() || {};
+  handleWithdrawalsUpdate();
+});
+document.getElementById('wdFilterPills').addEventListener('click', e=>{
+  const p = e.target.closest('.pill'); if(!p) return;
+  document.querySelectorAll('#wdFilterPills .pill').forEach(x=>x.classList.remove('active'));
+  p.classList.add('active');
+  wdFilter = p.dataset.f;
+  renderWithdrawals();
+});
+
+function flattenWithdrawals(){
+  const out = [];
+  Object.entries(withdrawalsCache).forEach(([uid, items])=>{
+    Object.entries(items||{}).forEach(([wid, w])=> out.push({uid, wid, ...w}));
+  });
+  return out.sort((a,b)=>(b.ts||0)-(a.ts||0));
+}
+
+function buildQueueIndex(){
+  const map = new Map();
+  Object.entries(withdrawQueueCache).forEach(([qid, q])=>{
+    if(!q) return;
+    map.set(q.wdId || qid, q);
+  });
+  return map;
+}
+
+function findQueueEntry(w, queueIndex){
+  const q = queueIndex.get(w.wid);
+  if(!q) return null;
+  if(q.userId===undefined || String(q.userId)===String(w.uid)) return q;
+  return null;
+}
+
+function resolveWithdrawalStatus(w, q){
+  if(q){
+    if(q.status==='paid' || q.status==='sent' || q.status==='completed') return 'completed';
+    if(q.status==='failed' || q.status==='rejected' || q.status==='cancelled' || q.status==='canceled') return 'rejected';
+  }
+  const s = String(w.status || '').trim().toLowerCase();
+  if(s==='completed' || s==='paid' || s==='sent') return 'completed';
+  if(s==='rejected' || s==='failed' || s==='cancelled' || s==='canceled') return 'rejected';
+  return 'pending';
+}
+
+function renderWithdrawals(){
+  const queueIndex = buildQueueIndex();
+  let list = flattenWithdrawals().map(w=>{
+    const q = findQueueEntry(w, queueIndex);
+    return { ...w, _queue: q, _resolvedStatus: resolveWithdrawalStatus(w, q) };
+  });
+  const pendingCount = list.filter(w=>w._resolvedStatus==='pending').length;
+  const badge = document.getElementById('wdBadge');
+  if(pendingCount>0){ badge.style.display='inline-flex'; badge.textContent = pendingCount; } else { badge.style.display='none'; }
+  document.getElementById('statPendingWd').textContent = 'طلبات سحب معلّقة: ' + fmt(pendingCount);
+
+  if(currentView!=='withdrawals') return;
+
+  if(wdFilter!=='all') list = list.filter(w=>w._resolvedStatus===wdFilter);
+  const body = document.getElementById('wdBody');
+  if(!list.length){ body.innerHTML = emptyRow(8,'لا توجد طلبات سحب في هذا التصنيف'); return; }
+
+  const RENDER_LIMIT = 200;
+  const shownList = list.slice(0, RENDER_LIMIT);
+  const truncatedNote = list.length > RENDER_LIMIT
+    ? `<tr><td colspan="8"><div class="empty">بيتم عرض آخر ${fmt(RENDER_LIMIT)} طلب فقط من أصل ${fmt(list.length)} — استخدم التصنيفات فوق لتضييق النتائج</div></td></tr>`
+    : '';
+
+  body.innerHTML = shownList.map(w=>{
+    const u = usersCache[w.uid] || {};
+    const q = w._queue;
+    const statusBadge = w._resolvedStatus==='completed' ? '<span class="badge b-green">مكتمل</span>'
+      : w._resolvedStatus==='rejected' ? '<span class="badge b-red">مرفوض</span>'
+      : '<span class="badge b-gold">معلّق</span>';
+    const paidTitle = (w._resolvedStatus==='completed' && q) ? ` title="دُفع آليًا — TX: ${escapeHtml(q.txHash||'')}"` : '';
+    const viewUserBtn = `<div class="iconbtn" title="عرض تفاصيل المستخدم" onclick="openViewUser('${w.uid}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>`;
+    const actions = (w._resolvedStatus!=='completed' && w._resolvedStatus!=='rejected') ? `
+      <div class="row-actions">
+        ${viewUserBtn}
+        <button class="btn btn-gold btn-sm" onclick="approveWithdrawal('${w.uid}','${w.wid}')">موافقة</button>
+        <button class="btn btn-danger btn-sm" onclick="rejectWithdrawal('${w.uid}','${w.wid}', ${w.requestedAmount||w.amount||0})">رفض</button>
+      </div>` : `<div class="row-actions">${viewUserBtn}${q ? '<span class="muted" title="تم الدفع تلقائيًا عبر نظام الدفع الآلي">آليًا ✓</span>' : '<span class="muted">—</span>'}</div>`;
+    return `<tr>
+      <td><div class="u-cell"><img src="${u.photoUrl||AVATAR_FALLBACK}" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name">${escapeHtml(displayName(u))}</div><div class="u-sub mono">${w.uid}</div></div></div></td>
+      <td class="mono">$${fmtTon(w.requestedAmount)}</td>
+      <td class="mono muted">$${fmtTon(w.fee)}</td>
+      <td class="mono">$${fmtTon(w.netAmount||w.amount)}${w.payoutAmountTon?`<div class="u-sub">≈ ${fmtTon(w.payoutAmountTon)} TON</div>`:''}</td>
+      <td class="mono" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escapeHtml(w.walletAddress||'')}">${escapeHtml(w.walletAddress||'—')}</td>
+      <td class="muted">${fmtDate(w.ts)}</td>
+      <td${paidTitle}>${statusBadge}</td>
+      <td>${actions}</td>
+    </tr>`;
+  }).join('') + truncatedNote;
+}
+
+function approveWithdrawal(uid, wid){
+  if(!confirm('تأكيد الموافقة على طلب السحب وتحويله لمكتمل؟')) return;
+  db.ref(`withdrawals/${uid}/${wid}`).update({status:'completed', completedAt:Date.now()})
+    .then(()=>toast('تمت الموافقة على طلب السحب ✓'))
+    .catch(err=>toast('خطأ: '+err.message, true));
+}
+
+function rejectWithdrawal(uid, wid, requestedAmount){
+  const refund = confirm('رفض الطلب — هل تريد إرجاع مبلغ ' + fmtTon(requestedAmount) + ' $ لرصيد المستخدم تلقائيًا؟\n(اضغط إلغاء لرفض الطلب بدون استرجاع الرصيد)');
+  const doReject = ()=>{
+    db.ref(`withdrawals/${uid}/${wid}`).update({status:'rejected', rejectedAt:Date.now()})
+      .then(()=>toast('تم رفض طلب السحب'))
+      .catch(err=>toast('خطأ: '+err.message, true));
+  };
+  if(refund){
+    const u = usersCache[uid] || {};
+    const newBal = Number((usdOf(u) + Number(requestedAmount||0)).toFixed(4));
+    db.ref('users/'+uid).update({usdBalance:newBal, tonBalance:0}).then(doReject).catch(err=>toast('خطأ: '+err.message,true));
+  } else {
+    doReject();
+  }
+}
+
+/* =========================================================
+   TASKS
+   ========================================================= */
+db.ref('tasks').on('value', snap=>{
+  tasksCache = snap.val() || {};
+  renderTasks();
+});
+function renderTasks(){
+  const entries = Object.entries(tasksCache);
+  document.getElementById('statActiveTasks').textContent = fmt(entries.filter(([id,t])=>t.status==='active').length);
+  const wrap = document.getElementById('tasksCards');
+  const cardsHtml = entries.map(([id,t])=>{
+    const completions = Number(t.completions||0);
+    const target = Number(t.membersNeeded||0);
+    const remaining = target ? Math.max(0, target - completions) : 0;
+    return `
+    <div class="mini-card">
+      <h4><span>${escapeHtml(t.title||id)}</span>${t.status==='active'?'<span class="badge b-green">مفعّلة</span>':'<span class="badge b-gray">موقوفة</span>'}</h4>
+      <div class="mini-row"><span>التصنيف</span><b>${escapeHtml(t.category||'—')}</b></div>
+      <div class="mini-row"><span>المكافأة</span><b>${fmt(t.reward)} ZNX</b></div>
+      ${t.requiredReferrals?`<div class="mini-row"><span>إحالات مطلوبة</span><b>${fmt(t.requiredReferrals)}</b></div>`:''}
+      ${target?`<div class="mini-row"><span>الهدف (عدد الأعضاء)</span><b>${fmt(target)}</b></div>
+      <div class="mini-row"><span>عدد الإكمالات</span><b>${fmt(completions)}</b></div>
+      <div class="mini-row"><span>المتبقي</span><b>${fmt(remaining)}</b></div>`
+      :`<div class="mini-row"><span>عدد الإكمالات</span><b>${fmt(completions)}</b></div>`}
+      <div class="row-actions" style="margin-top:10px">
+        <button class="btn btn-ghost btn-sm" style="flex:1" onclick='openTaskModal(${JSON.stringify(id)})'>تعديل</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTask('${id}')">حذف</button>
+      </div>
+    </div>`;
+  }).join('');
+  wrap.innerHTML = cardsHtml + `<div class="add-card" onclick="openTaskModal()">+ إضافة مهمة</div>`;
+  if(!entries.length) wrap.innerHTML = `<div class="empty" style="grid-column:1/-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="4"/></svg>لا توجد مهام بعد — أضف أول مهمة</div>` + wrap.innerHTML;
+}
+
+function openTaskModal(id){
+  const t = id ? (tasksCache[id]||{}) : {};
+  document.getElementById('modalTitle').textContent = id ? 'تعديل المهمة' : 'مهمة جديدة';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="field"><label>عنوان المهمة</label><input type="text" class="sans" id="t_title" value="${escapeHtml(t.title||'')}"></div>
+    <div class="field"><label>الرابط</label><input type="text" class="sans" id="t_link" value="${escapeHtml(t.link||'')}"></div>
+    <div class="field"><label>التصنيف</label>
+      <select id="t_category">
+        <option value="channels" ${t.category==='channels'?'selected':''}>قنوات</option>
+        <option value="bots" ${t.category==='bots'?'selected':''}>بوتات</option>
+        <option value="invite" ${t.category==='invite'?'selected':''}>دعوة (إحالة)</option>
+      </select>
+    </div>
+    <div class="field"><label>المكافأة (ZNX)</label><input type="number" id="t_reward" value="${Number(t.reward)||500}"></div>
+    <div class="field" id="t_reqRefWrap" style="display:${t.category==='invite'?'flex':'none'}"><label>عدد الإحالات المطلوبة</label><input type="number" id="t_reqRef" value="${Number(t.requiredReferrals)||0}"></div>
+    <div class="field" id="t_targetWrap" style="display:${t.category==='invite'?'none':'flex'}"><label>عدد الأعضاء المستهدف (اختياري — تُحذف المهمة تلقائيًا عند الوصول له، اتركه فارغًا لعدم وجود هدف)</label><input type="number" id="t_target" value="${Number(t.membersNeeded)||''}"></div>
+    <div class="switch-row"><div class="lbl"><b>مفعّلة</b><span>إظهار المهمة للمستخدمين الآن</span></div><label class="switch"><input type="checkbox" id="t_status" ${t.status!=='disabled'?'checked':''}><span class="slider"></span></label></div>
+  `;
+  document.getElementById('t_category').addEventListener('change', e=>{
+    document.getElementById('t_reqRefWrap').style.display = e.target.value==='invite' ? 'flex':'none';
+    document.getElementById('t_targetWrap').style.display = e.target.value==='invite' ? 'none':'flex';
+  });
+  document.getElementById('modalFoot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">إلغاء</button><button class="btn btn-gold" onclick='saveTask(${JSON.stringify(id||null)})'>حفظ</button>`;
+  showModal();
+}
+
+function saveTask(id){
+  const title = document.getElementById('t_title').value.trim();
+  const link = document.getElementById('t_link').value.trim();
+  const category = document.getElementById('t_category').value;
+  const reward = Number(document.getElementById('t_reward').value)||0;
+  const status = document.getElementById('t_status').checked ? 'active' : 'disabled';
+  if(!title){ toast('يرجى إدخال عنوان المهمة', true); return; }
+  const data = { title, link, category, reward, status };
+  if(category==='invite'){
+    data.requiredReferrals = Number(document.getElementById('t_reqRef').value)||0;
+  } else {
+    const targetVal = document.getElementById('t_target').value;
+    if(targetVal){ data.membersNeeded = Number(targetVal)||0; }
+  }
+  const taskId = id || ('task_' + Date.now().toString(36));
+  data.id = taskId;
+  db.ref('tasks/'+taskId).update(data)
+    .then(()=>{ toast('تم حفظ المهمة ✓'); closeModal(); })
+    .catch(err=>toast('خطأ: '+err.message, true));
+}
+
+function deleteTask(id){
+  if(!confirm('هل تريد حذف هذه المهمة نهائيًا؟')) return;
+  db.ref('tasks/'+id).remove().then(()=>toast('تم حذف المهمة')).catch(err=>toast('خطأ: '+err.message, true));
+}
+
+/* =========================================================
+   MANDATORY CHANNELS
+   ========================================================= */
+db.ref('mandatoryChannels').on('value', snap=>{
+  channelsCache = snap.val() || {};
+  renderChannels();
+});
+function renderChannels(){
+  const entries = Object.entries(channelsCache);
+  const activeCount = entries.filter(([id,c])=>c.status!=='disabled' && c.status!=='inactive').length;
+  const statActiveChannelsEl = document.getElementById('statActiveChannels');
+  if(statActiveChannelsEl) statActiveChannelsEl.textContent = fmt(activeCount);
+  const wrap = document.getElementById('channelsCards');
+  const html = entries.map(([id,c])=>`
+    <div class="mini-card">
+      <h4><span>${escapeHtml(c.title||id)}</span>${(c.status!=='disabled'&&c.status!=='inactive')?'<span class="badge b-green">مفعّلة</span>':'<span class="badge b-gray">موقوفة</span>'}</h4>
+      <div class="mini-row"><span>اليوزر</span><b>@${escapeHtml(c.username||'—')}</b></div>
+      <div class="mini-row"><span>الرابط</span><b style="font-size:11px">${escapeHtml((c.link||'').replace('https://t.me/',''))}</b></div>
+      <div class="row-actions" style="margin-top:10px">
+        <button class="btn btn-ghost btn-sm" style="flex:1" onclick='openChannelModal(${JSON.stringify(id)})'>تعديل</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteChannel('${id}')">حذف</button>
+      </div>
+    </div>`).join('');
+  wrap.innerHTML = html + `<div class="add-card" onclick="openChannelModal()">+ إضافة قناة</div>`;
+  if(!entries.length) wrap.innerHTML = `<div class="empty" style="grid-column:1/-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/></svg>لا توجد قنوات اشتراك إجباري حاليًا</div>` + wrap.innerHTML;
+}
+
+function openChannelModal(id){
+  const c = id ? (channelsCache[id]||{}) : {};
+  document.getElementById('modalTitle').textContent = id ? 'تعديل القناة' : 'قناة جديدة';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="field"><label>اسم القناة</label><input type="text" class="sans" id="c_title" value="${escapeHtml(c.title||'')}"></div>
+    <div class="field"><label>يوزر القناة (بدون @)</label><input type="text" class="sans" id="c_username" value="${escapeHtml(c.username||'')}"></div>
+    <div class="field"><label>رابط القناة</label><input type="text" class="sans" id="c_link" value="${escapeHtml(c.link||'')}"></div>
+    <div class="switch-row"><div class="lbl"><b>مفعّلة</b><span>إجبار المستخدمين على الاشتراك بها</span></div><label class="switch"><input type="checkbox" id="c_status" ${c.status!=='disabled'&&c.status!=='inactive'?'checked':''}><span class="slider"></span></label></div>
+  `;
+  document.getElementById('modalFoot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">إلغاء</button><button class="btn btn-gold" onclick='saveChannel(${JSON.stringify(id||null)})'>حفظ</button>`;
+  showModal();
+}
+
+function saveChannel(id){
+  const title = document.getElementById('c_title').value.trim();
+  const username = document.getElementById('c_username').value.trim().replace('@','');
+  const link = document.getElementById('c_link').value.trim() || ('https://t.me/'+username);
+  const status = document.getElementById('c_status').checked ? 'active' : 'disabled';
+  if(!title || !username){ toast('يرجى إدخال اسم واسم مستخدم القناة', true); return; }
+  const chId = id || username;
+  db.ref('mandatoryChannels/'+chId).set({title, username, link, status})
+    .then(()=>{ toast('تم حفظ القناة ✓'); closeModal(); })
+    .catch(err=>toast('خطأ: '+err.message, true));
+}
+function deleteChannel(id){
+  if(!confirm('هل تريد حذف هذه القناة من الاشتراك الإجباري؟')) return;
+  db.ref('mandatoryChannels/'+id).remove().then(()=>toast('تم حذف القناة')).catch(err=>toast('خطأ: '+err.message, true));
+}
+
+/* =========================================================
+   PROMO CODES  (redeemCodes/{CODE}) — matches worker.js handleRedeemCode
+   ========================================================= */
+db.ref('redeemCodes').on('value', snap=>{
+  promoCodesCache = snap.val() || {};
+  renderPromoCodes();
+});
+
+function renderPromoCodes(){
+  const entries = Object.entries(promoCodesCache).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+  const now = Date.now();
+  const totalUses = entries.reduce((s,[,c])=>s+Number(c.usedCount||0),0);
+  const activeCount = entries.filter(([,c])=>{
+    const expired = c.expiresAt && Number(c.expiresAt) < now;
+    const maxedOut = Number(c.maxUses||0) > 0 && Number(c.usedCount||0) >= Number(c.maxUses);
+    return c.active !== false && !expired && !maxedOut;
+  }).length;
+  const elTotal = document.getElementById('statPromoTotal');
+  const elActive = document.getElementById('statPromoActive');
+  const elUses = document.getElementById('statPromoUses');
+  if(elTotal) elTotal.textContent = fmt(entries.length);
+  if(elActive) elActive.textContent = fmt(activeCount);
+  if(elUses) elUses.textContent = fmt(totalUses);
+
+  const body = document.getElementById('promoCodesBody');
+  if(!body) return;
+  if(!entries.length){ body.innerHTML = emptyRow(6,'لا توجد أكواد برومو حاليًا — أنشئ أول كود'); return; }
+  body.innerHTML = entries.map(([code,c])=>{
+    const expired = c.expiresAt && Number(c.expiresAt) < now;
+    const maxUses = Number(c.maxUses||0);
+    const used = Number(c.usedCount||0);
+    const maxedOut = maxUses > 0 && used >= maxUses;
+    let statusBadge;
+    if(c.active === false) statusBadge = '<span class="badge b-gray">موقوف</span>';
+    else if(expired) statusBadge = '<span class="badge b-red">منتهي</span>';
+    else if(maxedOut) statusBadge = '<span class="badge b-red">اكتمل الاستخدام</span>';
+    else statusBadge = '<span class="badge b-green">مفعّل</span>';
+    return `
+    <tr>
+      <td class="mono" style="font-weight:700;letter-spacing:.5px">
+        ${escapeHtml(code)}
+        <button class="btn btn-ghost btn-sm" style="padding:3px 8px;margin-right:6px" onclick="copyPromoCode('${code}')" title="نسخ">⧉</button>
+      </td>
+      <td>${fmt(c.reward)} ZNX</td>
+      <td class="mono">${fmt(used)} ${maxUses ? ' / ' + fmt(maxUses) : '(غير محدود)'}</td>
+      <td class="muted">${c.expiresAt ? fmtDate(c.expiresAt) : 'بلا تاريخ انتهاء'}</td>
+      <td>${statusBadge}</td>
+      <td>
+        <div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick='openPromoCodeModal(${JSON.stringify(code)})'>تعديل</button>
+          <button class="btn btn-danger btn-sm" onclick="deletePromoCode('${code}')">حذف</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function copyPromoCode(code){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(code).then(()=>toast('تم نسخ الكود ✓')).catch(()=>toast('تعذّر نسخ الكود', true));
+  } else {
+    toast('تعذّر نسخ الكود', true);
+  }
+}
+
+function openPromoCodeModal(code){
+  const c = code ? (promoCodesCache[code]||{}) : {};
+  document.getElementById('modalTitle').textContent = code ? 'تعديل الكود' : 'كود برومو جديد';
+  const expiresVal = c.expiresAt ? new Date(Number(c.expiresAt)).toISOString().slice(0,10) : '';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="field"><label>الكود (حروف إنجليزية وأرقام و _ - فقط)</label><input type="text" class="mono" id="p_code" value="${escapeHtml(code||'')}" ${code?'disabled':''} style="text-transform:uppercase" placeholder="مثال: ZNX2026"></div>
+    <div class="field"><label>المكافأة (ZNX)</label><input type="number" id="p_reward" value="${Number(c.reward)||100}"></div>
+    <div class="field"><label>الحد الأقصى لعدد مرات الاستخدام (اتركه فارغًا لعدم التحديد)</label><input type="number" id="p_maxUses" value="${c.maxUses?Number(c.maxUses):''}" placeholder="غير محدود"></div>
+    <div class="field"><label>تاريخ الانتهاء (اختياري)</label><input type="date" id="p_expires" value="${expiresVal}"></div>
+    <div class="switch-row"><div class="lbl"><b>مفعّل</b><span>السماح باستخدام هذا الكود حاليًا</span></div><label class="switch"><input type="checkbox" id="p_status" ${c.active!==false?'checked':''}><span class="slider"></span></label></div>
+  `;
+  document.getElementById('modalFoot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">إلغاء</button><button class="btn btn-gold" onclick='savePromoCode(${JSON.stringify(code||null)})'>حفظ</button>`;
+  showModal();
+}
+
+function savePromoCode(existingCode){
+  const rawCode = existingCode || document.getElementById('p_code').value.trim();
+  const code = rawCode.toUpperCase().replace(/[^A-Z0-9_-]/g,'').slice(0,64);
+  const reward = Math.floor(Number(document.getElementById('p_reward').value))||0;
+  const maxUsesRaw = document.getElementById('p_maxUses').value.trim();
+  const maxUses = maxUsesRaw ? (Number(maxUsesRaw)||0) : 0;
+  const expiresRaw = document.getElementById('p_expires').value;
+  const expiresAt = expiresRaw ? new Date(expiresRaw+'T23:59:59').getTime() : null;
+  const active = document.getElementById('p_status').checked;
+  if(!code){ toast('يرجى إدخال كود صحيح (حروف إنجليزية/أرقام فقط)', true); return; }
+  if(reward <= 0){ toast('يرجى إدخال قيمة مكافأة صحيحة', true); return; }
+  const existing = existingCode ? (promoCodesCache[existingCode]||{}) : {};
+  const payload = {
+    reward, maxUses, active,
+    usedCount: existing.usedCount || 0,
+    createdAt: existing.createdAt || Date.now()
+  };
+  if(expiresAt) payload.expiresAt = expiresAt;
+  db.ref('redeemCodes/'+code).set(payload)
+    .then(()=>{ toast('تم حفظ كود البرومو ✓'); closeModal(); })
+    .catch(err=>toast('خطأ: '+err.message, true));
+}
+
+function deletePromoCode(code){
+  if(!confirm('هل تريد حذف كود "'+code+'" نهائيًا؟')) return;
+  db.ref('redeemCodes/'+code).remove().then(()=>toast('تم حذف الكود')).catch(err=>toast('خطأ: '+err.message, true));
+}
+
+/* =========================================================
+   AD COMPANIES  (config/adCompanies)
+   ========================================================= */
+// الشركات المعروفة في كود التطبيق (server.js) — بيتم عرضها هنا حتى لو
+// لسه ملهاش نود في Firebase، بقيم افتراضية (200 مكافأة / 10 حد يومي)،
+// عشان الأدمن يقدر يشوفها ويعدّل عليها من هنا مباشرة بدل ما يضطر
+// يضيفها يدويًا كـ"شركة جديدة". أي شركة تانية اتضافت فعليًا في Firebase
+// (زي شركة خاصة عملتها إنت) بتتعرض عادي زي ما هي حتى لو مش في القائمة دي.
+// الشركات المعروفة في كود التطبيق (server.js) — بيتم عرضها هنا حتى لو
+// لسه ملهاش نود في Firebase، بقيم افتراضية (200 مكافأة / 10 حد يومي)،
+// عشان الأدمن يقدر يشوفها ويعدّل عليها من هنا مباشرة بدل ما يضطر
+// يضيفها يدويًا كـ"شركة جديدة". أي شركة تانية اتضافت فعليًا في Firebase
+// (زي شركة خاصة عملتها إنت) بتتعرض عادي زي ما هي حتى لو مش في القائمة دي.
+const KNOWN_AD_COMPANIES_DEFAULTS = {
+  adsgram: { reward: 200, dailyLimit: 10 },
+  gigapub: { reward: 200, dailyLimit: 10 },
+  adloop:  { reward: 200, dailyLimit: 10 },
+};
+
+// شركات اتشالت من لوحة التحكم عمدًا (زي Monetag) — حتى لو النود بتاعها
+// لسه موجود في Firebase (config/adCompanies/monetag)، مش هتتعرض هنا
+// خالص. لو حبيت ترجّعها تاني يوم من الأيام، امسح اسمها من القائمة دي.
+const HIDDEN_AD_COMPANIES = ['monetag'];
+
+function renderAdCompanies(){
+  const saved = (configCache.adCompanies) || {};
+  const merged = { ...KNOWN_AD_COMPANIES_DEFAULTS, ...saved };
+  const visible = Object.entries(merged).filter(([name,c]) => !HIDDEN_AD_COMPANIES.includes(name) && !(c && c.deleted));
+  const deleted = Object.entries(merged).filter(([name,c]) => c && c.deleted);
+  const wrap = document.getElementById('adsCards');
+  const html = visible.map(([name,c])=>{
+    const isUnsaved = !saved[name];
+    const paused = c.enabled === false;
+    return `
+    <div class="mini-card" style="${paused?'opacity:.7':''}">
+      <h4><span style="text-transform:capitalize">${escapeHtml(name)}</span>
+        ${paused?' <span class="badge b-red">متوقفة</span>':' <span class="badge b-green">شغّالة</span>'}
+        ${isUnsaved?' <span class="badge" style="font-size:10px;opacity:.75">افتراضية</span>':''}</h4>
+      <div class="mini-row"><span>مكافأة الإعلان</span><b>${fmt(c.reward)} ZNX</b></div>
+      <div class="mini-row"><span>الحد اليومي</span><b>${fmt(c.dailyLimit)}</b></div>
+      <div class="row-actions" style="margin-top:10px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" style="flex:1" onclick='openAdCompanyModal(${JSON.stringify(name)})'>تعديل</button>
+        <button class="btn ${paused?'btn-gold':'btn-ghost'} btn-sm" style="flex:1" onclick="toggleAdCompany('${name}', ${paused})">${paused?'تشغيل':'إيقاف'}</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteAdCompany('${name}')">حذف</button>
+      </div>
+    </div>`;
+  }).join('');
+  const restore = deleted.length ? `<div style="grid-column:1/-1;margin-top:8px" class="muted">شركات محذوفة: ${deleted.map(([n])=>`<button class="btn btn-ghost btn-sm" style="margin:2px" onclick="restoreAdCompany('${n}')">↺ استرجاع ${escapeHtml(n)}</button>`).join('')}</div>` : '';
+  wrap.innerHTML = html + `<div class="add-card" onclick="openAdCompanyModal()">+ إضافة شركة</div>` + restore;
+}
+
+function toggleAdCompany(name, enable){
+  const cur = ((configCache.adCompanies||{})[name]) || KNOWN_AD_COMPANIES_DEFAULTS[name] || {reward:200,dailyLimit:10};
+  db.ref('config/adCompanies/'+name).update({reward:Number(cur.reward)||0, dailyLimit:Number(cur.dailyLimit)||0, enabled:!!enable, deleted:false})
+    .then(()=>toast(enable?'تم تشغيل الشركة ✓':'تم إيقاف الشركة — اختفت من التطبيق'))
+    .catch(err=>toast('خطأ: '+err.message, true));
+}
+function restoreAdCompany(name){
+  db.ref('config/adCompanies/'+name).update({deleted:false, enabled:true})
+    .then(()=>toast('تم استرجاع الشركة ✓')).catch(err=>toast('خطأ: '+err.message, true));
+}
+
+function openAdCompanyModal(name){
+  const c = name ? ((configCache.adCompanies||{})[name] || KNOWN_AD_COMPANIES_DEFAULTS[name] || {}) : {};
+  document.getElementById('modalTitle').textContent = name ? 'تعديل: '+name : 'شركة إعلانات جديدة';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="field"><label>اسم الشركة (بالإنجليزية، مطابق للكود)</label><input type="text" class="sans" id="a_name" value="${escapeHtml(name||'')}" ${name?'disabled':''}></div>
+    <div class="field"><label>مكافأة الإعلان الواحد (ZNX)</label><input type="number" id="a_reward" value="${Number(c.reward)||200}"></div>
+    <div class="field"><label>الحد اليومي المسموح</label><input type="number" id="a_limit" value="${Number(c.dailyLimit)||10}"></div>
+  `;
+  document.getElementById('modalFoot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">إلغاء</button><button class="btn btn-gold" onclick='saveAdCompany(${JSON.stringify(name||null)})'>حفظ</button>`;
+  showModal();
+}
+
+function saveAdCompany(existingName){
+  const name = (existingName || document.getElementById('a_name').value.trim()).toLowerCase();
+  const reward = Number(document.getElementById('a_reward').value)||0;
+  const dailyLimit = Number(document.getElementById('a_limit').value)||0;
+  if(!name){ toast('يرجى إدخال اسم الشركة', true); return; }
+  db.ref('config/adCompanies/'+name).update({reward, dailyLimit, deleted:false})
+    .then(()=>{ toast('تم حفظ شركة الإعلانات ✓'); closeModal(); })
+    .catch(err=>toast('خطأ: '+err.message, true));
+}
+function deleteAdCompany(name){
+  const isBuiltIn = !!KNOWN_AD_COMPANIES_DEFAULTS[name];
+  if(!confirm('حذف شركة "'+name+'" من اللوحة؟'+(isBuiltIn?'\n(الشركة مدمجة في البوت، فهيتم إيقافها وإخفاؤها ويمكنك استرجاعها لاحقًا)':''))) return;
+  const ref = db.ref('config/adCompanies/'+name);
+  const op = isBuiltIn ? ref.update({deleted:true, enabled:false}) : ref.remove();
+  op.then(()=>toast('تم الحذف')).catch(err=>toast('خطأ: '+err.message, true));
+}
+
+document.getElementById('saveAdDailyLimitBtn').addEventListener('click', ()=>{
+  const val = Number(document.getElementById('cfg_adDailyLimit_ads').value)||0;
+  db.ref('config').update({adDailyLimit: val})
+    .then(()=>toast('تم حفظ الحد اليومي الإجمالي للإعلانات ✓'))
+    .catch(err=>toast('خطأ: '+err.message, true));
+});
+
+/* =========================================================
+   CONTEST MANAGEMENT  (weeklyContest/*)
+   ========================================================= */
+let contestState = null, contestAdj = {};
+function contestPrizesArr(){
+  const a = configCache.weeklyContestPrizesTon;
+  return (Array.isArray(a) && a.length===10) ? a.map(n=>Number(n)||0) : [1,0.5,0.5,0.25,0.25,0.1,0.1,0.1,0.1,0.1];
+}
+function toLocalInput(ts){
+  const d = new Date(ts - new Date(ts).getTimezoneOffset()*60000);
+  return d.toISOString().slice(0,16);
+}
+db.ref('weeklyContest/state').on('value', snap=>{
+  contestState = snap.val();
+  if(contestState && contestState.endTs){
+    const el = document.getElementById('ct_endTs'); if(el) el.value = toLocalInput(contestState.endTs);
+    const h = document.getElementById('ctStateHint');
+    if(h) h.textContent = 'بدأت: '+fmtDate(contestState.startTs)+' — تنتهي: '+fmtDate(contestState.endTs);
+  }
+});
+function renderContestPrizeInputs(){
+  const box = document.getElementById('ctPrizes'); if(!box) return;
+  if(box.dataset.filled && box.contains(document.activeElement)) return;
+  const p = contestPrizesArr();
+  box.innerHTML = p.map((v,i)=>`<div class="field"><label>المركز ${i+1}</label><input type="number" step="0.01" id="ct_prize_${i}" value="${v}"></div>`).join('');
+  box.dataset.filled = '1';
+}
+document.getElementById('nav').addEventListener('click', ()=> setTimeout(renderContestPrizeInputs, 0));
+
+function saveContestEnd(){
+  const v = document.getElementById('ct_endTs').value;
+  const ts = new Date(v).getTime();
+  if(!v || !Number.isFinite(ts)){ toast('اختر تاريخ صحيح', true); return; }
+  if(contestState && ts <= contestState.startTs){ toast('وقت الانتهاء لازم يكون بعد وقت البداية', true); return; }
+  db.ref('weeklyContest/state/endTs').set(ts).then(()=>toast('تم تعديل وقت الانتهاء ✓')).catch(e=>toast('خطأ: '+e.message,true));
+}
+function extendContest(days){
+  if(!contestState){ toast('لا توجد جولة حالية', true); return; }
+  db.ref('weeklyContest/state/endTs').set(Number(contestState.endTs)+days*86400000)
+    .then(()=>toast('تم التمديد ✓')).catch(e=>toast('خطأ: '+e.message,true));
+}
+function endContestNow(){
+  if(!confirm('إنهاء الجولة فورًا؟ سيتم توزيع الجوائز على الفائزين عند أول طلب للبوت (أو خلال دقيقة).')) return;
+  db.ref('weeklyContest/state/endTs').set(Date.now()-1000)
+    .then(()=>toast('تم إنهاء الجولة — جاري التوزيع')).catch(e=>toast('خطأ: '+e.message,true));
+}
+function saveContestPrizes(){
+  const arr = [];
+  for(let i=0;i<10;i++) arr.push(Number(document.getElementById('ct_prize_'+i).value)||0);
+  db.ref('config/weeklyContestPrizesTon').set(arr).then(()=>toast('تم حفظ الجوائز ✓')).catch(e=>toast('خطأ: '+e.message,true));
+}
+function contestPeriodId(){ return contestState ? (contestState.periodId || ('wc_'+contestState.startTs)) : null; }
+function contestAdjRef(uid){ return db.ref('weeklyContest/adjustments/'+contestPeriodId()+'/'+uid); }
+function contestUidInput(){
+  const uid = (document.getElementById('ct_uid').value||'').trim();
+  if(!/^\d+$/.test(uid)){ toast('آيدي تيليجرام غير صحيح', true); return null; }
+  if(!contestState){ toast('لا توجد جولة حالية', true); return null; }
+  return uid;
+}
+function contestAdjust(sign){
+  const uid = contestUidInput(); if(!uid) return;
+  const n = Math.floor(Number(document.getElementById('ct_amount').value)||0);
+  if(n<=0){ toast('أدخل عددًا أكبر من صفر', true); return; }
+  contestAdjRef(uid).child('delta').transaction(cur => (Number(cur)||0) + sign*n)
+    .then(()=>{ toast((sign>0?'تمت إضافة ':'تم حذف ')+n+' ✓'); loadContestBoard(); })
+    .catch(e=>toast('خطأ: '+e.message,true));
+}
+function contestRemoveUser(flag){
+  const uid = contestUidInput(); if(!uid) return;
+  contestAdjRef(uid).child('removed').set(!!flag)
+    .then(()=>{ toast(flag?'تم استبعاد المستخدم من المسابقة':'تم إلغاء الاستبعاد'); loadContestBoard(); })
+    .catch(e=>toast('خطأ: '+e.message,true));
+}
+function contestResetAdj(uid){
+  if(!confirm('مسح كل التعديلات اليدوية لهذا المستخدم؟')) return;
+  contestAdjRef(uid).remove().then(()=>{ toast('تم المسح'); loadContestBoard(); }).catch(e=>toast('خطأ: '+e.message,true));
+}
+async function loadContestBoard(){
+  renderContestPrizeInputs();
+  const body = document.getElementById('ctBody');
+  const snapState = await db.ref('weeklyContest/state').once('value');
+  contestState = snapState.val();
+  if(!contestState){ body.innerHTML = emptyRow(6,'لا توجد جولة حالية بعد — ستُنشأ تلقائيًا عند أول طلب للبوت'); return; }
+  const [refSnap, adjSnap] = await Promise.all([
+    db.ref('referrals').once('value'),
+    db.ref('weeklyContest/adjustments/'+contestPeriodId()).once('value')
+  ]);
+  const allRefs = refSnap.val() || {};
+  contestAdj = adjSnap.val() || {};
+  const rows = {};
+  Object.entries(allRefs).forEach(([rid, refs])=>{
+    if(!refs || typeof refs!=='object') return;
+    let c = 0;
+    Object.values(refs).forEach(r=>{
+      const st = (r&&r.status)||'active';
+      const j = Number((r&&r.joinedAt)||0);
+      if((st==='active'||st==='completed') && j>=contestState.startTs && j<contestState.endTs) c++;
+    });
+    if(c>0) rows[rid] = c;
+  });
+  Object.keys(contestAdj).forEach(uid=>{ if(!(uid in rows)) rows[uid]=0; });
+  const list = Object.entries(rows).map(([uid,base])=>{
+    const a = contestAdj[uid] || {};
+    const delta = Number(a.delta)||0;
+    return { uid, base, delta, removed: !!a.removed, total: Math.max(0, base+delta) };
+  }).filter(r=> r.total>0 || r.removed || r.delta!==0)
+    .sort((x,y)=> (x.removed-y.removed) || (y.total-x.total));
+  const prizes = contestPrizesArr();
+  let rank = 0;
+  body.innerHTML = list.slice(0,25).map(r=>{
+    const u = usersCache[r.uid] || {};
+    const pos = r.removed ? '—' : (++rank);
+    const prize = (!r.removed && typeof pos==='number' && pos<=10) ? '$'+prizes[pos-1] : '—';
+    return `<tr>
+      <td>${pos}</td>
+      <td><div class="u-cell"><img src="${u.photoUrl||AVATAR_FALLBACK}" onerror="this.src='${AVATAR_FALLBACK}'"><div><div class="u-name">${escapeHtml(displayName(u))}</div><div class="u-sub mono">${r.uid}</div></div></div></td>
+      <td class="mono"><b>${fmt(r.total)}</b>${r.removed?' <span class="badge b-red">مستبعد</span>':''}</td>
+      <td class="mono muted">${r.delta>0?'+':''}${r.delta||0}</td>
+      <td class="mono">${prize}</td>
+      <td>${(r.delta||r.removed)?`<button class="btn btn-ghost btn-sm" onclick="contestResetAdj('${r.uid}')">مسح التعديل</button>`:''}</td>
+    </tr>`;
+  }).join('') || emptyRow(6,'لا يوجد مشاركون بعد');
+}
+db.ref('config/weeklyContestPrizesTon').on('value', ()=>{ const b=document.getElementById('ctPrizes'); if(b){ delete b.dataset.filled; if(currentView==='contest') renderContestPrizeInputs(); } });
+
+
+/* =========================================================
+   BLOCKED ACCOUNTS
+   ========================================================= */
+db.ref('blocked_accounts').on('value', snap=>{
+  blockedCache = snap.val() || {};
+  renderBlocked();
+  renderDashboardStats();
+  if(currentView==='users') renderUsersTable();
+});
+function renderBlocked(){
+  const entries = Object.entries(blockedCache).sort((a,b)=>(b[1].ts||0)-(a[1].ts||0));
+  const body = document.getElementById('blockedBody');
+  if(!entries.length){ body.innerHTML = emptyRow(5,'لا توجد حسابات محظورة حاليًا 🎉'); return; }
+  body.innerHTML = entries.map(([id,b])=>`
+    <tr>
+      <td class="mono">${id}</td>
+      <td>
+        <div>${escapeHtml(b.reason||'—')}</div>
+        ${b.reasonCode?`<div class="u-sub mono" style="margin-top:3px">${escapeHtml(b.reasonCode)}</div>`:''}
+      </td>
+      <td><span class="badge ${Number(b.score)>=70?'b-red':'b-gold'}">${fmt(b.score)}</span></td>
+      <td class="muted">${fmtDate(b.ts)}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="unblockUser('${id}')">فك الحظر</button></td>
+    </tr>`).join('');
+}
+function unblockUser(id){
+  if(!confirm('فك الحظر عن هذا المستخدم؟')) return;
+  db.ref('blocked_accounts/'+id).remove().then(()=>toast('تم فك الحظر ✓')).catch(err=>toast('خطأ: '+err.message, true));
+}
+
+/* =========================================================
+   DATABASE PARTITIONS (root-level nodes) — Explore / Delete
+   Uses REST "shallow" reads (keys only, no values) so listing and
+   deleting huge nodes (thousands of users, etc.) never has to pull
+   down or push up the full payload in one shot — this is what
+   avoids Firebase's WRITE_TOO_BIG error on large partitions.
+   ========================================================= */
+const PARTITION_BATCH_SIZE = 500; // keys deleted per multi-path update
+
+function dbUrl(path, query){
+  const base = firebaseConfig.databaseURL.replace(/\/$/, '');
+  const p = path ? '/' + String(path).replace(/^\/+/, '') : '';
+  return base + p + '.json' + (query ? ('?' + query) : '');
+}
+
+async function shallowGet(path){
+  const res = await fetch(dbUrl(path, 'shallow=true'));
+  if(!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json(); // null | true (per object child) | scalar value | {key:true,...}
+}
+
+function loadPartitions(){
+  const wrap = document.getElementById('partitionsCards');
+  wrap.innerHTML = '<div class="loader"><span class="spin"></span></div>';
+  shallowGet('/').then(async root=>{
+    root = root || {};
+    const keys = Object.keys(root).sort((a,b)=>a.localeCompare(b));
+    if(!keys.length){ wrap.innerHTML = '<div class="empty">لا توجد أي أقسام في قاعدة البيانات حاليًا</div>'; return; }
+    // shallow root only tells us "is this key an object" (true) or its raw
+    // scalar value — fetch a second shallow level per key to get real counts.
+    const info = await Promise.all(keys.map(async key=>{
+      const topVal = root[key];
+      const isObj = topVal === true; // shallow marks object/array children as literal `true`
+      let count = null;
+      if(isObj){
+        try{
+          const children = await shallowGet(key);
+          count = children ? Object.keys(children).length : 0;
+        }catch(e){ count = null; }
+      }
+      return {key, isObj, count, scalarVal: isObj ? undefined : topVal};
+    }));
+    wrap.innerHTML = info.map(({key,isObj,count,scalarVal})=>{
+      const typeLabel = isObj ? 'كائن (Object)' : 'قيمة مفردة';
+      const countLabel = count===null ? '—' : fmt(count);
+      return `
+      <div class="mini-card">
+        <h4><span class="mono" style="font-size:13.5px">${escapeHtml(key)}</span></h4>
+        <div class="mini-row"><span>النوع</span><b>${typeLabel}</b></div>
+        <div class="mini-row"><span>عدد العناصر الفرعية</span><b>${isObj?countLabel:'—'}</b></div>
+        ${!isObj?`<div class="mini-row"><span>القيمة</span><b class="mono" style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escapeHtml(String(scalarVal))}">${escapeHtml(String(scalarVal))}</b></div>`:''}
+        <div class="row-actions" style="margin-top:10px">
+          <button class="btn btn-ghost btn-sm" style="flex:1" onclick='explorePartition(${JSON.stringify(key)})'>استكشاف</button>
+          <button class="btn btn-danger btn-sm" style="flex:1" onclick='deletePartition(${JSON.stringify(key)})'>حذف القائمة بالكامل</button>
+        </div>
+      </div>`;
+    }).join('');
+  }).catch(err=>{
+    wrap.innerHTML = '<div class="empty">تعذّر تحميل الأقسام: '+escapeHtml(err.message)+'</div>';
+  });
+}
+
+const PARTITION_EXPLORE_LIMIT = 300; // above this, show a key list instead of full JSON
+
+async function explorePartition(key){
+  document.getElementById('modalTitle').textContent = 'استكشاف قسم: ' + key;
+  document.getElementById('modalBody').innerHTML = '<div class="loader"><span class="spin"></span></div>';
+  document.getElementById('modalFoot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">إغلاق</button><button class="btn btn-danger" onclick='closeModal();deletePartition(${JSON.stringify(key)})'>حذف هذا القسم</button>`;
+  showModal();
+  try{
+    const shallow = await shallowGet(key);
+    const isObj = shallow !== null && typeof shallow === 'object';
+    if(!isObj){
+      document.getElementById('modalBody').innerHTML = `<pre class="mono" style="white-space:pre-wrap;word-break:break-all;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:12px">${escapeHtml(JSON.stringify(shallow, null, 2))}</pre>`;
+      return;
+    }
+    const childKeys = Object.keys(shallow);
+    if(childKeys.length > PARTITION_EXPLORE_LIMIT){
+      document.getElementById('modalBody').innerHTML = `
+        <div class="hint">هذا القسم كبير جدًا (${fmt(childKeys.length)} عنصر فرعي) — بيتعرض هنا أسماء العناصر فقط لتفادي تعليق المتصفح.</div>
+        <div class="mono" style="max-height:38vh;overflow-y:auto;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:12px;line-height:1.7;margin-top:8px">
+          ${childKeys.slice(0,PARTITION_EXPLORE_LIMIT).map(k=>escapeHtml(k)).join('<br>')}
+          <div class="muted" style="margin-top:6px">... و${fmt(childKeys.length-PARTITION_EXPLORE_LIMIT)} عنصر آخر</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick='loadFullPartitionData(${JSON.stringify(key)})'>تحميل كل البيانات كاملة (قد يكون بطيئًا جدًا)</button>
+      `;
+      return;
+    }
+    await loadFullPartitionData(key, childKeys.length);
+  }catch(err){
+    document.getElementById('modalBody').innerHTML = '<div class="empty">خطأ: '+escapeHtml(err.message)+'</div>';
+  }
+}
+
+async function loadFullPartitionData(key, knownCount){
+  document.getElementById('modalBody').innerHTML = '<div class="loader"><span class="spin"></span></div><div class="hint" style="text-align:center">جارِ تحميل البيانات الكاملة...</div>';
+  try{
+    const res = await fetch(dbUrl(key));
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const count = knownCount!==undefined ? knownCount : (data && typeof data==='object' ? Object.keys(data).length : null);
+    document.getElementById('modalBody').innerHTML = `
+      <div class="hint">عدد العناصر الفرعية: ${count===null?'—':fmt(count)}</div>
+      <pre class="mono" style="white-space:pre-wrap;word-break:break-all;max-height:52vh;overflow-y:auto;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:12px;line-height:1.6;margin-top:6px">${escapeHtml(JSON.stringify(data, null, 2))}</pre>
+    `;
+  }catch(err){
+    document.getElementById('modalBody').innerHTML = '<div class="empty">خطأ: '+escapeHtml(err.message)+'</div>';
+  }
+}
+
+async function deletePartition(key){
+  const typed = prompt('⚠️ تحذير: هذا إجراء نهائي وسيحذف قسم "'+key+'" بالكامل من قاعدة البيانات ولن يمكن التراجع عنه.\n\nللتأكيد، اكتب اسم القسم بالضبط كما هو:\n'+key);
+  if(typed === null) return;
+  if(typed.trim() !== key){ toast('الاسم المكتوب غير مطابق — تم إلغاء عملية الحذف', true); return; }
+
+  toast('جارِ حذف قسم "'+key+'"... قد يستغرق ذلك وقتًا لو كان القسم كبيرًا');
+  try{
+    let totalDeleted = 0;
+    // Delete in batches of child keys (multi-path update with null values)
+    // instead of one big remove() — a single remove() on a huge node is
+    // exactly what triggers WRITE_TOO_BIG. Each batch below only sends
+    // key paths mapped to null, so its payload stays tiny no matter how
+    // much data used to live under those keys.
+    while(true){
+      const children = await shallowGet(key);
+      if(children === null) break; // already fully empty
+      if(typeof children !== 'object'){
+        // remaining node is a plain scalar value — safe to remove directly
+        await db.ref(key).remove();
+        break;
+      }
+      const childKeys = Object.keys(children);
+      if(!childKeys.length) break;
+      const batchKeys = childKeys.slice(0, PARTITION_BATCH_SIZE);
+      const updates = {};
+      batchKeys.forEach(k => { updates[key + '/' + k] = null; });
+      await db.ref().update(updates);
+      totalDeleted += batchKeys.length;
+    }
+    toast('تم حذف قسم "'+key+'" بالكامل ✓' + (totalDeleted ? (' ('+fmt(totalDeleted)+' عنصر)') : ''));
+    closeModal();
+    loadPartitions();
+  }catch(err){
+    toast('حصل خطأ أثناء الحذف (ممكن جزء من البيانات يكون اتحذف بالفعل): '+err.message, true);
+    loadPartitions();
+  }
+}
+
+/* =========================================================
+   CONFIG
+   ========================================================= */
+const CFG_NUM_FIELDS = ['dailyBonusReward','referralReward',
+  'miningReward','gameDailyLimit','usdConversionRate',
+  'minWithdrawalUsd','usdPerTon','taskPricePer100Usd'];
+
+db.ref('config').on('value', snap=>{
+  configCache = snap.val() || {};
+  fillConfigForm();
+  renderAdCompanies();
+});
+
+function fillConfigForm(){
+  const c = configCache;
+  CFG_NUM_FIELDS.forEach(key=>{
+    const el = document.getElementById('cfg_'+key);
+    if(el && c[key] !== undefined) el.value = c[key];
+  });
+  document.getElementById('cfg_miningDurationMin').value = c.miningDurationMs ? Math.round(c.miningDurationMs/60000) : 60;
+  document.getElementById('cfg_botUsername').value = c.botUsername || '';
+  document.getElementById('cfg_botToken').value = c.botToken || '';
+  document.getElementById('cfg_mandatorySubEnabled').checked = c.mandatorySubEnabled !== false;
+  document.getElementById('cfg_withdrawalEnabled').checked = c.withdrawalEnabled !== false;
+  const adDailyLimitEl = document.getElementById('cfg_adDailyLimit_ads');
+  if(adDailyLimitEl && c.adDailyLimit !== undefined) adDailyLimitEl.value = c.adDailyLimit;
+}
+
+document.getElementById('saveConfigBtn').addEventListener('click', ()=>{
+  const updates = {};
+  CFG_NUM_FIELDS.forEach(key=>{
+    const el = document.getElementById('cfg_'+key);
+    if(el && el.value !== '') updates[key] = Number(el.value)||0;
+  });
+  updates.miningDurationMs = (Number(document.getElementById('cfg_miningDurationMin').value)||60) * 60000;
+  const _bu = document.getElementById('cfg_botUsername').value.trim(); if(_bu) updates.botUsername = _bu;
+  const _bt = document.getElementById('cfg_botToken').value.trim(); if(_bt) updates.botToken = _bt;
+  updates.mandatorySubEnabled = document.getElementById('cfg_mandatorySubEnabled').checked;
+  updates.withdrawalEnabled = document.getElementById('cfg_withdrawalEnabled').checked;
+
+  const btn = document.getElementById('saveConfigBtn');
+  btn.disabled = true; btn.textContent = 'جارِ الحفظ...';
+  db.ref('config').update(updates)
+    .then(()=>{ toast('تم حفظ الإعدادات وتطبيقها على البوت فورًا ✓'); })
+    .catch(err=>toast('خطأ أثناء الحفظ: '+err.message, true))
+    .finally(()=>{ btn.disabled=false; btn.textContent='حفظ كل التغييرات'; });
+});
+
+/* =========================================================
+   MODAL helpers
+   ========================================================= */
+function showModal(){ document.getElementById('modalOverlay').classList.add('show'); }
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('show'); }
+document.getElementById('modalOverlay').addEventListener('click', e=>{ if(e.target.id==='modalOverlay') closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+/* init */
+switchView('dashboard');
+</script>
+</body>
+</html>
