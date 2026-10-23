@@ -1881,6 +1881,11 @@ const CFG_FIELDS = [
   {t:'num', k:'referralReward', l:'مكافأة الإحالة (مرة واحدة بعد 10 إعلانات)'},
   {t:'num', k:'taskDefaultReward', l:'المكافأة الافتراضية للمهام'},
   {t:'num', k:'gameDailyLimit', l:'الحد اليومي للألعاب (لكل لعبة)'},
+  {t:'sec', l:'الحد الأقصى لربح الألعاب (في المحاولة الواحدة، '+COIN_NAME+')'},
+  {t:'num', k:'gameMaxRewards/memory', l:'لعبة الذاكرة (Memory)'},
+  {t:'num', k:'gameMaxRewards/rps', l:'حجر ورقة مقص (RPS)'},
+  {t:'num', k:'gameMaxRewards/higher', l:'أعلى أو أقل (Higher/Lower)'},
+  {t:'num', k:'gameMaxRewards/tap', l:'لعبة الضغط (Tap)'},
   {t:'sec', l:'الإعلانات'},
   {t:'num', k:'adCompanyDailyLimit', l:'الحد اليومي لكل شركة (احتياطي)'},
   {t:'num', k:'adMinWatchMs', l:'أقل وقت مشاهدة (ملي ثانية)'},
@@ -1890,6 +1895,7 @@ const CFG_FIELDS = [
   {t:'num', k:'stakingPeriodMs', l:'مدة الدورة (ساعات)', mul:3600000},
   {t:'num', k:'stakingMinAmount', l:'أقل مبلغ ستيك ('+COIN_NAME+')'},
   {t:'sec', l:'الدولار والتحويل'},
+  {t:'num', k:'minWithdrawalUsd', l:'أقل مبلغ للسحب ($)'},
   {t:'num', k:'usdConversionRate', l:'عدد '+COIN_NAME+' مقابل 1 دولار'},
   {t:'num', k:'usdPerTon', l:'سعر 1 TON بالدولار'},
   {t:'num', k:'taskPricePer100Usd', l:'سعر ترويج القناة لكل 100 عضو ($)'},
@@ -1921,7 +1927,7 @@ function fillConfigForm(){
   CFG_FIELDS.forEach(f=>{
     const el = document.getElementById('cfg_'+f.k);
     if(!el) return;
-    const v = c[f.k];
+    const v = f.k.split('/').reduce((o,p)=>(o && typeof o==='object') ? o[p] : undefined, c);
     if(f.t==='sw') el.checked = v !== false;
     else if(v !== undefined && v !== null) el.value = f.mul ? +(Number(v)/f.mul).toFixed(4) : v;
   });
