@@ -4517,7 +4517,8 @@ function startTap(){
 function finishGame(){
   if(gameFinished || !activeGame) return;
   gameFinished=true; clearInterval(gameTimerId);
-  var key=activeGame, score=Math.min(key==='memory'?30:key==='rps'?10:key==='higher'?25:key==='tap'?20:0,Math.max(0,gameScore));
+  var key=activeGame; var gmx=((S.data&&S.data.config&&S.data.config.gameMaxRewards)||{}), dmx={memory:30,rps:10,higher:25,tap:20}, capN=Number(gmx[key]); if(!(capN>=0)) capN=dmx[key]||0;
+  var score=Math.min(capN,Math.max(0,gameScore));
   apiCaptcha('playGame',{game:key,score:score}).then(function(res){
     if(!res.success){ showToast(res.error||'Game unavailable','error'); closeGame(); return; }
     S.user.balance=res.data.shibaBalance; updatePmtTonValueDisplays();
