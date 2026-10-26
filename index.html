@@ -753,7 +753,6 @@ img[src*="cloudinary"],img[src*="simpleicons"]{filter:grayscale(1) contrast(1.1)
 .cp-ind{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:14px;background:linear-gradient(135deg,rgba(96,242,145,.75),rgba(40,217,99,.55));border:1px solid rgba(185,249,206,.7);box-shadow:0 0 18px rgba(96,242,145,.55),inset 0 0 14px rgba(170,255,210,.12);transition:transform .45s cubic-bezier(.5,1.4,.5,1);overflow:hidden}
 .cp-ind::after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(170,255,210,.35) 50%,transparent 70%);transform:translateX(-120%);animation:cpSweep 3.4s ease-in-out infinite}
 .cp-tabs[data-on="ads"] .cp-ind{transform:translateX(100%)}
-#cpTabs{display:none!important}
 @keyframes cpSweep{0%,55%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
 #cpPanel{transition:opacity .25s ease,transform .25s ease}
 #cpPanel.sw{opacity:0;transform:translate3d(0,8px,0)}
@@ -1571,6 +1570,7 @@ html body .tx-item{border-radius:16px}
 #page-record .cp-info{margin:0;width:42px;height:42px;border-radius:14px;background:var(--z-surf);border:1px solid var(--z-line2);color:#7dffae}
 #page-record .cp-info .ico{width:22px;height:22px}
 #page-record .cp-tabs.single{display:none}
+#page-record .cp-tabs:not(.single){margin-bottom:14px}
 #page-record .cp-tabs:not(.single){background:rgba(255,255,255,.04);border:1px solid var(--z-line);border-radius:18px;box-shadow:none}
 #page-record .ico{width:20px;height:20px;flex-shrink:0;display:inline-block;vertical-align:middle}
 #page-record .ico.coin{width:18px;height:18px;object-fit:contain}
