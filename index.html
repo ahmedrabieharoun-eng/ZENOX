@@ -1842,7 +1842,7 @@ html body .ico{filter:none}
        <div class="ref-banner">
          <div class="ref-banner-title">Invite friends and earn</div>
           <span class="ref-banner-pct" id="refPct">4,000 ZNX</span>
-          <div class="ref-banner-desc">Each referral must watch 10 GigaPub ads — you get paid instantly, one time.<br>Only GigaPub ads count toward the 10.<br>Plus 10% of everything they make after activation, forever.</div>
+          <div class="ref-banner-desc">Each referral must watch 10 Adsgram ads — you get paid instantly, one time.<br>Only Adsgram ads count toward the 10.<br>Plus 10% of everything they make after activation, forever.</div>
       </div>
 
       <div class="ref-link-section">
@@ -1904,9 +1904,9 @@ html body .ico{filter:none}
          <div class="wallet-form-title"><span><svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span><span>Withdraw USD</span></div>
          <div class="withdraw-requirements" aria-label="Withdrawal requirements">
            <div class="withdraw-requirement min"><span>MIN</span><span id="withdrawMinValue">$0.2</span></div>
-           <div class="withdraw-requirement ads"><span>GIGAPUB ADS</span><span id="withdrawAdsValue">0/20</span></div>
+           <div class="withdraw-requirement ads"><span>ADSGRAM ADS</span><span id="withdrawAdsValue">0/20</span></div>
          </div>
-         <div class="wallet-form-help" style="margin:-6px 0 12px">Only ads watched through GigaPub count toward the withdrawal requirement.</div>
+         <div class="wallet-form-help" style="margin:-6px 0 12px">Only ads watched through Adsgram count toward the withdrawal requirement.</div>
          <input class="wallet-input" id="withdrawWallet" placeholder="TON Wallet Address (UQ...) — you receive TON here">
          <input class="wallet-input" id="withdrawAmount" type="number" step="0.01" inputmode="decimal" placeholder="Amount in USD ($)">
           <div class="withdraw-fee-card">Withdrawal fee: <b>10%</b><div class="withdraw-net"><span>Amount you will receive after the fee</span><strong id="withdrawNetAmount">$0.0000</strong></div><div class="withdraw-net"><span>You will receive in TON</span><strong id="withdrawTonAmount">0.0000 TON</strong></div><div class="withdraw-net"><span>Rate</span><strong id="withdrawRateLabel">1 TON = $1.50</strong></div></div>
@@ -3035,17 +3035,26 @@ function claimStake(){
     .then(function(){ miningAdBusy = false; try { renderStaking(); } catch(_){} });
 }
 
-// ── Shared: require a completed GigaPub ad view before running an action ──
-// If the admin disabled GigaPub (config/adCompanies/gigapub/enabled = false),
+// ── Shared: require a completed Adsgram ad view before running an action ──
+// Used by the side features (daily bonus, promo code, convert). These ads give
+// no ad reward of their own, so they don't go through checkSession/syncBalance.
+// If the admin disabled Adsgram (config/adCompanies/adsgram/enabled = false),
 // the ad step is skipped so features never get stuck behind a hidden network.
 function isAdCompanyEnabled(name){
   var c = (S.data && S.data.stats && S.data.stats.adCompanies && S.data.stats.adCompanies[name]) || null;
   return !(c && c.enabled === false);
 }
+// Resolves when the user watched the ad to the end; rejects (with Adsgram's
+// result object) if it was skipped/failed. Rejects with {description} if the
+// SDK isn't ready yet.
+function showSideAdsgram(){
+  var controller = ensureAdsgramInit();
+  if (!controller) return Promise.reject({ description: 'Ad loading, try again' });
+  return controller.show();
+}
 function watchAdThen(onSuccess, onFail){
-  if (!isAdCompanyEnabled('gigapub')){ onSuccess(); return; }
-  if (typeof window.showGiga !== 'function'){ showToast('Ad loading, try again','error'); if (onFail) onFail(); return; }
-  window.showGiga().then(function(){
+  if (!isAdCompanyEnabled('adsgram')){ onSuccess(); return; }
+  showSideAdsgram().then(function(){
     onSuccess();
   }).catch(function(err){
     showToast((err && (err.description || err.message)) || 'Ad was not completed','error');
@@ -3157,7 +3166,7 @@ function renderRefs(page){
         var progressHtml = '<div class="ref-days">'+
             '<div class="ref-day '+(isCompleted?'done':'')+'">'+
               '<div class="ref-day-title">'+(isCompleted?IC('check')+' ':'')+(isCompleted?'Reward claimed':'Watching ads')+'</div>'+
-              '<div>GigaPub ads '+adsWatched+'/10</div>'+
+              '<div>Adsgram ads '+adsWatched+'/10</div>'+
             '</div>'+
           '</div>';
         var earnedTotal = isCompleted
@@ -3179,7 +3188,7 @@ function renderRefs(page){
          '<div class="ref-user-details">'+
             (r.fraudMultipleAccounts ? IC('alert')+' Flagged as multiple accounts from the same device' :
             isCompleted ? IC('checkc')+' The one-time referral bonus has been credited' :
-              IC('tv')+' Watches 10 GigaPub ads to unlock a one-time reward of <b>'+fmtShiba(r.reward||0)+' ZNX</b>')+
+              IC('tv')+' Watches 10 Adsgram ads to unlock a one-time reward of <b>'+fmtShiba(r.reward||0)+' ZNX</b>')+
         '</div>'+
       '</div>');
     } catch (err) {
@@ -3518,7 +3527,7 @@ function openWithdrawForm(){
   var cfg = (S.data && S.data.config) || {};
   if (cfg.withdrawalEnabled === false){ showToast('Withdrawals are currently disabled','error'); return; }
   var adsByCompanyW = (S.data && S.data.stats && S.data.stats.adsWatchedByCompany) || {};
-  var watched = Number(adsByCompanyW.gigapub || 0);
+  var watched = Number(adsByCompanyW.adsgram || 0);
   var minUsd = Number(cfg.minWithdrawalUsd); if (!(minUsd > 0)) minUsd = 0.2;
   var rule = { min: minUsd, ads: 20 };
   document.getElementById('withdrawMinValue').textContent = '$'+rule.min;
@@ -4372,9 +4381,9 @@ function copyRefLink(){
 
 // ── Mini games ─────────────────────────────────────────────────────────
 function showGameAd(){
-  if (!isAdCompanyEnabled('gigapub')) return Promise.resolve();
-  if (typeof window.showGiga !== 'function') return Promise.resolve();
-  try { return window.showGiga().catch(function(){}); } catch(_){ return Promise.resolve(); }
+  // Games never get blocked by an ad problem: skipped/failed/unavailable all resolve.
+  if (!isAdCompanyEnabled('adsgram')) return Promise.resolve();
+  try { return showSideAdsgram().catch(function(){}); } catch(_){ return Promise.resolve(); }
 }
 function startGame(key){
   var names = {memory:'Memory Match',rps:'Rock Paper Scissors',higher:'Higher or Lower',tap:'Quick Tap'};
@@ -4721,7 +4730,7 @@ var AR={
 "Your Balance":"رصيدك","Your balance":"رصيدك","Balance:":"الرصيد:","Available:":"المتاح:","Your available ZNX and USD balances":"أرصدتك المتاحة من ZNX وUSD","Your reward coin":"عملة مكافآتك","Total earned":"إجمالي الأرباح","Earned today":"أرباح اليوم","Ads watched":"إعلانات تمت مشاهدتها","Friends invited":"أصدقاء تمت دعوتهم","Transaction History":"سجل المعاملات","No transactions yet":"لا توجد معاملات بعد",
 "Daily Bonus":"المكافأة اليومية","Come back every day · +500 ZNX":"عد كل يوم · +500 ZNX","Keep earning every day!":"واصل الربح كل يوم!","Build a streak":"كوّن سلسلة أيام","DAILY OPS":"المهام اليومية","Lucky Wheel":"عجلة الحظ","1 free spin":"لفة مجانية","Spins available:":"اللفات المتاحة:","Every 2 active referrals = 1 free spin!":"كل إحالتين نشطتين = لفة مجانية!","for every":"لكل","active referrals. Spin to win up to":"إحالات نشطة. لف واربح حتى",
 "Invite Friends":"ادعُ أصدقاءك","Invite friends and earn":"ادعُ أصدقاءك واربح","Your Referral Link":"رابط الإحالة الخاص بك","Referral List · One-Time Bonus":"قائمة الإحالات · مكافأة لمرة واحدة","No referrals yet":"لا توجد إحالات بعد","Lifetime referral commission":"عمولة الإحالة مدى الحياة",
-"Each referral must watch 10 GigaPub ads — you get paid instantly, one time.":"يجب على كل إحالة مشاهدة 10 إعلانات GigaPub — تُدفع لك فوراً، مرة واحدة.","Only GigaPub ads count toward the 10.":"إعلانات GigaPub فقط تُحتسب ضمن الـ 10.","Plus 10% of everything they make after activation, forever.":"بالإضافة إلى 10% من كل ما يربحونه بعد التفعيل، للأبد.","Only ads watched through GigaPub count toward the withdrawal requirement.":"إعلانات GigaPub فقط تُحتسب ضمن شرط السحب.",
+"Each referral must watch 10 Adsgram ads — you get paid instantly, one time.":"يجب على كل إحالة مشاهدة 10 إعلانات Adsgram — تُدفع لك فوراً، مرة واحدة.","Only Adsgram ads count toward the 10.":"إعلانات Adsgram فقط تُحتسب ضمن الـ 10.","Plus 10% of everything they make after activation, forever.":"بالإضافة إلى 10% من كل ما يربحونه بعد التفعيل، للأبد.","Only ads watched through Adsgram count toward the withdrawal requirement.":"إعلانات Adsgram فقط تُحتسب ضمن شرط السحب.",
 "Withdraw":"سحب","Withdraw USD":"سحب USD","Deposit USD":"إيداع USD","Send Deposit":"إرسال الإيداع","Submit Withdrawal":"تقديم طلب السحب","Submit Request":"إرسال الطلب","Convert ZNX":"تحويل ZNX","Convert ZNX to USD":"تحويل ZNX إلى USD","Exchange Now":"حوّل الآن","Withdrawal fee:":"رسوم السحب:","You will pay":"ستدفع","You will receive in TON":"ستستلم بعملة TON","Amount you will receive after the fee":"المبلغ الذي ستستلمه بعد الرسوم","Enter the amount in USD, then pay the equivalent in TON from your connected wallet. Your User ID is added as the transaction comment.":"أدخل المبلغ بـ USD ثم ادفع ما يعادله بعملة TON من محفظتك المتصلة. يُضاف معرّف المستخدم الخاص بك كتعليق على المعاملة.","Additional Notes (Optional)":"ملاحظات إضافية (اختياري)","By submitting this request, you confirm that:":"بإرسال هذا الطلب فأنت تؤكد أن:",
 "Have a promo code? Claim your reward":"لديك كود ترويجي؟ استلم مكافأتك","Redeem Code":"استبدال الكود","Redeem Reward":"استلام المكافأة","Enter a valid code to receive its ZNX reward.":"أدخل كوداً صالحاً لاستلام مكافأة ZNX الخاصة به.","Enter redeem code":"أدخل كود الاستبدال",
 "Staked":"المخزَّن","No active stake":"لا يوجد تخزين نشط","Stake ZNX":"تخزين ZNX","STAKING":"التخزين","Reward / cycle":"المكافأة / الدورة","/ 24h":"/ 24 ساعة","Stake your ZNX and earn 5% every 24 hours":"خزّن ZNX واربح 5% كل 24 ساعة","ZNX · Staked coins are locked and earn a reward every 24 hours.":"ZNX · العملات المخزَّنة مقفلة وتربح مكافأة كل 24 ساعة.","Amount to stake":"المبلغ المراد تخزينه","Or enter a custom amount (multiples of 100)":"أو أدخل مبلغاً مخصصاً (من مضاعفات 100)","Amount in USD ($)":"المبلغ بـ USD ($)",
@@ -4729,7 +4738,7 @@ var AR={
 "User Tasks":"مهام المستخدمين","Add Task":"إضافة مهمة","Task Name":"اسم المهمة","Channel / Group":"قناة / مجموعة","Website / Bot":"موقع / بوت","Channel Link":"رابط القناة","Channel / Bot:":"القناة / البوت:","Members You Need":"عدد الأعضاء المطلوب","Members requested:":"الأعضاء المطلوبون:","Total Cost":"التكلفة الإجمالية","Total cost:":"التكلفة الإجمالية:","Task Added Successfully":"تمت إضافة المهمة بنجاح","Promote your Telegram channel or bot. Bot tasks are approved instantly. Channel tasks are checked immediately to confirm that the bot is an administrator.":"روّج لقناتك أو بوتك على تيليجرام. مهام البوتات تُعتمد فوراً، ومهام القنوات تُفحص فوراً للتأكد من أن البوت مشرف.","Pay with your USD balance to promote your channel or bot":"ادفع من رصيد USD للترويج لقناتك أو بوتك","Add the bot as an administrator in your channel/group before submitting. The check is performed immediately.":"أضف البوت كمشرف في قناتك/مجموعتك قبل الإرسال. يتم الفحص فوراً.","Pricing is charged from your USD balance: every 100 completions = $0.225. Bot tasks go live instantly; channel tasks go live after payment and setup verification.":"يُخصم السعر من رصيد USD: كل 100 إتمام = $0.225. مهام البوتات تعمل فوراً، ومهام القنوات بعد الدفع والتحقق من الإعداد.","Enter at least 100 members":"أدخل 100 عضو على الأقل","Your USD payment was deducted and the task is now live. The bot administrator permission was verified automatically:":"تم خصم دفعتك بـ USD والمهمة نشطة الآن. تم التحقق تلقائياً من صلاحية مشرف البوت:","• You own or manage this channel.":"• أنت تملك هذه القناة أو تديرها.","• You agree to the price calculated for the members requested.":"• توافق على السعر المحسوب للأعضاء المطلوبين.","• The task goes live on the Tasks page once payment is confirmed.":"• تظهر المهمة في صفحة المهام بعد تأكيد الدفع.","• Our team will contact you with payment details to activate the task.":"• سيتواصل معك فريقنا بتفاصيل الدفع لتفعيل المهمة.",
 "Join to Continue":"انضم للمتابعة","Verify Membership":"تحقق من العضوية","You must join the channels below to use the bot and unlock your referral reward.":"يجب الانضمام إلى القنوات أدناه لاستخدام البوت وفتح مكافأة الإحالة.","Security Check":"فحص الأمان","Please complete the quick verification below to continue and receive your reward.":"أكمل التحقق السريع أدناه للمتابعة واستلام مكافأتك.",
 "Account Banned":"الحساب محظور","This account has been permanently blocked from using the bot for violating the usage policy.":"تم حظر هذا الحساب نهائياً من استخدام البوت لمخالفة سياسة الاستخدام.","Changing your network or IP address will not lift this restriction — the block is tied to this specific device.":"تغيير الشبكة أو عنوان IP لن يرفع هذا القيد — الحظر مرتبط بهذا الجهاز تحديداً.","Multiple accounts detected on the same device. Only the first account created on this device is allowed to use the bot.":"تم اكتشاف عدة حسابات على نفس الجهاز. يُسمح فقط بأول حساب أُنشئ على هذا الجهاز باستخدام البوت.",
-"Advertisements":"الإعلانات","GIGAPUB ADS":"إعلانات GIGAPUB","Task Reward":"مكافأة مهمة","Invite Reward":"مكافأة دعوة","Daily Combo":"الكومبو اليومي","Referral Bonus":"مكافأة إحالة","Withdrawal":"سحب","Lucky Wheel ":"عجلة الحظ","Staked ":"تم التخزين","Staking Reward":"مكافأة التخزين","ZNX → USD":"ZNX ← USD",
+"Advertisements":"الإعلانات","ADSGRAM ADS":"إعلانات ADSGRAM","Task Reward":"مكافأة مهمة","Invite Reward":"مكافأة دعوة","Daily Combo":"الكومبو اليومي","Referral Bonus":"مكافأة إحالة","Withdrawal":"سحب","Lucky Wheel ":"عجلة الحظ","Staked ":"تم التخزين","Staking Reward":"مكافأة التخزين","ZNX → USD":"ZNX ← USD",
 "Anything you'd like us to know...":"أي شيء تود إخبارنا به...","e.g. Join my channel or start my bot":"مثال: انضم لقناتي أو شغّل بوتي","TON Wallet Address (UQ...) — you receive TON here":"عنوان محفظة TON (UQ...) — ستستلم TON هنا",
 /* toasts / errors */
 "Ad loading, try again":"الإعلان قيد التحميل، حاول مرة أخرى","Ad was not completed":"لم يكتمل الإعلان","Already claimed today!":"تم الاستلام اليوم بالفعل!","Amount too small":"المبلغ صغير جداً","Connect your TON wallet first":"اربط محفظة TON أولاً","Conversion completed ✅":"تم التحويل ✅","Could not claim reward":"تعذّر استلام المكافأة","Could not stake":"تعذّر التخزين","Deposit pending, refresh later":"الإيداع قيد المعالجة، حدّث لاحقاً","Deposit sent, verifying... ✅":"تم إرسال الإيداع، جارٍ التحقق... ✅","Enter a redeem code":"أدخل كود الاستبدال","Enter a task name":"أدخل اسم المهمة","Enter a valid amount in USD":"أدخل مبلغاً صالحاً بـ USD","Enter a valid amount":"أدخل مبلغاً صالحاً","Enter the amount to stake":"أدخل المبلغ المراد تخزينه","Enter your TON wallet address":"أدخل عنوان محفظة TON","Enter your Telegram link":"أدخل رابط تيليجرام الخاص بك","Insufficient USD balance":"رصيد USD غير كافٍ","Insufficient ZNX balance":"رصيد ZNX غير كافٍ","Invalid wallet address":"عنوان المحفظة غير صالح","Invite link copied! 🎉":"تم نسخ رابط الدعوة! 🎉","Join all channels first":"انضم لكل القنوات أولاً","Network error":"خطأ في الشبكة","No spins left. Invite friends! 🎯":"لا توجد لفات متبقية. ادعُ أصدقاءك! 🎯","Referral link copied! 📋":"تم نسخ رابط الإحالة! 📋","Select all 4 items first!":"اختر العناصر الأربعة أولاً!","Verification failed":"فشل التحقق","Verification was cancelled":"تم إلغاء التحقق","Verified! Welcome aboard 🎉":"تم التحقق! أهلاً بك 🎉","Watch the full ad (15s)":"شاهد الإعلان كاملاً (15 ثانية)","Withdrawals are currently disabled":"السحب متوقف حالياً","❌ Wrong combination. Try again!":"❌ تركيبة خاطئة. حاول مرة أخرى!","😬 No reward. Try again!":"😬 لا مكافأة. حاول مرة أخرى!","Ad reward unavailable":"مكافأة الإعلان غير متاحة","Deposit cancelled":"تم إلغاء الإيداع","Reward is not ready yet":"المكافأة ليست جاهزة بعد","Conversion failed":"فشل التحويل","Could not claim bonus":"تعذّر استلام المكافأة","Could not claim":"تعذّر الاستلام","Could not spin":"تعذّر تدوير العجلة","Failed to submit":"فشل الإرسال","Failed.":"فشلت العملية.","Game unavailable":"اللعبة غير متاحة","Invalid code":"كود غير صالح","Unable to start task":"تعذّر بدء المهمة","Withdrawal failed":"فشل السحب","Open bot, wait 5s, then Verify":"افتح البوت وانتظر 5 ثوانٍ ثم اضغط تحقق","Join channel, then Verify ✓":"انضم للقناة ثم اضغط تحقق ✓","Unable to load your Telegram account":"تعذّر تحميل حساب تيليجرام الخاص بك","LIVE":"مباشر","TOTAL PRIZE POOL":"إجمالي الجوائز","Round ends in":"تنتهي الجولة خلال","days":"أيام","hrs":"ساعات","min":"دقائق","sec":"ثوانٍ","RANK":"المركز","Top players":"المتصدرون","LIVE CONTEST":"مسابقة مباشرة","Competitions":"المسابقات","Referral Leaderboard":"لوحة متصدري الإحالات","ACTIVE REFERRALS":"إحالات نشطة","YOU":"أنت","USD rewards":"جوائز USD","You are in the prize zone":"أنت في منطقة الجوائز","Not ranked yet":"لا ترتيب بعد","Keep climbing to reach the prizes":"واصل الصعود للوصول إلى الجوائز","Ranked by active referrals joined this round — top 10 win USD automatically":"الترتيب حسب الإحالات النشطة في هذه الجولة — أفضل 10 يربحون USD تلقائياً","Unable to load the leaderboard right now":"تعذّر تحميل لوحة المتصدرين الآن","just now":"الآن","Ads Leaderboard":"لوحة متصدري الإعلانات","ADS WATCHED":"إعلانات مشاهدة","Ranked by ads watched this round — top 10 win USD automatically":"الترتيب حسب الإعلانات المشاهدة في هذه الجولة — أفضل 10 يربحون USD تلقائياً","Watch ads, climb the board and win USD when the round ends.":"شاهد الإعلانات، اصعد في الترتيب واربح USD عند انتهاء الجولة.","Invite friends, climb the board and win USD when the round ends.":"ادعُ أصدقاءك، اصعد في الترتيب واربح USD عند انتهاء الجولة."
