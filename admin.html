@@ -312,6 +312,8 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
 .cmb-slot img{width:58px;height:58px;object-fit:contain}
 .cmb-slot-n{position:absolute;top:4px;left:7px;font-size:10px;font-weight:800;color:rgba(170,255,210,.55)}
 .cmb-reward{margin-inline-start:auto;text-align:left}
+.cmb-edit{display:flex;gap:8px;align-items:center;margin-top:8px;justify-content:flex-end}
+.cmb-edit input{width:150px;padding:8px 10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--border);color:var(--text);font:inherit}
 .cmb-items .cmb-slot{width:46px;height:46px;border-radius:12px}
 .cmb-items .cmb-slot img{width:34px;height:34px}
 .cmb-items .cmb-slot-n{display:none}
@@ -528,7 +530,9 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
           <div class="panel-head"><div><h2>كومبو اليوم</h2><div class="hint" id="cmbDate">—</div></div></div>
           <div class="cmb-today">
             <div class="cmb-items" id="cmbItems"></div>
-            <div class="cmb-reward"><div class="stat-label">المكافأة</div><div class="stat-value" id="cmbReward">—</div></div>
+            <div class="cmb-reward"><div class="stat-label">المكافأة</div><div class="stat-value" id="cmbReward">—</div>
+              <div class="cmb-edit"><input type="number" id="cmbRewardInput" min="1" max="1000000" step="1" placeholder="مكافأة جديدة"><button class="btn btn-gold btn-sm" type="button" onclick="saveComboReward()">حفظ المكافأة</button></div>
+              <div class="hint" style="margin-top:6px">تتطبق على كومبو اليوم (لو اتولّد) وعلى الكومبوهات الجاية</div></div>
           </div>
           <div class="hint" style="margin-top:10px">يتجدد تلقائيًا عند منتصف الليل بتوقيت UTC — لكل مستخدم محاولة واحدة في اليوم</div>
         </div>
@@ -539,14 +543,7 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
           <div class="stat-card"><div class="stat-label">إجمالي المحاولات</div><div class="stat-value" id="cmbAttempted">—</div><div class="stat-foot">كل من جرّب الكومبو اليوم</div></div>
         </div>
 
-        <div class="panel">
-          <div class="panel-head"><div><h2>محاولات اليوم</h2><div class="hint">الناجحون أولًا</div></div></div>
-          <div class="table-wrap" style="max-height:420px;overflow-y:auto"><table>
-            <thead><tr><th>المستخدم</th><th>الآيدي</th><th>النتيجة</th></tr></thead>
-            <tbody id="cmbAttemptBody"></tbody>
-          </table></div>
-        </div>
-
+        
         <div class="panel">
           <div class="panel-head"><div><h2>آخر الكومبوهات</h2><div class="hint">آخر 7 أيام — العناصر بالترتيب الصحيح</div></div></div>
           <div class="table-wrap"><table>
@@ -870,6 +867,29 @@ const CMB_ICONS = {"task": "data:image/webp;base64,UklGRiQ5AABXRUJQVlA4WAoAAAAQA
 const CMB_LABELS = {task:"هيكل المهام", znx:"رمز ZNX", potion:"الجرعة", hub:"المركز"};
 
 let comboCache = {};
+async function saveComboReward(){
+  const input = document.getElementById('cmbRewardInput');
+  const val = Math.floor(Number(input.value));
+  if (!Number.isFinite(val) || val < 1 || val > 1000000 || String(input.value).trim() === ''){
+    toast('أدخل مكافأة صحيحة بين 1 و 1,000,000', true); return;
+  }
+  const key = todayKeyUTCAdmin();
+  if (!confirm('تغيير مكافأة الكومبو إلى ' + fmt(val) + ' ZNX؟')) return;
+  const updates = {};
+  updates['config/comboReward'] = val;
+  // كومبو اليوم لو اتولّد بالفعل: بنعدّل مكافأته بس (من غير ما نكتب سجل ناقص بدون عناصر)
+  if (comboCache[key] && Array.isArray(comboCache[key].items)) {
+    updates['combo/' + key + '/reward'] = val;
+  }
+  try {
+    await db.ref().update(updates);
+    input.value = '';
+    toast('تم حفظ المكافأة ✓' + (updates['combo/' + key + '/reward'] ? '' : ' — هتتطبق على الكومبو الجاي'));
+  } catch (err) {
+    console.error('Save combo reward failed', err);
+    toast('تعذّر حفظ المكافأة', true);
+  }
+}
 function todayKeyUTCAdmin(){ return new Date().toISOString().slice(0,10); }
 function cmbIconsHtml(items){
   return (items||[]).map(function(k,i){
@@ -899,16 +919,6 @@ function renderCombo(){
   document.getElementById('cmbSolved').textContent = fmt(solved.length);
   document.getElementById('cmbFailed').textContent = fmt(attempted.length - solved.length);
   document.getElementById('cmbAttempted').textContent = fmt(attempted.length);
-
-  const rows = attempted.slice().sort((a,b) => (b[1].comboClaimDate===key) - (a[1].comboClaimDate===key));
-  document.getElementById('cmbAttemptBody').innerHTML = rows.length
-    ? rows.map(([id,u]) => {
-        const ok = u.comboClaimDate===key;
-        return '<tr><td>'+escapeHtml(displayName(u))+'</td><td class="mono">'+escapeHtml(id)+'</td><td>'+
-          (ok ? '<span class="badge" style="background:rgba(34,197,94,.14);color:var(--gold)">✓ حلّ الكومبو</span>'
-              : '<span class="badge" style="background:rgba(239,68,68,.14);color:#f87171">✕ ترتيب خاطئ</span>')+'</td></tr>';
-      }).join('')
-    : '<tr><td colspan="3" class="empty">لا توجد محاولات اليوم بعد</td></tr>';
 
   const days = Object.keys(comboCache).sort().reverse().slice(0,7);
   document.getElementById('cmbHistBody').innerHTML = days.length
