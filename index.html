@@ -4257,9 +4257,10 @@ function checkCombo(){
       renderComboState(); resetCombo();
     }
   }, function(err){
+    // fetch() نفسه بيرمي TypeError لما الشبكة تقع؛ الرد اللي مش JSON (خطأ سيرفر) بيرمي SyntaxError
     console.error('Daily combo: request failed', err);
-    var offline = (typeof navigator !== 'undefined' && navigator.onLine === false);
-    showToast(offline ? 'Network error' : 'Server error, please try again.','error');
+    var netDown = (typeof navigator !== 'undefined' && navigator.onLine === false) || (err && err.name === 'TypeError');
+    showToast(netDown ? 'Network error' : 'Server error, please try again.','error');
     renderComboState(); resetCombo();
   });
 }
