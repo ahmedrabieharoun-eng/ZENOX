@@ -315,6 +315,9 @@ input:checked + .slider::before{transform:translateX(-19px);background:#fff}
 .cmb-items .cmb-slot{width:46px;height:46px;border-radius:12px}
 .cmb-items .cmb-slot img{width:34px;height:34px}
 .cmb-items .cmb-slot-n{display:none}
+.cmb-slot.legacy{border-style:dashed;border-color:rgba(239,68,68,.45);background:rgba(239,68,68,.06)}
+.cmb-legacy{font-size:20px}
+.cmb-items .cmb-slot.legacy .cmb-legacy{font-size:16px}
 </style>
 </head>
 <body>
@@ -870,13 +873,21 @@ let comboCache = {};
 function todayKeyUTCAdmin(){ return new Date().toISOString().slice(0,10); }
 function cmbIconsHtml(items){
   return (items||[]).map(function(k,i){
-    return '<div class="cmb-slot" title="'+escapeHtml(CMB_LABELS[k]||k)+'"><span class="cmb-slot-n">'+(i+1)+'</span><img src="'+(CMB_ICONS[k]||'')+'" alt=""></div>';
+    const src = CMB_ICONS[k];
+    const inner = src
+      ? '<img src="'+src+'" alt="">'
+      : '<span class="cmb-legacy">'+escapeHtml(String(k))+'</span>';
+    const title = src ? (CMB_LABELS[k]||k) : 'عنصر قديم (النظام السابق) — غير مدعوم';
+    return '<div class="cmb-slot'+(src?'':' legacy')+'" title="'+escapeHtml(title)+'"><span class="cmb-slot-n">'+(i+1)+'</span>'+inner+'</div>';
   }).join('');
+}
+function cmbIsLegacy(combo){
+  return !!(combo && combo.items && combo.items.some(function(k){ return !CMB_ICONS[k]; }));
 }
 function renderCombo(){
   const key = todayKeyUTCAdmin();
   const combo = comboCache[key] || null;
-  document.getElementById('cmbDate').textContent = key + ' (UTC)';
+  document.getElementById('cmbDate').textContent = key + ' (UTC)' + (cmbIsLegacy(combo) ? ' — ⚠️ محفوظ بالنظام القديم، امسح combo/'+key+' من Firebase' : '');
   document.getElementById('cmbItems').innerHTML = combo && combo.items
     ? cmbIconsHtml(combo.items)
     : '<div class="hint">لم يُنشأ الكومبو بعد — يُنشأ عند أول محاولة اليوم</div>';
